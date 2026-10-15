@@ -1,0 +1,50 @@
+---
+import type { Project } from '../projects/Project';
+
+interface Props {
+  lead: Project[];
+  secondary: Project[];
+  compact: Project[];
+}
+
+const { lead, secondary, compact } = Astro.props;
+---
+<main>
+  <p>Dr. Jetski Studios project catalogue.</p>
+
+  <section aria-label="Lead projects">
+    <h2>Featured</h2>
+    <ul>
+      {lead.map((project) => (
+        <li>
+          <h3>{project.displayName}</h3>
+          <p>{project.description}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section aria-label="Secondary projects">
+    <h2>More featured</h2>
+    <ul>
+      {secondary.map((project) => (
+        <li>
+          <h3>{project.displayName}</h3>
+          <p>{project.description}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section aria-label="Project collection">
+    <h2>More projects</h2>
+    <ul>
+      {compact.map((project) => (
+        <li>
+          <h3>{project.displayName}</h3>
+          <p>{project.description}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+</main>

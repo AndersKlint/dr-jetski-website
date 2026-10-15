@@ -1,0 +1,17 @@
+---
+import { loadProjectRecords } from '../projects/astroProjectSource';
+import { ProjectCatalogService } from '../projects/ProjectCatalogService';
+import HomeView from '../home-view/HomeView.astro';
+import SiteLayout from '../site/SiteLayout.astro';
+
+const catalog = new ProjectCatalogService(await loadProjectRecords());
+const lead = catalog.leadFeatured();
+const secondary = catalog.secondaryFeatured();
+const compact = catalog.compactProjects();
+---
+<SiteLayout
+  title="Dr. Jetski Studios"
+  description="Independent apps, audio tools, and developer utilities."
+>
+  <HomeView lead={lead} secondary={secondary} compact={compact} />
+</SiteLayout>

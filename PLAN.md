@@ -4,6 +4,8 @@
 
 Implementation plan confirmed by the owner alongside [DESIGN.md](DESIGN.md). Terminology is defined in [GLOSSARY.md](GLOSSARY.md).
 
+Phase 1 is complete: the Astro static foundation, validated content model, catalogue selection service, and ten authored launch projects are implemented. Content/type checks and the production build pass. The current homepage is a minimal catalogue; Phase 2 adds the visual system and staggered showcases, and Phase 3 adds project detail routes and media interactions.
+
 ## 1. Static foundation and project content
 
 - Initialize Astro with TypeScript and static output.
