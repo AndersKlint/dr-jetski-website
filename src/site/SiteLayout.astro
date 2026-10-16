@@ -1,4 +1,8 @@
 ---
+import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource-variable/inter';
+import './global.css';
+
 interface Props {
   title: string;
   description?: string;
@@ -15,6 +19,20 @@ const { title, description } = Astro.props;
     {description && <meta name="description" content={description} />}
   </head>
   <body>
-    <slot />
+    <div class="site-shell">
+      <a class="skip-link" href="#main-content">Skip to content</a>
+      <header class="site-header">
+        <a class="site-mark" href="/">Dr. Jetski <span class="mark-accent">Studios</span></a>
+        <nav class="site-nav" aria-label="Site">
+          <a href="/#about">About/contact</a>
+        </nav>
+      </header>
+      <div class="site-main">
+        <slot />
+      </div>
+      <footer class="site-footer">
+        <p>Dr. Jetski Studios — independent apps, audio tools, and developer utilities.</p>
+      </footer>
+    </div>
   </body>
 </html>

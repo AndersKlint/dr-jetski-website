@@ -1,0 +1,68 @@
+---
+import type { GalleryItem } from '../projects/Project';
+
+interface Props {
+  media?: GalleryItem;
+  isPriority?: boolean;
+  class?: string;
+}
+
+const { media, isPriority = false, class: className } = Astro.props;
+const figureClass = className ? `media-preview ${className}` : 'media-preview';
+const staticSrc = media ? (media.kind === 'image' ? media.src : media.poster) : undefined;
+---
+{media && staticSrc ? (
+  <figure class={figureClass}>
+    <img
+      src={staticSrc}
+      width={media.width}
+      height={media.height}
+      alt={media.alt}
+      decoding="async"
+      loading={isPriority ? 'eager' : 'lazy'}
+      fetchpriority={isPriority ? 'high' : undefined}
+    />
+    {media.isPlaceholder && <figcaption class="placeholder-label">Placeholder preview</figcaption>}
+  </figure>
+) : (
+  <div class={figureClass} aria-label="Preview not available">
+    <span class="empty-label" aria-hidden="true">Preview not available</span>
+  </div>
+)}
+<style>
+  .media-preview {
+    margin: 0;
+    min-width: 0;
+    position: relative;
+  }
+
+  .media-preview img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .placeholder-label {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    margin: 0;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    background: var(--charcoal-deep);
+    color: var(--cream);
+    border: 1px solid var(--line);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .empty-label {
+    display: block;
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--cream-dim);
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+  }
+</style>

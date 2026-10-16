@@ -1,0 +1,121 @@
+---
+import type { Project } from '../projects/Project';
+import MediaPreview from '../media/MediaPreview.astro';
+import { maturityLabel, typeLabel } from './projectLabels';
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+---
+<section class="collection" aria-labelledby="collection-heading">
+  <h2 class="section-heading" id="collection-heading">More projects</h2>
+  <ul class="grid">
+    {projects.map((project) => (
+      <li>
+        <article class="compact-card">
+          <div class="compact-media">
+            <MediaPreview media={project.gallery[0]} />
+          </div>
+          <div class="compact-body">
+            <p class="compact-kicker">
+              <span>{typeLabel(project.projectType)}</span>
+              <span aria-label={`Release maturity: ${maturityLabel(project.releaseMaturity)}`}>
+                {maturityLabel(project.releaseMaturity)}
+              </span>
+            </p>
+            <h3 class="compact-title">{project.displayName}</h3>
+            <p class="compact-description">{project.description}</p>
+            <p class="compact-note">{project.publicationNote ?? project.availability.message}</p>
+          </div>
+        </article>
+      </li>
+    ))}
+  </ul>
+</section>
+<style>
+  .collection {
+    max-width: var(--measure);
+    margin-inline: auto;
+    padding: 3.5rem 1.25rem 0;
+  }
+
+  .section-heading {
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    margin: 0 0 1.25rem;
+  }
+
+  .grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .grid > li {
+    min-width: 0;
+  }
+
+  .compact-card {
+    height: 100%;
+    background: var(--charcoal-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .compact-media :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .compact-body {
+    padding: 1rem 1.1rem 1.25rem;
+  }
+
+  .compact-kicker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.6rem;
+    margin: 0 0 0.45rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    max-width: none;
+  }
+
+  .compact-title {
+    margin: 0 0 0.4rem;
+    font-size: 1.15rem;
+  }
+
+  .compact-description {
+    margin: 0 0 0.6rem;
+    font-size: 0.92rem;
+  }
+
+  .compact-note {
+    margin: 0;
+    font-size: 0.83rem;
+    color: var(--cream-dim);
+    border-top: 1px solid var(--line);
+    padding-top: 0.6rem;
+  }
+
+  @media (max-width: 56rem) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 36rem) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

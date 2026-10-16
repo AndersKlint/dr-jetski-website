@@ -15,9 +15,16 @@ authoringNotes:
   - "Owner TODO: supply the pub.dev URL once published."
   - "This finished package is pending publication, not unfinished; keep maturity stable with pending availability."
   - "Platform support was not specified, so supportedPlatforms stays empty instead of claiming Flutter platforms."
+  - "Owner TODO: replace the concept placeholder gallery entry with a real screenshot or preview when supplied."
 downloads: []
 links: []
-gallery: []
+gallery:
+  - kind: "image"
+    src: "/images/placeholders/dart-paddle-ocr.svg"
+    alt: "Illustrative placeholder: concept mockup of the on-device OCR pipeline from image input to text output, not a real screenshot."
+    width: 1200
+    height: 800
+    isPlaceholder: true
 ---
 
 dart_paddle_ocr is a Flutter package providing end-to-end, optimized on-device OCR inference with PaddleOCR v6 and v5 models, with extensibility to other Paddle models.

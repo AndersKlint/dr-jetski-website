@@ -15,12 +15,19 @@ authoringNotes:
   - "Owner TODO: supply the public APK URL, version, file size, filename, and install notes."
   - "Only OCR is established as offline (PaddleOCR v6); do not claim English translation works offline."
   - "Possible future iOS support is unconfirmed, so supportedPlatforms lists Android only."
+  - "Owner TODO: replace the concept placeholder gallery entry with a real screenshot or preview when supplied."
 downloads:
   - label: "Android APK"
     platform: "Android"
     format: "APK"
 links: []
-gallery: []
+gallery:
+  - kind: "image"
+    src: "/images/placeholders/hanscan.svg"
+    alt: "Illustrative placeholder: concept mockup of HanScan overlaying recognition results on a phone photo, not a real screenshot."
+    width: 1200
+    height: 800
+    isPlaceholder: true
 ---
 
 HanScan recognizes Chinese text in photos taken with the camera or picked from the gallery, and overlays the results at their positions in the image.

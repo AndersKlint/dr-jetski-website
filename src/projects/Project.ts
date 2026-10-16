@@ -38,6 +38,7 @@ export interface ImageGalleryItem {
   alt: string;
   width: number;
   height: number;
+  isPlaceholder?: boolean;
 }
 
 export interface PreviewGalleryItem {
@@ -47,6 +48,7 @@ export interface PreviewGalleryItem {
   alt: string;
   width: number;
   height: number;
+  isPlaceholder?: boolean;
 }
 
 export interface DemoGalleryItem {
@@ -57,6 +59,7 @@ export interface DemoGalleryItem {
   width: number;
   height: number;
   hasAudio: boolean;
+  isPlaceholder?: boolean;
 }
 
 export type GalleryItem = ImageGalleryItem | PreviewGalleryItem | DemoGalleryItem;

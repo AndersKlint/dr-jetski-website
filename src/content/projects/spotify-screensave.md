@@ -12,10 +12,16 @@ availability:
   message: "Finished script. The source/install destination is still to confirm, so there are no actionable downloads yet."
 authoringNotes:
   - "Owner TODO: confirm the source/install destination and supply install instructions."
-  - "A screenshot is reported to exist but media lands in Phase 2; gallery stays empty until then."
+  - "A screenshot is reported to exist; replace the concept placeholder gallery entry with the real screenshot when supplied."
 downloads: []
 links: []
-gallery: []
+gallery:
+  - kind: "image"
+    src: "/images/placeholders/spotify-screensave.svg"
+    alt: "Illustrative placeholder: concept mockup of the screensaver showing album artwork with track details, not a real screenshot."
+    width: 1200
+    height: 800
+    isPlaceholder: true
 ---
 
 spotify-screensave is a small Linux desktop app that displays the current song's album artwork, title, and artist as a styled screensaver.

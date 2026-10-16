@@ -15,6 +15,7 @@ authoringNotes:
   - "Owner TODO: supply the public download URLs, beta version, file sizes, filenames, and install notes."
   - "The final product name is still provisional (working name: vocal aligner)."
   - "The plugin may become paid later, but there is no sales flow at launch; do not add purchase UI."
+  - "Owner TODO: replace the concept placeholder gallery entry with a real screenshot or preview when supplied."
 downloads:
   - label: "Windows VST3 (beta)"
     platform: "Windows"
@@ -29,7 +30,13 @@ downloads:
     platform: "Linux"
     format: "CLAP"
 links: []
-gallery: []
+gallery:
+  - kind: "image"
+    src: "/images/placeholders/vocal-aligner.svg"
+    alt: "Illustrative placeholder: concept mockup of guide and dub vocal waveforms being aligned, not a real screenshot."
+    width: 1200
+    height: 800
+    isPlaceholder: true
 ---
 
 The vocal aligner time-aligns a dub vocal track to a guide track, producing tightly timed vocal stacks and doubles.

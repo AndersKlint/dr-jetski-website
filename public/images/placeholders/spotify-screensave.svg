@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img">
+  <title>Concept mockup of a screensaver showing album artwork with track details</title>
+  <rect width="1200" height="800" rx="32" fill="#3A352D"/>
+  <path d="M-40 660 Q 300 610 620 660 T 1240 640" fill="none" stroke="#57503F" stroke-width="10" stroke-linecap="round"/>
+  <path d="M-40 716 Q 320 666 640 712 T 1240 696" fill="none" stroke="#57503F" stroke-width="6" stroke-linecap="round" opacity="0.7"/>
+  <rect x="330" y="90" width="540" height="620" rx="28" fill="#EAE1D0"/>
+  <rect x="400" y="150" width="400" height="400" rx="20" fill="#2E2B26"/>
+  <circle cx="600" cy="350" r="130" fill="#C4641F"/>
+  <circle cx="600" cy="350" r="92" fill="#7FA07A"/>
+  <circle cx="600" cy="350" r="54" fill="#EAE1D0"/>
+  <circle cx="600" cy="350" r="16" fill="#2E2B26"/>
+  <path d="M600 220 v-24 M600 480 v24 M470 350 h-24 M730 350 h24" stroke="#EAE1D0" stroke-width="8" stroke-linecap="round"/>
+  <rect x="400" y="578" width="280" height="30" rx="8" fill="#33302A" opacity="0.8"/>
+  <rect x="400" y="620" width="180" height="22" rx="6" fill="#8B8071"/>
+  <rect x="400" y="662" width="400" height="14" rx="7" fill="#D5C9B2"/>
+  <rect x="400" y="662" width="170" height="14" rx="7" fill="#C4641F"/>
+  <circle cx="150" cy="150" r="10" fill="#C4641F" opacity="0.8"/>
+  <circle cx="1050" cy="650" r="10" fill="#7FA07A" opacity="0.8"/>
+</svg>

@@ -14,9 +14,16 @@ authoringNotes:
   - "Owner TODO: confirm the source/install destination and supply install instructions and the requirements details."
   - "Exact OS coverage is unconfirmed, so supportedPlatforms stays generic; do not claim specific operating systems."
   - "A user-facing GUI may be added later; do not promise it."
+  - "Owner TODO: replace the concept placeholder gallery entry with a real screenshot or preview when supplied."
 downloads: []
 links: []
-gallery: []
+gallery:
+  - kind: "image"
+    src: "/images/placeholders/paddle-my-pdf.svg"
+    alt: "Illustrative placeholder: concept mockup of a scanned page becoming a searchable document, not a real screenshot."
+    width: 1200
+    height: 800
+    isPlaceholder: true
 ---
 
 Paddle-my-pdf converts large scanned PDFs into searchable, copyable PDFs by adding a recognized text layer with PaddleOCR. It is particularly aimed at Asian languages.

@@ -15,9 +15,16 @@ authoringNotes:
   - "Owner TODO: supply the pub.dev URL once published."
   - "This finished package is pending publication, not unfinished; keep maturity stable with pending availability."
   - "Platform support was not specified, so supportedPlatforms stays empty instead of claiming Flutter platforms."
+  - "Owner TODO: replace the concept placeholder gallery entry with a real screenshot or preview when supplied."
 downloads: []
 links: []
-gallery: []
+gallery:
+  - kind: "image"
+    src: "/images/placeholders/chinese-popup-dict.svg"
+    alt: "Illustrative placeholder: concept mockup of wrapped text with a tap-to-open dictionary popup, not a real screenshot."
+    width: 1200
+    height: 800
+    isPlaceholder: true
 ---
 
 chinese_popup_dict is a Flutter package that wraps text widgets with Chinese popup-dictionary interaction: pressing a Chinese character opens the dictionary.

@@ -1,0 +1,122 @@
+---
+import type { Project } from '../../projects/Project';
+import ProjectCard from '../ProjectCard.astro';
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+---
+<section class="showcase" aria-labelledby="featured-heading">
+  <h2 class="section-heading" id="featured-heading">Featured projects</h2>
+  <ol class="trail">
+    {projects.map((project, index) => (
+      <li class="trail-item" data-variant={index < 3 ? 'lead' : 'secondary'}>
+        <ProjectCard
+          project={project}
+          isPriority={index === 0}
+          size={index < 3 ? 'lead' : 'secondary'}
+        />
+      </li>
+    ))}
+  </ol>
+</section>
+<style>
+  .showcase {
+    max-width: var(--measure);
+    margin-inline: auto;
+    padding: 1.5rem 1.25rem 0;
+  }
+
+  .section-heading {
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    margin: 0 0 1.25rem;
+  }
+
+  .trail {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: start;
+  }
+
+  .trail-item {
+    min-width: 0;
+  }
+
+  .trail-item:nth-child(odd) {
+    grid-column: 1;
+  }
+
+  .trail-item:nth-child(even) {
+    grid-column: 2;
+  }
+
+  .trail-item:nth-child(1) {
+    grid-row: 1;
+  }
+
+  .trail-item:nth-child(2) {
+    grid-row: 1;
+    margin-top: clamp(3rem, 7vw, 6rem);
+  }
+
+  .trail-item:nth-child(3) {
+    grid-row: 2;
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .trail-item:nth-child(4) {
+    grid-row: 2;
+    margin-top: clamp(4rem, 8vw, 7rem);
+  }
+
+  .trail-item:nth-child(5) {
+    grid-row: 3;
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .trail-item[data-variant='secondary'] {
+    max-width: 26rem;
+  }
+
+  .trail-item:nth-child(4) {
+    justify-self: end;
+  }
+
+  @media (max-width: 46rem) {
+    .trail {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .trail-item:nth-child(odd),
+    .trail-item:nth-child(even) {
+      grid-column: 1;
+    }
+
+    .trail-item:nth-child(1),
+    .trail-item:nth-child(2),
+    .trail-item:nth-child(3),
+    .trail-item:nth-child(4),
+    .trail-item:nth-child(5) {
+      grid-row: auto;
+      margin-top: 0;
+    }
+
+    .trail {
+      row-gap: 1.5rem;
+    }
+
+    .trail-item[data-variant='secondary'] {
+      max-width: none;
+    }
+
+    .trail-item:nth-child(4) {
+      justify-self: stretch;
+    }
+  }
+</style>

@@ -14,6 +14,7 @@ availability:
 authoringNotes:
   - "Owner TODO: supply the public download URLs, version, file sizes, filenames, and install notes."
   - "Do not assume Windows/Linux bundle layout, exact file extensions, or installer formats; those download formats stay plain and descriptive until confirmed."
+  - "Owner TODO: replace the concept placeholder gallery entry with a real screenshot or preview when supplied."
 downloads:
   - label: "Windows build"
     platform: "Windows"
@@ -25,7 +26,13 @@ downloads:
     platform: "Android"
     format: "APK"
 links: []
-gallery: []
+gallery:
+  - kind: "image"
+    src: "/images/placeholders/hankan.svg"
+    alt: "Illustrative placeholder: concept mockup of HanKan reading mode with a popup dictionary over a document, not a real screenshot."
+    width: 1200
+    height: 800
+    isPlaceholder: true
 ---
 
 HanKan is a Chinese-learning app combining a simple text editor with a reading mode that features a popup dictionary. It also opens PDFs and uses targeted OCR at the tapped or clicked position to give dictionary lookup for the selected word.

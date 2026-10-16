@@ -2,10 +2,14 @@
 
 ## Status
 
-Phase 1 foundation: Astro static site with a validated project catalogue
-(`src/content/projects/*.md`, ten public entries). Visual design, homepage
-showcase, media galleries, and project detail pages arrive in later phases.
-No placeholder media or detail routes are wired up yet.
+Phases 1 and 2 are complete: an Astro static site with ten validated project
+entries, a responsive staggered homepage, compact project grid, locally hosted
+fonts, studio identity, and About/contact area. Each project has a clearly
+labeled concept preview, replaceable through its content file.
+
+Phase 3 adds project detail pages, card navigation, and preview playback.
+See [PLAN.md](PLAN.md) for the implementation milestones and [AGENTS.md](AGENTS.md)
+for source organization.
 
 ## Commands
 
@@ -38,7 +42,10 @@ satisfy `src/projects/projectSchema.ts`; invalid content fails the build.
 - Compact projects sort by `editorialOrder`: paddle-my-pdf, then the two
   Flutter packages adjacent, then yt-clip-extractor, spotify-screensave.
 - Unknowns go in frontmatter `authoringNotes`, never as public calls to
-  action or invented links. Gallery stays `[]` until Phase 2 placeholders.
+  action or invented links.
+- Homepage cards use the first `gallery` entry. To replace a concept preview,
+  update its `src`, `alt`, `width`, and `height` and remove `isPlaceholder: true`.
+  Video entries use their poster image until Phase 3 adds playback.
 
 ## Workflow
 
@@ -58,4 +65,5 @@ Marked per file in `authoringNotes`; still needed before launch:
 - HanKan Windows/Linux, yt-clip-extractor: exact bundle/extension/installer formats.
 - Paddle-my-pdf / spotify-screensave: source/install destinations.
 - Flutter packages: pub.dev URLs once published.
-- Contact details, professional links, and real screenshots/previews (Phase 2).
+- Contact details, professional links, and real screenshots/previews to replace
+  the initial concept placeholders.

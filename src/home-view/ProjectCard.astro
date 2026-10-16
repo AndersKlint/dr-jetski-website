@@ -1,0 +1,117 @@
+---
+import type { Project } from '../projects/Project';
+import MediaPreview from '../media/MediaPreview.astro';
+import { isTrialMaturity, maturityLabel, typeLabel } from './projectLabels';
+
+interface Props {
+  project: Project;
+  isPriority?: boolean;
+  size?: 'lead' | 'secondary';
+}
+
+const { project, isPriority = false, size = 'lead' } = Astro.props;
+const note = project.publicationNote ?? project.availability.message;
+---
+<article class="card" data-size={size}>
+  <div class="card-media">
+    <MediaPreview media={project.gallery[0]} isPriority={isPriority} />
+  </div>
+  <div class="card-body">
+    <p class="card-kicker">
+      <span class="type">{typeLabel(project.projectType)}</span>
+      <span class="maturity" data-trial={isTrialMaturity(project.releaseMaturity)}>
+        {maturityLabel(project.releaseMaturity)}
+      </span>
+      {project.supportedPlatforms.length > 0 && (
+        <span class="platforms">{project.supportedPlatforms.join(' · ')}</span>
+      )}
+    </p>
+    <h3 class="card-title">{project.displayName}</h3>
+    <p class="card-description">{project.description}</p>
+    <p class="card-note">{note}</p>
+  </div>
+</article>
+<style>
+  .card {
+    background: var(--charcoal-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  .card-media :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .card-body {
+    padding: 1.25rem 1.25rem 1.5rem;
+  }
+
+  .card[data-size='secondary'] .card-body {
+    padding: 1rem 1.1rem 1.25rem;
+  }
+
+  .card-kicker {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.6rem;
+    margin: 0 0 0.6rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    max-width: none;
+  }
+
+  .type {
+    color: var(--cream-dim);
+  }
+
+  .maturity {
+    padding: 0.1rem 0.55rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--cream-dim);
+  }
+
+  .maturity[data-trial='true'] {
+    background: var(--ember);
+    border-color: var(--ember);
+    color: var(--ember-ink);
+    font-weight: 700;
+  }
+
+  .platforms {
+    color: var(--cream-dim);
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  .card-title {
+    margin: 0 0 0.5rem;
+    font-size: 1.6rem;
+  }
+
+  .card[data-size='secondary'] .card-title {
+    font-size: 1.3rem;
+  }
+
+  .card-description {
+    margin: 0 0 0.75rem;
+  }
+
+  .card[data-size='secondary'] .card-description {
+    font-size: 0.95rem;
+  }
+
+  .card-note {
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--cream-dim);
+    border-top: 1px solid var(--line);
+    padding-top: 0.75rem;
+  }
+</style>

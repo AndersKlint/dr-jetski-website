@@ -4,7 +4,9 @@
 
 Implementation plan confirmed by the owner alongside [DESIGN.md](DESIGN.md). Terminology is defined in [GLOSSARY.md](GLOSSARY.md).
 
-Phase 1 is complete: the Astro static foundation, validated content model, catalogue selection service, and ten authored launch projects are implemented. Content/type checks and the production build pass. The current homepage is a minimal catalogue; Phase 2 adds the visual system and staggered showcases, and Phase 3 adds project detail routes and media interactions.
+Phase 1 is complete: the Astro static foundation, validated content model, catalogue selection service, and ten authored launch projects are implemented.
+
+Phase 2 is complete: the visual system, locally hosted typography, studio wordmark and wake artwork, responsive staggered showcases, compact project grid, About/contact area, and ten replaceable concept previews are implemented. Content/type checks and the production build pass. Chrome verification covered 320–1440px viewports, project ordering, non-overlapping layouts, first-project visibility, image/font loading, and keyboard skip navigation. Phase 3 adds project detail routes, card navigation, and media interactions.
 
 ## 1. Static foundation and project content
 

@@ -13,6 +13,7 @@ availability:
 authoringNotes:
   - "Owner TODO: supply the public download URLs, version, file sizes, filenames, and install notes."
   - "Do not assume bundle layout, exact file extensions, or installer formats; download formats stay plain and descriptive until confirmed."
+  - "Owner TODO: replace the concept placeholder gallery entry with a real screenshot or preview when supplied."
 downloads:
   - label: "Linux build"
     platform: "Linux"
@@ -21,7 +22,13 @@ downloads:
     platform: "Windows"
     format: "Desktop build"
 links: []
-gallery: []
+gallery:
+  - kind: "image"
+    src: "/images/placeholders/yt-clip-extractor.svg"
+    alt: "Illustrative placeholder: concept mockup of selecting a clip between two timestamps on a timeline, not a real screenshot."
+    width: 1200
+    height: 800
+    isPlaceholder: true
 ---
 
 yt-clip-extractor is a small desktop app that uses yt-dl to download and cut a video between two timestamped YouTube URLs.

@@ -77,6 +77,7 @@ const gallerySchema = z.discriminatedUnion('kind', [
     alt: nonBlankString,
     width: dimension,
     height: dimension,
+    isPlaceholder: z.boolean().optional(),
   }),
   z.object({
     kind: z.literal('preview'),
@@ -85,6 +86,7 @@ const gallerySchema = z.discriminatedUnion('kind', [
     alt: nonBlankString,
     width: dimension,
     height: dimension,
+    isPlaceholder: z.boolean().optional(),
   }),
   z.object({
     kind: z.literal('demo'),
@@ -94,6 +96,7 @@ const gallerySchema = z.discriminatedUnion('kind', [
     width: dimension,
     height: dimension,
     hasAudio: z.boolean(),
+    isPlaceholder: z.boolean().optional(),
   }),
 ]);
 

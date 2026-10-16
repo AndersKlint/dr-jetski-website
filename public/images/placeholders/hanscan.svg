@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img">
+  <title>Concept mockup of phone scanning a sign with overlaid recognition boxes</title>
+  <rect width="1200" height="800" rx="32" fill="#EAE1D0"/>
+  <path d="M-40 660 Q 300 600 620 660 T 1240 640" fill="none" stroke="#D5C9B2" stroke-width="10" stroke-linecap="round"/>
+  <path d="M-40 710 Q 320 650 640 706 T 1240 690" fill="none" stroke="#D5C9B2" stroke-width="6" stroke-linecap="round" opacity="0.7"/>
+  <rect x="80" y="96" width="640" height="520" rx="24" fill="#FAF5E9" stroke="#D5C9B2" stroke-width="3"/>
+  <rect x="120" y="136" width="560" height="150" rx="14" fill="#3B372F"/>
+  <rect x="150" y="160" width="330" height="34" rx="8" fill="#E9DFC9"/>
+  <rect x="150" y="206" width="240" height="28" rx="8" fill="#CFC2A6"/>
+  <rect x="150" y="244" width="290" height="20" rx="8" fill="#8B8071" opacity="0.7"/>
+  <rect x="140" y="152" width="180" height="120" rx="10" fill="none" stroke="#C4641F" stroke-width="5" stroke-dasharray="18 12"/>
+  <rect x="120" y="316" width="560" height="260" rx="14" fill="#F1E8D4"/>
+  <rect x="150" y="346" width="500" height="26" rx="8" fill="#D8CDB4"/>
+  <rect x="150" y="388" width="430" height="26" rx="8" fill="#D8CDB4"/>
+  <rect x="150" y="430" width="470" height="26" rx="8" fill="#D8CDB4"/>
+  <rect x="150" y="472" width="340" height="26" rx="8" fill="#D8CDB4"/>
+  <rect x="330" y="380" width="220" height="70" rx="10" fill="none" stroke="#C4641F" stroke-width="5" stroke-dasharray="18 12"/>
+  <rect x="150" y="516" width="150" height="40" rx="20" fill="#7FA07A"/>
+  <rect x="168" y="526" width="114" height="20" rx="6" fill="#FAF5E9" opacity="0.85"/>
+  <rect x="812" y="120" width="288" height="560" rx="40" fill="#2E2B26"/>
+  <rect x="830" y="152" width="252" height="496" rx="26" fill="#F4EDDE"/>
+  <rect x="852" y="176" width="208" height="130" rx="12" fill="#3B372F"/>
+  <rect x="872" y="194" width="150" height="26" rx="7" fill="#E9DFC9"/>
+  <rect x="872" y="230" width="110" height="22" rx="7" fill="#CFC2A6"/>
+  <rect x="866" y="188" width="120" height="100" rx="8" fill="none" stroke="#C4641F" stroke-width="4" stroke-dasharray="12 9"/>
+  <rect x="852" y="322" width="208" height="180" rx="12" fill="#EFE5CF"/>
+  <rect x="868" y="340" width="176" height="20" rx="6" fill="#D8CDB4"/>
+  <rect x="868" y="370" width="140" height="20" rx="6" fill="#D8CDB4"/>
+  <rect x="902" y="362" width="96" height="56" rx="8" fill="none" stroke="#C4641F" stroke-width="4" stroke-dasharray="12 9"/>
+  <circle cx="950" cy="390" r="16" fill="#C4641F"/>
+  <circle cx="950" cy="390" r="26" fill="none" stroke="#C4641F" stroke-width="3" opacity="0.5"/>
+  <rect x="852" y="522" width="208" height="66" rx="14" fill="#FAF5E9" stroke="#D5C9B2" stroke-width="3"/>
+  <rect x="868" y="540" width="120" height="18" rx="6" fill="#7FA07A"/>
+  <rect x="868" y="562" width="80" height="12" rx="6" fill="#CFC2A6"/>
+  <circle cx="1024" cy="560" r="20" fill="#C4641F"/>
+  <rect x="940" y="120" width="32" height="10" rx="5" fill="#14120F"/>
+</svg>

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img">
+  <title>Concept mockup of a clipboard history popup opened at the mouse cursor</title>
+  <rect width="1200" height="800" rx="32" fill="#EAE1D0"/>
+  <rect x="80" y="96" width="1040" height="88" rx="20" fill="#2E2B26"/>
+  <circle cx="136" cy="140" r="14" fill="#C4641F"/>
+  <circle cx="176" cy="140" r="14" fill="#7FA07A"/>
+  <circle cx="216" cy="140" r="14" fill="#8B8071"/>
+  <rect x="280" y="118" width="520" height="44" rx="22" fill="#FAF5E9" opacity="0.9"/>
+  <rect x="860" y="118" width="200" height="44" rx="22" fill="#C4641F"/>
+  <rect x="120" y="240" width="880" height="360" rx="24" fill="#F1E8D4" stroke="#D5C9B2" stroke-width="3"/>
+  <rect x="160" y="280" width="420" height="30" rx="8" fill="#D8CDB4"/>
+  <rect x="160" y="326" width="330" height="30" rx="8" fill="#D8CDB4"/>
+  <rect x="160" y="372" width="390" height="30" rx="8" fill="#D8CDB4"/>
+  <rect x="640" y="280" width="300" height="150" rx="16" fill="#7FA07A" opacity="0.35"/>
+  <circle cx="790" cy="355" r="60" fill="#7FA07A" opacity="0.6"/>
+  <rect x="380" y="300" width="560" height="380" rx="24" fill="#FAF5E9" stroke="#33302A" stroke-width="5"/>
+  <rect x="412" y="332" width="496" height="64" rx="14" fill="#F7EFE0" stroke="#C4641F" stroke-width="4"/>
+  <circle cx="452" cy="364" r="22" fill="#C4641F"/>
+  <rect x="442" y="356" width="20" height="16" rx="4" fill="#FAF5E9"/>
+  <rect x="488" y="350" width="260" height="22" rx="6" fill="#33302A" opacity="0.75"/>
+  <rect x="412" y="412" width="496" height="64" rx="14" fill="#F7EFE0"/>
+  <circle cx="452" cy="444" r="22" fill="#7FA07A"/>
+  <rect x="442" y="436" width="20" height="16" rx="4" fill="#FAF5E9"/>
+  <rect x="488" y="430" width="200" height="22" rx="6" fill="#33302A" opacity="0.45"/>
+  <rect x="700" y="430" width="90" height="52" rx="10" fill="#7FA07A" opacity="0.55"/>
+  <rect x="412" y="492" width="496" height="64" rx="14" fill="#F7EFE0"/>
+  <circle cx="452" cy="524" r="22" fill="#33302A"/>
+  <rect x="442" y="516" width="20" height="16" rx="4" fill="#FAF5E9"/>
+  <rect x="488" y="510" width="230" height="22" rx="6" fill="#33302A" opacity="0.45"/>
+  <path d="M858 614 L 806 656" fill="none" stroke="#8B8071" stroke-width="4" stroke-dasharray="10 8"/>
+  <path d="M806 622 L 806 690 L 874 690 L 874 654 Z" fill="#FAF5E9" stroke="#33302A" stroke-width="5" stroke-linejoin="round"/>
+  <rect x="160" y="648" width="220" height="56" rx="28" fill="#FAF5E9" stroke="#D5C9B2" stroke-width="3"/>
+  <rect x="180" y="666" width="60" height="22" rx="6" fill="#C4641F"/>
+  <rect x="250" y="666" width="110" height="22" rx="6" fill="#8B8071" opacity="0.6"/>
+  <rect x="404" y="648" width="280" height="56" rx="28" fill="#FAF5E9" stroke="#D5C9B2" stroke-width="3"/>
+  <rect x="424" y="666" width="60" height="22" rx="6" fill="#33302A"/>
+  <rect x="494" y="666" width="170" height="22" rx="6" fill="#8B8071" opacity="0.6"/>
+</svg>
