@@ -12,6 +12,8 @@ Phase 3 is implemented: ten public project routes, card navigation, compact retu
 
 The supplied logo suite is integrated: the homepage banner displays the full logo with no duplicate header mark, compact wordmarks on other pages, and an SVG favicon. Content/type checks and the production build pass. Local Chrome verification covered 320px, 390px, 768px, and 1440px layouts, logo proportions/loading, first-project visibility, overflow, home links, keyboard focus, and icon delivery.
 
+Main-only warm recolor is integrated pending visual approval: the full logo uses the new root warm main, while compact/icon intentionally use the archived colorful originals until their recolor is approved. The approved palette preserves the original geometry and editable SVG structure, and the colorful archive is unchanged. Content/type checks and the production build pass. Local Chrome verification at 320px, 390px, and 1440px confirmed the warm banner loads with its original proportions, no horizontal overflow, and the first project visible without scrolling; the compact wordmark and favicon also load.
+
 ## 1. Static foundation and project content
 
 - Initialize Astro with TypeScript and static output.
