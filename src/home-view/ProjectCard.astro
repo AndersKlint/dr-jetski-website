@@ -1,7 +1,7 @@
 ---
 import type { Project } from '../projects/Project';
 import MediaPreview from '../media/MediaPreview.astro';
-import { isTrialMaturity, maturityLabel, typeLabel } from './projectLabels';
+import { isTrialMaturity, maturityLabel, typeLabel } from '../projects/projectLabels';
 
 interface Props {
   project: Project;
@@ -26,9 +26,16 @@ const note = project.publicationNote ?? project.availability.message;
         <span class="platforms">{project.supportedPlatforms.join(' · ')}</span>
       )}
     </p>
-    <h3 class="card-title">{project.displayName}</h3>
+    <h3 class="card-title">
+      <a class="card-title-link" href={project.href}>{project.displayName}</a>
+    </h3>
     <p class="card-description">{project.description}</p>
     <p class="card-note">{note}</p>
+    <p class="card-action">
+      <a href={project.href} aria-label={`View ${project.displayName} project page`}>
+        View project <span aria-hidden="true">→</span>
+      </a>
+    </p>
   </div>
 </article>
 <style>
@@ -38,6 +45,12 @@ const note = project.publicationNote ?? project.availability.message;
     border-radius: var(--radius);
     overflow: hidden;
     min-width: 0;
+    transition: border-color 0.15s ease-in;
+  }
+
+  .card:hover,
+  .card:focus-within {
+    border-color: var(--ember);
   }
 
   .card-media :global(img) {
@@ -95,6 +108,17 @@ const note = project.publicationNote ?? project.availability.message;
     font-size: 1.6rem;
   }
 
+  .card-title-link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .card-title-link:hover {
+    color: var(--ember);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
   .card[data-size='secondary'] .card-title {
     font-size: 1.3rem;
   }
@@ -113,5 +137,16 @@ const note = project.publicationNote ?? project.availability.message;
     color: var(--cream-dim);
     border-top: 1px solid var(--line);
     padding-top: 0.75rem;
+  }
+
+  .card-action {
+    margin: 0.75rem 0 0;
+    font-weight: 700;
+  }
+
+  .card-action a {
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+    text-decoration-thickness: 2px;
   }
 </style>

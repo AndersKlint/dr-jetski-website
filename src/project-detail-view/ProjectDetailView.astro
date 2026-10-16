@@ -1,0 +1,122 @@
+---
+import type { Project, ProjectDownload } from '../projects/Project';
+import { isTrialMaturity, maturityLabel, typeLabel } from '../projects/projectLabels';
+import ProjectDownloads from './ProjectDownloads.astro';
+import ProjectGallery from './ProjectGallery.astro';
+
+interface Props {
+  project: Project;
+  downloads: ProjectDownload[];
+  isCompactMedia?: boolean;
+}
+
+const { project, downloads, isCompactMedia = false } = Astro.props;
+const hasBody = project.body.trim().length > 0;
+---
+<main class="detail" id="main-content">
+  <ProjectGallery gallery={project.gallery} isCompact={isCompactMedia} />
+  <header class="intro">
+    <p class="kicker">
+      <span class="type">{typeLabel(project.projectType)}</span>
+      <span class="maturity" data-trial={isTrialMaturity(project.releaseMaturity)}>
+        {maturityLabel(project.releaseMaturity)}
+      </span>
+      {project.supportedPlatforms.length > 0 && (
+        <span class="platforms">{project.supportedPlatforms.join(' · ')}</span>
+      )}
+    </p>
+    <h1 class="title">{project.displayName}</h1>
+    <p class="description">{project.description}</p>
+    <p class="availability">{project.publicationNote ?? project.availability.message}</p>
+  </header>
+  <ProjectDownloads
+    downloads={downloads}
+    availabilityMessage={project.availability.message}
+    publicationNote={project.publicationNote}
+    links={project.links}
+  />
+  {hasBody && (
+    <section class="body" aria-label="Project details">
+      <slot />
+    </section>
+  )}
+</main>
+<style>
+  .detail {
+    max-width: var(--measure);
+    margin-inline: auto;
+    padding: 2rem 1.25rem 0;
+  }
+
+  .intro {
+    margin-top: 2rem;
+    max-width: 62ch;
+  }
+
+  .kicker {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.6rem;
+    margin: 0 0 0.6rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    max-width: none;
+  }
+
+  .type {
+    color: var(--cream-dim);
+  }
+
+  .maturity {
+    padding: 0.1rem 0.55rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--cream-dim);
+  }
+
+  .maturity[data-trial='true'] {
+    background: var(--ember);
+    border-color: var(--ember);
+    color: var(--ember-ink);
+    font-weight: 700;
+  }
+
+  .platforms {
+    color: var(--cream-dim);
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  .title {
+    margin: 0 0 0.5rem;
+    font-size: clamp(2rem, 5vw, 3rem);
+  }
+
+  .description {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+
+  .availability {
+    margin: 0.75rem 0 0;
+    font-size: 0.92rem;
+    color: var(--cream-dim);
+    border-top: 1px solid var(--line);
+    padding-top: 0.75rem;
+  }
+
+  .body {
+    margin-top: 2.5rem;
+    max-width: 62ch;
+  }
+
+  .body :global(ul) {
+    padding-left: 1.25rem;
+  }
+
+  .body :global(li + li) {
+    margin-top: 0.35rem;
+  }
+</style>

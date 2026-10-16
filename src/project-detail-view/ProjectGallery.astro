@@ -1,0 +1,37 @@
+---
+import type { GalleryItem } from '../projects/Project';
+import MediaPreview from '../media/MediaPreview.astro';
+
+interface Props {
+  gallery: GalleryItem[];
+  isCompact?: boolean;
+}
+
+const { gallery, isCompact = false } = Astro.props;
+---
+{gallery.length > 0 && (
+  <section class="gallery" data-compact={isCompact} aria-label="Project previews">
+    {gallery.map((item, index) => (
+      <MediaPreview media={item} isPriority={index === 0} />
+    ))}
+  </section>
+)}
+<style>
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .gallery[data-compact='true'] {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 44rem;
+  }
+
+  @media (max-width: 40rem) {
+    .gallery {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

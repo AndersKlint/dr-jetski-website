@@ -1,0 +1,30 @@
+---
+---
+<button type="button" class="motion-control" data-motion-control hidden aria-pressed="false">
+  Pause motion
+</button>
+<script>
+  import { initPreviewPlayback } from './previewPlayback.client';
+  initPreviewPlayback();
+</script>
+<style>
+  .motion-control {
+    font: inherit;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--cream-dim);
+    cursor: pointer;
+  }
+
+  .motion-control:hover {
+    color: var(--ember);
+    border-color: var(--ember);
+  }
+
+  .motion-control[hidden] {
+    display: none;
+  }
+</style>

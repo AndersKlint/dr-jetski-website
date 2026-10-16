@@ -1,0 +1,202 @@
+---
+import type { ProjectDownload, ProjectLink } from '../projects/Project';
+
+interface Props {
+  downloads: ProjectDownload[];
+  availabilityMessage: string;
+  publicationNote?: string;
+  links: ProjectLink[];
+}
+
+const { downloads, availabilityMessage, publicationNote, links } = Astro.props;
+
+const LINK_LABELS: Record<ProjectLink['kind'], string> = {
+  source: 'Source code',
+  store: 'Store listing',
+  registry: 'Package registry',
+  demo: 'Live demo',
+  website: 'Project website',
+};
+
+function formatSize(sizeBytes?: number): string | undefined {
+  if (sizeBytes === undefined) {
+    return undefined;
+  }
+  const megabytes = sizeBytes / (1024 * 1024);
+  if (megabytes >= 1) {
+    return `${megabytes.toFixed(1)} MB`;
+  }
+  return `${Math.max(1, Math.round(sizeBytes / 1024))} KB`;
+}
+
+function downloadMeta(download: ProjectDownload): string {
+  const parts = [download.platform, download.format];
+  if (download.version !== undefined) {
+    parts.push(download.version);
+  }
+  const size = formatSize(download.sizeBytes);
+  if (size !== undefined) {
+    parts.push(size);
+  }
+  if (download.filename !== undefined) {
+    parts.push(download.filename);
+  }
+  return parts.join(' · ');
+}
+---
+{downloads.length > 0 ? (
+  <section class="downloads" id="downloads" aria-labelledby="downloads-heading">
+    <h2 id="downloads-heading">Downloads</h2>
+    <ul class="download-list">
+      {downloads.map((download) => (
+        <li class="download">
+          {download.url !== undefined ? (
+            <a class="download-link" href={download.url}>
+              {download.label}
+            </a>
+          ) : (
+            <span class="download-label">{download.label}</span>
+          )}
+          <p class="download-meta">{downloadMeta(download)}</p>
+          {download.installationNotes && (
+            <p class="install-notes">{download.installationNotes}</p>
+          )}
+          {download.url === undefined && (
+            <p class="pending-note">Download link pending.</p>
+          )}
+        </li>
+      ))}
+    </ul>
+    {links.length > 0 && (
+      <div class="elsewhere">
+        <h3 class="elsewhere-heading">Elsewhere</h3>
+        <ul class="link-list">
+          {links.map((link) => (
+            <li>
+              <a href={link.url}>{link.label}</a>
+              <span class="link-kind">{LINK_LABELS[link.kind]}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </section>
+) : (
+  <section class="downloads" aria-labelledby="availability-heading">
+    <h2 id="availability-heading">Availability</h2>
+    {publicationNote && (
+      <p class="publication-note">{publicationNote}</p>
+    )}
+    <p class="availability-text">{availabilityMessage}</p>
+    {links.length > 0 && (
+      <div class="elsewhere">
+        <h3 class="elsewhere-heading">Elsewhere</h3>
+        <ul class="link-list">
+          {links.map((link) => (
+            <li>
+              <a href={link.url}>{link.label}</a>
+              <span class="link-kind">{LINK_LABELS[link.kind]}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </section>
+)}
+<style>
+  .downloads {
+    margin-top: 2.5rem;
+    scroll-margin-top: 1rem;
+  }
+
+  #downloads-heading,
+  #availability-heading {
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
+    margin: 0 0 1rem;
+  }
+
+  .download-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .download {
+    background: var(--charcoal-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+  }
+
+  .download-link {
+    font-weight: 700;
+    font-size: 1.05rem;
+    overflow-wrap: anywhere;
+  }
+
+  .download-label {
+    font-weight: 700;
+    font-size: 1.05rem;
+    overflow-wrap: anywhere;
+  }
+
+  .download-meta {
+    margin: 0.3rem 0 0;
+    font-size: 0.88rem;
+    color: var(--cream-dim);
+    max-width: none;
+    overflow-wrap: anywhere;
+  }
+
+  .install-notes {
+    margin: 0.5rem 0 0;
+    font-size: 0.92rem;
+  }
+
+  .pending-note {
+    margin: 0.5rem 0 0;
+    font-size: 0.88rem;
+    color: var(--cream-dim);
+  }
+
+  .publication-note {
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+  }
+
+  .availability-text {
+    margin: 0;
+    color: var(--cream-dim);
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+  }
+
+  .elsewhere {
+    margin-top: 1.5rem;
+  }
+
+  .elsewhere-heading {
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem;
+  }
+
+  .link-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.4rem;
+    overflow-wrap: anywhere;
+  }
+
+  .link-kind {
+    margin-left: 0.6rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+  }
+</style>

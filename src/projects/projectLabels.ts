@@ -1,4 +1,4 @@
-import type { ProjectType, ReleaseMaturity } from '../projects/Project';
+import type { ProjectType, ReleaseMaturity } from './Project';
 
 const TYPE_LABELS: Record<ProjectType, string> = {
   app: 'App',

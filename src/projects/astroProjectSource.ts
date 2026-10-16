@@ -1,6 +1,7 @@
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import { projectHref, type Project } from './Project';
+import { ProjectCatalogService } from './ProjectCatalogService';
 
 function canonicalSlugFromFile(entry: CollectionEntry<'projects'>): string | null {
   const filePath = entry.filePath;
@@ -40,4 +41,19 @@ function toProject(entry: CollectionEntry<'projects'>): Project {
 export async function loadProjectRecords(): Promise<Project[]> {
   const entries = await getCollection('projects');
   return entries.map(toProject);
+}
+
+export interface ProjectDetailSource {
+  project: Project;
+  entry: CollectionEntry<'projects'>;
+}
+
+export async function loadPublicProjectDetails(): Promise<ProjectDetailSource[]> {
+  const entries = await getCollection('projects');
+  const bySlug = new Map(entries.map((entry) => [entry.data.slug, entry]));
+  const catalog = new ProjectCatalogService(entries.map(toProject));
+  return catalog.publicProjects().map((project) => ({
+    project,
+    entry: bySlug.get(project.slug) as CollectionEntry<'projects'>,
+  }));
 }

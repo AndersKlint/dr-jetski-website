@@ -1,14 +1,42 @@
 ---
 import '@fontsource-variable/bricolage-grotesque';
 import '@fontsource-variable/inter';
+import MediaMotionControl from '../media/MediaMotionControl.astro';
 import './global.css';
 
 interface Props {
   title: string;
   description?: string;
+  image?: string;
+  imageAlt?: string;
+  noindex?: boolean;
+  projectBanner?: {
+    displayName: string;
+    hasDownloads: boolean;
+  };
 }
 
-const { title, description } = Astro.props;
+const { title, description, image, imageAlt, noindex = false, projectBanner } = Astro.props;
+
+function publicOrigin(): string | undefined {
+  const configured = Astro.site?.origin ?? (import.meta.env.PUBLIC_SITE_URL as string | undefined);
+  if (typeof configured !== 'string' || configured.length === 0) return undefined;
+  let url: URL;
+  try {
+    url = new URL(configured);
+  } catch {
+    return undefined;
+  }
+  // Never publish localhost origins as absolute social preview URLs.
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') return undefined;
+  if (url.hostname === 'localhost' || url.hostname === '127.0.0.1' || url.hostname.endsWith('.local')) {
+    return undefined;
+  }
+  return url.origin;
+}
+
+const origin = publicOrigin();
+const previewImage = image ? (origin ? new URL(image, origin).href : image) : undefined;
 ---
 <!doctype html>
 <html lang="en">
@@ -17,15 +45,38 @@ const { title, description } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:type" content="website" />
+    {previewImage && <meta property="og:image" content={previewImage} />}
+    {previewImage && imageAlt && <meta property="og:image:alt" content={imageAlt} />}
+    <meta name="twitter:card" content={previewImage ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    {previewImage && <meta name="twitter:image" content={previewImage} />}
+    {previewImage && imageAlt && <meta name="twitter:image:alt" content={imageAlt} />}
   </head>
   <body>
     <div class="site-shell">
       <a class="skip-link" href="#main-content">Skip to content</a>
       <header class="site-header">
         <a class="site-mark" href="/">Dr. Jetski <span class="mark-accent">Studios</span></a>
-        <nav class="site-nav" aria-label="Site">
-          <a href="/#about">About/contact</a>
-        </nav>
+        <div class="site-header-group">
+          {projectBanner ? (
+            <nav class="site-nav project-nav" aria-label="Project">
+              <a href="/">Back to projects</a>
+              <span class="project-identifier">{projectBanner.displayName}</span>
+              {projectBanner.hasDownloads && <a href="#downloads">Downloads</a>}
+              <a href="/#about">About/contact</a>
+            </nav>
+          ) : (
+            <nav class="site-nav" aria-label="Site">
+              <a href="/#about">About/contact</a>
+            </nav>
+          )}
+          <MediaMotionControl />
+        </div>
       </header>
       <div class="site-main">
         <slot />

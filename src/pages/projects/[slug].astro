@@ -1,0 +1,41 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import { loadPublicProjectDetails } from '../../projects/astroProjectSource';
+import { prepareProjectDetail } from '../../projects/projectDetail';
+import type { Project } from '../../projects/Project';
+import ProjectDetailView from '../../project-detail-view/ProjectDetailView.astro';
+import SiteLayout from '../../site/SiteLayout.astro';
+
+interface Props {
+  project: Project;
+  entry: CollectionEntry<'projects'>;
+}
+
+export async function getStaticPaths() {
+  const details = await loadPublicProjectDetails();
+  return details.map(({ project, entry }) => ({
+    params: { slug: project.slug },
+    props: { project, entry },
+  }));
+}
+
+const { project, entry } = Astro.props as Props;
+const { Content } = await render(entry);
+const detail = prepareProjectDetail(project);
+---
+<SiteLayout
+  title={`${project.displayName} — Dr. Jetski Studios`}
+  description={project.description}
+  projectBanner={{ displayName: project.displayName, hasDownloads: detail.hasDownloads }}
+  image={detail.socialImage}
+  imageAlt={detail.socialImageAlt}
+>
+  <ProjectDetailView
+    project={project}
+    downloads={detail.downloads}
+    isCompactMedia={detail.isCompactMedia}
+  >
+    <Content />
+  </ProjectDetailView>
+</SiteLayout>

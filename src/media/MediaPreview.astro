@@ -10,8 +10,10 @@ interface Props {
 const { media, isPriority = false, class: className } = Astro.props;
 const figureClass = className ? `media-preview ${className}` : 'media-preview';
 const staticSrc = media ? (media.kind === 'image' ? media.src : media.poster) : undefined;
+const loading = isPriority ? 'eager' : 'lazy';
+const fetchPriority = isPriority ? 'high' : undefined;
 ---
-{media && staticSrc ? (
+{media && staticSrc && media.kind === 'image' && (
   <figure class={figureClass}>
     <img
       src={staticSrc}
@@ -19,16 +21,68 @@ const staticSrc = media ? (media.kind === 'image' ? media.src : media.poster) : 
       height={media.height}
       alt={media.alt}
       decoding="async"
-      loading={isPriority ? 'eager' : 'lazy'}
-      fetchpriority={isPriority ? 'high' : undefined}
+      loading={loading}
+      fetchpriority={fetchPriority}
     />
     {media.isPlaceholder && <figcaption class="placeholder-label">Placeholder preview</figcaption>}
   </figure>
-) : (
+)}
+{media && staticSrc && media.kind === 'preview' && (
+  <figure class={`${figureClass} has-loop`} data-auto-preview>
+    <img
+      src={staticSrc}
+      width={media.width}
+      height={media.height}
+      alt={media.alt}
+      decoding="async"
+      loading={loading}
+      fetchpriority={fetchPriority}
+    />
+    <video
+      class="loop-video"
+      data-preview-video
+      data-src={media.src}
+      poster={staticSrc}
+      width={media.width}
+      height={media.height}
+      muted
+      playsinline
+      loop
+      preload="none"
+      disablepictureinpicture
+      aria-label={media.alt}
+    />
+    {media.isPlaceholder && <figcaption class="placeholder-label">Placeholder preview</figcaption>}
+  </figure>
+)}
+{media && staticSrc && media.kind === 'demo' && (
+  <figure class={`${figureClass} has-demo`}>
+    <video
+      class="demo-video"
+      controls
+      preload="none"
+      poster={staticSrc}
+      src={media.src}
+      width={media.width}
+      height={media.height}
+      playsinline
+      muted={!media.hasAudio || undefined}
+      aria-label={media.alt}
+    >
+      {media.alt}
+    </video>
+    {media.isPlaceholder && <figcaption class="placeholder-label">Placeholder preview</figcaption>}
+  </figure>
+)}
+{(!media || !staticSrc) && (
   <div class={figureClass} aria-label="Preview not available">
     <span class="empty-label" aria-hidden="true">Preview not available</span>
   </div>
 )}
+<script>
+  import { initPreviewPlayback } from './previewPlayback.client';
+  initPreviewPlayback();
+</script>
 <style>
   .media-preview {
     margin: 0;
@@ -37,6 +91,26 @@ const staticSrc = media ? (media.kind === 'image' ? media.src : media.poster) : 
   }
 
   .media-preview img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .has-loop .loop-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .has-loop[data-playing='true'] .loop-video {
+    opacity: 1;
+  }
+
+  .has-demo .demo-video {
     display: block;
     width: 100%;
     height: auto;

@@ -59,4 +59,8 @@ export class ProjectCatalogService {
       .filter((project) => project.visibility === 'public' && project.featuredRank === undefined)
       .sort(compareEditorial);
   }
+
+  publicProjects(): Project[] {
+    return [...this.featuredByRank(), ...this.compactProjects()];
+  }
 }

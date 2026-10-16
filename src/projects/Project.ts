@@ -84,10 +84,12 @@ export interface Project {
   body: string;
 }
 
+export type ActionableDownload = ProjectDownload & { url: string };
+
 export function projectHref(slug: string): string {
   return `/projects/${slug}`;
 }
 
-export function selectActionableDownloads(project: Project): ProjectDownload[] {
-  return project.downloads.filter((download) => download.url !== undefined);
+export function selectActionableDownloads(project: Project): ActionableDownload[] {
+  return project.downloads.filter((download): download is ActionableDownload => download.url !== undefined);
 }
