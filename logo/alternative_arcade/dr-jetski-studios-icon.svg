@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="drj-icon-title drj-icon-description">
+  <title id="drj-icon-title">Dr. Jetski Studios — Dr.J square icon</title>
+  <desc id="drj-icon-description">Copper Dr. and parchment J in forward-leaning arcade lettering behind muted blue water with warm ivory foam, and the J stem with its lower shading comes forward over the wave with a small crest breaking on the right.</desc>
+  <defs>
+    <path id="drj-d" fill-rule="evenodd" d="m 14,35 h 80 q 82,0 82,81 v 63 q 0,81 -82,81 H 0 V 49 Q 0,35 14,35 Z m 46,55 v 115 h 24 q 32,0 32,-34 V 125 Q 116,90 84,90 Z"/>
+    <path id="drj-r" d="M 195,260 V 111 q 0,-12 12,-12 h 43 v 24 q 22,-29 55,-23 l -10,57 q -30,-7 -45,19 v 84 z"/>
+    <path id="drj-j" d="m 420,0 h 162 v 177 q 0,97 -93,97 -80,0 -88,-69 l -2,-18 h 64 l 2,13 q 3,21 23,21 26,0 26,-32 V 58 h -94 z"/>
+    <g id="drj-doctor">
+      <use href="#drj-d"/>
+      <use href="#drj-r" transform="translate(45 78) scale(.74 .7)"/>
+      <rect x="282" y="207" width="53" height="53" rx="10"/>
+    </g>
+    <g id="drj-lettering">
+      <use href="#drj-doctor"/>
+      <use href="#drj-j" transform="translate(-67 0)"/>
+    </g>
+    <clipPath id="drj-j-clip">
+      <path d="m 420,0 h 162 v 177 q 0,97 -93,97 -80,0 -88,-69 l -2,-18 h 64 l 2,13 q 3,21 23,21 26,0 26,-32 V 58 h -94 z"/>
+    </clipPath>
+    <clipPath id="drj-water-clip">
+      <path d="M28,346 Q120,366 210,356 Q300,346 360,348 Q410,348 435,330 Q450,315 458,298 Q478,312 472,340 L492,332 Q484,385 415,405 Q310,432 180,405 Q100,392 36,382 L110,378 Q60,368 28,346 Z"/>
+    </clipPath>
+  </defs>
+  <g transform="translate(256 256) scale(.92) translate(-256 -256)">
+    <g transform="translate(60 80) skewX(-8) scale(.83 1.05)" stroke-linejoin="round" stroke-linecap="round">
+      <g id="drj-outlines" inkscape:groupmode="layer" inkscape:label="Outlines">
+        <use href="#drj-lettering" fill="#1b1612" stroke="#f2dab6" stroke-width="44"/>
+        <use href="#drj-lettering" fill="#1b1612" stroke="#1b1612" stroke-width="30"/>
+      </g>
+      <g id="drj-faces" inkscape:groupmode="layer" inkscape:label="Dr.J lettering">
+        <use href="#drj-doctor" fill="#cc8152"/>
+        <use href="#drj-j" transform="translate(-67 0)" fill="#f0d59a"/>
+        <path fill="#1b1612" d="m 60,90 v 115 h 24 q 32,0 32,-34 V 125 Q 116,90 84,90 Z"/>
+      </g>
+      <g id="drj-shading" inkscape:groupmode="layer" inkscape:label="J lower shading">
+        <g transform="translate(-67 0)">
+          <path clip-path="url(#drj-j-clip)" fill="#c59d61" d="m 388,239 q 98,17 200,-9 l 2,64 H 388 Z"/>
+        </g>
+      </g>
+    </g>
+    <g id="drj-water" inkscape:groupmode="layer" inkscape:label="Water" stroke-linejoin="round">
+      <path fill="#5d7d90" stroke="#1b1612" stroke-width="9" d="M28,346 Q120,366 210,356 Q300,346 360,348 Q410,348 435,330 Q450,315 458,298 Q478,312 472,340 L492,332 Q484,385 415,405 Q310,432 180,405 Q100,392 36,382 L110,378 Q60,368 28,346 Z"/>
+      <g clip-path="url(#drj-water-clip)">
+        <path fill="#7895a4" d="M55,358 Q160,376 270,364 Q370,352 425,352 Q455,345 460,322 Q470,340 455,362 Q415,388 350,388 Q220,382 130,380 Z"/>
+        <path fill="#435f74" d="M200,378 Q300,388 380,386 Q430,384 460,368 Q440,390 380,398 Q280,400 200,388 Z"/>
+        <path fill="#f2dab6" d="M90,368 Q180,376 260,368 Q200,380 130,380 Z"/>
+        <path fill="#f2dab6" d="M300,376 Q360,380 410,376 Q360,386 310,384 Z"/>
+      </g>
+      <path fill="#f2dab6" d="M459,301 Q480,321 466,349 L480,344 Q473,366 447,374 Q469,345 465,324 Z"/>
+    </g>
+    <g transform="translate(60 80) skewX(-8) scale(.83 1.05)" stroke-linejoin="round" stroke-linecap="round">
+      <g id="drj-j-front" inkscape:groupmode="layer" inkscape:label="J foreground">
+        <g transform="translate(-67 0)">
+          <path fill="#1b1612" d="M 580,258 C 580,258 568,278 534,291 C 498,305 451,301 425,288 C 397,275 387,246 387,246 L 424,255 L 564,263 Z"/>
+          <path fill="#c59d61" d="M 428,248 C 428,248 448,266 484,268 C 514,270 536,263 546,256 L 541,246 L 435,242 Z"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

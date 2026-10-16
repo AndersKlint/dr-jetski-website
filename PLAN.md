@@ -14,6 +14,8 @@ The supplied logo suite is integrated: the homepage banner displays the full log
 
 The coordinated warm suite is integrated: the full, compact, and DRJ marks use the root files coordinated from the latest approved main, including its water overlap and foreground lettering. The compact retains the custom J/e layers with a larger Studios signature; the icon adapts the J foreground treatment to a square composition. The main artwork and colorful archive are unchanged. Content/type checks and the production build pass. Chrome verification covered the homepage and project header at 320px, 390px, and 1440px, compact renders at 192/240/320px, icon renders at 16–128px, and current SVG favicon delivery, with no horizontal overflow or loading errors.
 
+The full homepage logo has since been redesigned and refined in `logo/dr-jetski-studios-logo.svg` following the current logo direction in DESIGN.md. The self-contained SVG retains editable lettering and water layers, and a reusable preview renderer is saved in `logo/tools`. Content/type checks and the production build pass for the latest revision. Chrome verification covered the updated asset at 320px, 390px, 768px, and 1440px homepage viewports, checking rendering, proportions, alternative text, keyboard skip navigation, first-project visibility, and absence of horizontal overflow or loading errors.
+
 ## 1. Static foundation and project content
 
 - Initialize Astro with TypeScript and static output.
