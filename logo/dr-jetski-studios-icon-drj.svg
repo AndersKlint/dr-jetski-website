@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="drj-title drj-description">
+  <title id="drj-title">Dr. Jetski Studios — Dr.J icon</title>
+  <desc id="drj-description">Coral Dr. and a yellow J in the studio's forward-leaning arcade lettering, above a turquoise wave with a white crest.</desc>
+  <defs>
+    <path id="drj-d" fill-rule="evenodd" d="M14 35H94Q176 35 176 116V179Q176 260 94 260H0V49Q0 35 14 35ZM60 90V205H84Q116 205 116 171V125Q116 90 84 90Z"/>
+    <path id="drj-r" d="M195 260V111Q195 99 207 99H250V123Q272 94 305 100L295 157Q265 150 250 176V260Z"/>
+    <path id="drj-j" d="M420 0H582V177Q582 274 489 274Q409 274 401 205L399 187H463L465 200Q468 221 488 221Q514 221 514 189V58H420Z"/>
+    <g id="drj-doctor">
+      <use href="#drj-d"/>
+      <use href="#drj-r" transform="translate(45 78) scale(.74 .7)"/>
+      <rect x="282" y="218" width="42" height="42" rx="9"/>
+    </g>
+    <g id="drj-lettering">
+      <use href="#drj-doctor"/>
+      <use href="#drj-j" transform="translate(-67 0)"/>
+    </g>
+  </defs>
+  <g transform="translate(256 256) scale(.92) translate(-256 -256)">
+    <g id="drj-water" inkscape:groupmode="layer" inkscape:label="Water" stroke-linejoin="round">
+      <path fill="#147CD1" stroke="#17252E" stroke-width="9" d="M28 364Q149 389 270 370Q364 359 417 354Q453 343 459 316Q488 333 476 367L497 357Q486 412 411 431Q300 458 174 421Q99 412 36 401L112 397Q62 387 28 364Z"/>
+      <path fill="#19C6C7" d="M53 376Q164 397 274 382Q382 367 428 368Q463 358 466 335Q478 357 459 381Q419 412 350 409Q219 402 126 402Z"/>
+      <path fill="#F5FFFC" d="M459 321Q480 341 466 369L480 364Q473 386 447 394Q469 365 465 344Z"/>
+    </g>
+    <g transform="translate(60 80) skewX(-8) scale(.83 1.05)" stroke-linejoin="round" stroke-linecap="round">
+      <g id="drj-outlines" inkscape:groupmode="layer" inkscape:label="Outlines">
+        <use href="#drj-lettering" fill="#17252E" stroke="#FFF3D9" stroke-width="44"/>
+        <use href="#drj-lettering" fill="#17252E" stroke="#17252E" stroke-width="30"/>
+      </g>
+      <g id="drj-faces" inkscape:groupmode="layer" inkscape:label="Dr.J lettering">
+        <use href="#drj-doctor" fill="#FF7650"/>
+        <use href="#drj-j" transform="translate(-67 0)" fill="#FFE391"/>
+        <path fill="#17252E" d="M60 90V205H84Q116 205 116 171V125Q116 90 84 90Z"/>
+      </g>
+    </g>
+  </g>
+</svg>
