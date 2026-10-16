@@ -2,6 +2,7 @@
 import '@fontsource-variable/bricolage-grotesque';
 import '@fontsource-variable/inter';
 import MediaMotionControl from '../media/MediaMotionControl.astro';
+import { compactLogoSrc, iconSrc } from '../banner/studioBrandAssets';
 import './global.css';
 
 interface Props {
@@ -37,6 +38,7 @@ function publicOrigin(): string | undefined {
 
 const origin = publicOrigin();
 const previewImage = image ? (origin ? new URL(image, origin).href : image) : undefined;
+const isHome = Astro.url.pathname === '/';
 ---
 <!doctype html>
 <html lang="en">
@@ -56,12 +58,23 @@ const previewImage = image ? (origin ? new URL(image, origin).href : image) : un
     {description && <meta name="twitter:description" content={description} />}
     {previewImage && <meta name="twitter:image" content={previewImage} />}
     {previewImage && imageAlt && <meta name="twitter:image:alt" content={imageAlt} />}
+    <link rel="icon" type="image/svg+xml" sizes="any" href={iconSrc} />
   </head>
   <body>
     <div class="site-shell">
       <a class="skip-link" href="#main-content">Skip to content</a>
-      <header class="site-header">
-        <a class="site-mark" href="/">Dr. Jetski <span class="mark-accent">Studios</span></a>
+      <header class:list={["site-header", isHome && "site-header-home"]}>
+        {!isHome && (
+          <a class="site-mark" href="/" aria-label="Dr. Jetski Studios — home">
+            <img
+              class="site-mark-compact"
+              src={compactLogoSrc}
+              alt=""
+              width="240"
+              height="75"
+            />
+          </a>
+        )}
         <div class="site-header-group">
           {projectBanner ? (
             <nav class="site-nav project-nav" aria-label="Project">

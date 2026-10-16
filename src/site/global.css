@@ -95,7 +95,7 @@ svg {
 
 .site-header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 0.5rem 1rem;
@@ -105,16 +105,32 @@ svg {
   padding: 1rem 1.25rem 0.5rem;
 }
 
+.site-header-home {
+  justify-content: flex-end;
+}
+
 .site-mark {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 1.05rem;
-  letter-spacing: 0.01em;
+  display: inline-flex;
+  align-items: center;
+  flex: 0 1 auto;
+  min-width: 0;
   text-decoration: none;
 }
 
-.site-mark .mark-accent {
-  color: var(--ember);
+.site-mark img {
+  display: block;
+  height: auto;
+}
+
+.site-mark-compact {
+  width: 240px;
+  max-width: 100%;
+}
+
+@media (max-width: 22.5rem) {
+  .site-mark-compact {
+    width: 192px;
+  }
 }
 
 .site-nav {
