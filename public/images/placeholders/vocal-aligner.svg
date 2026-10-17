@@ -1,26 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img">
   <title>Concept mockup of guide and dub vocal timing waveforms being aligned</title>
-  <rect width="1200" height="800" rx="32" fill="#EAE1D0"/>
-  <rect x="80" y="72" width="1040" height="120" rx="20" fill="#2E2B26"/>
-  <circle cx="150" cy="132" r="26" fill="#EAE1D0"/>
-  <circle cx="150" cy="132" r="10" fill="#C4641F"/>
-  <circle cx="230" cy="132" r="26" fill="#EAE1D0"/>
+  <rect width="1200" height="800" rx="32" fill="#E5E0D9"/>
+  <rect x="80" y="72" width="1040" height="120" rx="20" fill="#2C2824"/>
+  <circle cx="150" cy="132" r="26" fill="#E5E0D9"/>
+  <circle cx="150" cy="132" r="10" fill="#EE7135"/>
+  <circle cx="230" cy="132" r="26" fill="#E5E0D9"/>
   <circle cx="230" cy="132" r="10" fill="#7FA07A"/>
-  <rect x="300" y="112" width="240" height="16" rx="8" fill="#8B8071"/>
-  <rect x="300" y="140" width="180" height="16" rx="8" fill="#8B8071"/>
-  <rect x="820" y="108" width="220" height="48" rx="24" fill="#C4641F"/>
-  <rect x="848" y="122" width="164" height="20" rx="6" fill="#FAF5E9" opacity="0.9"/>
-  <rect x="80" y="224" width="1040" height="504" rx="24" fill="#FAF5E9" stroke="#D5C9B2" stroke-width="3"/>
+  <rect x="300" y="112" width="240" height="16" rx="8" fill="#8F8377"/>
+  <rect x="300" y="140" width="180" height="16" rx="8" fill="#8F8377"/>
+  <rect x="820" y="108" width="220" height="48" rx="24" fill="#EE7135"/>
+  <rect x="848" y="122" width="164" height="20" rx="6" fill="#211E1B" opacity="0.9"/>
+  <rect x="80" y="224" width="1040" height="504" rx="24" fill="#F7F4EF" stroke="#C9C1B7" stroke-width="3"/>
   <rect x="120" y="256" width="150" height="36" rx="18" fill="#7FA07A"/>
-  <rect x="132" y="265" width="126" height="18" rx="5" fill="#FAF5E9" opacity="0.9"/>
+  <rect x="132" y="265" width="126" height="18" rx="5" fill="#F7F4EF" opacity="0.9"/>
   <rect x="120" y="316" width="960" height="150" rx="14" fill="#EDF0E4"/>
   <path d="M160 391 v-30 M200 391 v-52 M240 391 v-70 M280 391 v-44 M320 391 v-64 M360 391 v-36 M400 391 v-72 M440 391 v-48 M480 391 v-66 M520 391 v-38 M560 391 v-60 M600 391 v-44 M640 391 v-68 M680 391 v-40 M720 391 v-62 M760 391 v-46 M800 391 v-70 M840 391 v-42 M880 391 v-58 M920 391 v-36 M960 391 v-56 M1000 391 v-44 M1040 391 v-60 M160 391 v30 M200 391 v52 M240 391 v70 M280 391 v44 M320 391 v64 M360 391 v36 M400 391 v72 M440 391 v48 M480 391 v66 M520 391 v38 M560 391 v60 M600 391 v44 M640 391 v68 M680 391 v40 M720 391 v62 M760 391 v46 M800 391 v70 M840 391 v42 M880 391 v58 M920 391 v36 M960 391 v56 M1000 391 v44 M1040 391 v60" stroke="#7FA07A" stroke-width="9" stroke-linecap="round"/>
-  <rect x="120" y="496" width="150" height="36" rx="18" fill="#C4641F"/>
-  <rect x="132" y="505" width="126" height="18" rx="5" fill="#FAF5E9" opacity="0.9"/>
-  <rect x="120" y="556" width="960" height="150" rx="14" fill="#F7E9D8"/>
-  <path d="M160 631 v-24 M200 631 v-46 M240 631 v-62 M280 631 v-38 M320 631 v-56 M360 631 v-30 M400 631 v-64 M440 631 v-42 M480 631 v-58 M520 631 v-34 M560 631 v-52 M600 631 v-40 M640 631 v-60 M680 631 v-36 M720 631 v-54 M760 631 v-42 M800 631 v-62 M840 631 v-38 M880 631 v-50 M920 631 v-32 M960 631 v-48 M1000 631 v-40 M1040 631 v-52 M160 631 v24 M200 631 v46 M240 631 v62 M280 631 v38 M320 631 v56 M360 631 v30 M400 631 v64 M440 631 v42 M480 631 v58 M520 631 v34 M560 631 v52 M600 631 v40 M640 631 v60 M680 631 v36 M720 631 v54 M760 631 v42 M800 631 v62 M840 631 v38 M880 631 v50 M920 631 v32 M960 631 v48 M1000 631 v40 M1040 631 v52" stroke="#C4641F" stroke-width="9" stroke-linecap="round"/>
-  <path d="M400 470 L 430 540 M700 470 L 725 540 M950 470 L 968 540" stroke="#33302A" stroke-width="5" stroke-linecap="round"/>
-  <path d="M418 522 L 430 542 L 410 540 M713 522 L 725 542 L 705 540 M956 522 L 968 542 L 948 540" fill="none" stroke="#33302A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-  <rect x="596" y="240" width="8" height="452" rx="4" fill="#33302A"/>
-  <path d="M596 224 L 580 248 L 612 248 Z" fill="#33302A"/>
+  <rect x="120" y="496" width="150" height="36" rx="18" fill="#EE7135"/>
+  <rect x="132" y="505" width="126" height="18" rx="5" fill="#211E1B" opacity="0.9"/>
+  <rect x="120" y="556" width="960" height="150" rx="14" fill="#2C2824"/>
+  <path d="M160 631 v-24 M200 631 v-46 M240 631 v-62 M280 631 v-38 M320 631 v-56 M360 631 v-30 M400 631 v-64 M440 631 v-42 M480 631 v-58 M520 631 v-34 M560 631 v-52 M600 631 v-40 M640 631 v-60 M680 631 v-36 M720 631 v-54 M760 631 v-42 M800 631 v-62 M840 631 v-38 M880 631 v-50 M920 631 v-32 M960 631 v-48 M1000 631 v-40 M1040 631 v-52 M160 631 v24 M200 631 v46 M240 631 v62 M280 631 v38 M320 631 v56 M360 631 v30 M400 631 v64 M440 631 v42 M480 631 v58 M520 631 v34 M560 631 v52 M600 631 v40 M640 631 v60 M680 631 v36 M720 631 v54 M760 631 v42 M800 631 v62 M840 631 v38 M880 631 v50 M920 631 v32 M960 631 v48 M1000 631 v40 M1040 631 v52" stroke="#EE7135" stroke-width="9" stroke-linecap="round"/>
+  <path d="M400 470 L 430 540 M700 470 L 725 540 M950 470 L 968 540" stroke="#211E1B" stroke-width="5" stroke-linecap="round"/>
+  <path d="M418 522 L 430 542 L 410 540 M713 522 L 725 542 L 705 540 M956 522 L 968 542 L 948 540" fill="none" stroke="#211E1B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="596" y="240" width="8" height="316" rx="4" fill="#211E1B"/>
+  <rect x="596" y="556" width="8" height="136" rx="4" fill="#F7F4EF"/>
+  <path d="M596 224 L 580 248 L 612 248 Z" fill="#211E1B"/>
 </svg>

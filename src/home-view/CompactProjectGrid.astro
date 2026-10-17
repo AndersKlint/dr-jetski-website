@@ -98,7 +98,7 @@ const { projects } = Astro.props;
     font-size: 0.75rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--cream-dim);
+    color: var(--text-secondary);
     max-width: none;
   }
 
@@ -126,7 +126,7 @@ const { projects } = Astro.props;
   .compact-note {
     margin: 0;
     font-size: 0.83rem;
-    color: var(--cream-dim);
+    color: var(--text-secondary);
     border-top: 1px solid var(--line);
     padding-top: 0.6rem;
   }
@@ -138,9 +138,14 @@ const { projects } = Astro.props;
   }
 
   .compact-action a {
+    color: var(--ember);
     text-decoration: underline;
     text-underline-offset: 0.18em;
     text-decoration-thickness: 2px;
+  }
+
+  .compact-action a:hover {
+    color: var(--text-primary);
   }
 
   @media (max-width: 56rem) {

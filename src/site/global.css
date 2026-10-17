@@ -1,13 +1,13 @@
 :root {
-  --charcoal: #221d17;
-  --charcoal-deep: #171310;
-  --charcoal-raised: #2c261e;
-  --cream: #f4e8d3;
-  --cream-dim: #cdbfa6;
-  --ember: #e4712b;
-  --ember-ink: #241105;
-  --wake: #8a7d68;
-  --line: rgba(244, 232, 211, 0.16);
+  --charcoal: #211e1b;
+  --charcoal-deep: #181614;
+  --charcoal-raised: #2c2824;
+  --text-primary: #f7f4ef;
+  --text-secondary: #d2ccc4;
+  --ember: #ee7135;
+  --ember-ink: #211e1b;
+  --wake: #8f8377;
+  --line: rgb(247 244 239 / 0.20);
   --radius: 14px;
   --font-display: "Bricolage Grotesque Variable", "Georgia", serif;
   --font-body: "Inter Variable", system-ui, "-apple-system", "Segoe UI", sans-serif;
@@ -28,7 +28,7 @@ html {
 body {
   margin: 0;
   background: var(--charcoal);
-  color: var(--cream);
+  color: var(--text-primary);
   font-family: var(--font-body);
   font-size: 1rem;
   line-height: 1.6;
@@ -49,7 +49,7 @@ p {
 }
 
 a {
-  color: var(--cream);
+  color: var(--text-primary);
   text-underline-offset: 0.18em;
 }
 
@@ -82,9 +82,13 @@ svg {
   transition: top 0.15s ease-in;
 }
 
+.skip-link:hover {
+  color: var(--ember-ink);
+}
+
 .skip-link:focus-visible {
   top: 1rem;
-  outline-color: var(--cream);
+  outline-color: var(--text-primary);
 }
 
 .site-shell {
@@ -154,10 +158,18 @@ svg {
 
 .project-identifier {
   font-size: 0.85rem;
-  color: var(--cream-dim);
+  color: var(--text-secondary);
   min-width: 0;
   max-width: 16rem;
   overflow-wrap: anywhere;
+}
+
+.project-nav a[href="#downloads"] {
+  color: var(--ember);
+}
+
+.project-nav a[href="#downloads"]:hover {
+  color: var(--text-primary);
 }
 
 .site-main {
@@ -175,7 +187,7 @@ svg {
   margin-inline: auto;
   padding: 1.25rem;
   font-size: 0.85rem;
-  color: var(--cream-dim);
+  color: var(--text-secondary);
 }
 
 @media (prefers-reduced-motion: reduce) {

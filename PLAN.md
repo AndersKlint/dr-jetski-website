@@ -16,6 +16,8 @@ The coordinated warm suite is integrated: the full, compact, and DRJ marks use t
 
 The full homepage logo has since been redesigned and refined in `logo/dr-jetski-studios-logo.svg` following the current logo direction in DESIGN.md. The self-contained SVG retains editable lettering and water layers, and a reusable preview renderer is saved in `logo/tools`. Content/type checks and the production build pass for the latest revision. Chrome verification covered the updated asset at 320px, 390px, 768px, and 1440px homepage viewports, checking rendering, proportions, alternative text, keyboard skip navigation, first-project visibility, and absence of horizontal overflow or loading errors.
 
+The orange/near-white palette refinement is implemented across the interface and all ten temporary preview illustrations, following the updated full logo. Typography, spacing, catalogue content, and responsive composition are unchanged. The owner's full-logo edits and pure-white reference asset are preserved; compact-logo, icon, and light-theme artwork updates remain separate work. Content/type checks pass with no errors, warnings, or hints, and the production build generates all twelve intended pages. Browser visual review is reserved for the owner as requested.
+
 ## 1. Static foundation and project content
 
 - Initialize Astro with TypeScript and static output.
@@ -29,7 +31,7 @@ The full homepage logo has since been redesigned and refined in `logo/dr-jetski-
 
 ## 2. Visual system and homepage
 
-- Establish warm charcoal, cream, burnt-orange, and quiet warm-gray tokens, with readable contrast and visible focus states.
+- Establish the shared palette defined in DESIGN.md, with readable primary/secondary text, dark labels on orange fills, and visible focus states.
 - Choose characterful readable heading typography and neutral body typography; self-host the fonts.
 - Create the initial typeset studio wordmark and lightweight wake-line artwork.
 - Keep the introduction short enough that the first project is visible immediately in representative desktop and phone viewports.

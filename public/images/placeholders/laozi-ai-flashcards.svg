@@ -1,27 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img">
   <title>Concept mockup of stacked study flashcards with pinyin, gloss and example</title>
-  <rect width="1200" height="800" rx="32" fill="#EAE1D0"/>
-  <path d="M-40 660 Q 300 600 620 660 T 1240 640" fill="none" stroke="#D5C9B2" stroke-width="10" stroke-linecap="round"/>
+  <rect width="1200" height="800" rx="32" fill="#E5E0D9"/>
+  <path d="M-40 660 Q 300 600 620 660 T 1240 640" fill="none" stroke="#C9C1B7" stroke-width="10" stroke-linecap="round"/>
   <rect x="150" y="150" width="420" height="500" rx="28" fill="#7FA07A" opacity="0.55" transform="rotate(-7 360 400)"/>
-  <rect x="640" y="150" width="420" height="500" rx="28" fill="#C4641F" opacity="0.35" transform="rotate(6 850 400)"/>
-  <rect x="380" y="120" width="440" height="520" rx="28" fill="#FAF5E9" stroke="#33302A" stroke-width="5"/>
-  <rect x="420" y="164" width="180" height="40" rx="20" fill="#EFE5CF"/>
-  <rect x="436" y="176" width="148" height="16" rx="5" fill="#8B8071"/>
-  <rect x="420" y="236" width="360" height="64" rx="14" fill="#33302A"/>
-  <rect x="438" y="254" width="220" height="28" rx="7" fill="#FAF5E9"/>
+  <rect x="640" y="150" width="420" height="500" rx="28" fill="#EE7135" opacity="0.35" transform="rotate(6 850 400)"/>
+  <rect x="380" y="120" width="440" height="520" rx="28" fill="#F7F4EF" stroke="#211E1B" stroke-width="5"/>
+  <rect x="420" y="164" width="180" height="40" rx="20" fill="#E7E1D9"/>
+  <rect x="436" y="176" width="148" height="16" rx="5" fill="#8F8377"/>
+  <rect x="420" y="236" width="360" height="64" rx="14" fill="#211E1B"/>
+  <rect x="438" y="254" width="220" height="28" rx="7" fill="#F7F4EF"/>
   <rect x="420" y="324" width="200" height="44" rx="22" fill="#7FA07A"/>
-  <rect x="436" y="337" width="168" height="18" rx="5" fill="#FAF5E9" opacity="0.9"/>
-  <rect x="420" y="396" width="360" height="120" rx="14" fill="#F1E8D4"/>
-  <rect x="444" y="418" width="312" height="20" rx="6" fill="#8B8071" opacity="0.7"/>
-  <rect x="444" y="450" width="250" height="20" rx="6" fill="#8B8071" opacity="0.5"/>
-  <rect x="444" y="482" width="280" height="14" rx="6" fill="#CFC2A6"/>
-  <circle cx="470" cy="570" r="12" fill="#C4641F"/>
-  <circle cx="510" cy="570" r="12" fill="#C4641F"/>
-  <circle cx="550" cy="570" r="12" fill="#C4641F" opacity="0.35"/>
-  <circle cx="590" cy="570" r="12" fill="#33302A" opacity="0.2"/>
-  <circle cx="630" cy="570" r="12" fill="#33302A" opacity="0.2"/>
-  <circle cx="150" cy="620" r="46" fill="none" stroke="#C4641F" stroke-width="8"/>
-  <path d="M150 590 v60 M120 620 h60" stroke="#C4641F" stroke-width="8" stroke-linecap="round"/>
+  <rect x="436" y="337" width="168" height="18" rx="5" fill="#F7F4EF" opacity="0.9"/>
+  <rect x="420" y="396" width="360" height="120" rx="14" fill="#EBE6DF"/>
+  <rect x="444" y="418" width="312" height="20" rx="6" fill="#8F8377" opacity="0.7"/>
+  <rect x="444" y="450" width="250" height="20" rx="6" fill="#8F8377" opacity="0.5"/>
+  <rect x="444" y="482" width="280" height="14" rx="6" fill="#C4BBB0"/>
+  <circle cx="470" cy="570" r="12" fill="#EE7135"/>
+  <circle cx="510" cy="570" r="12" fill="#EE7135"/>
+  <circle cx="550" cy="570" r="12" fill="#EE7135" opacity="0.35"/>
+  <circle cx="590" cy="570" r="12" fill="#211E1B" opacity="0.2"/>
+  <circle cx="630" cy="570" r="12" fill="#211E1B" opacity="0.2"/>
+  <circle cx="150" cy="620" r="46" fill="none" stroke="#211E1B" stroke-width="8"/>
+  <path d="M150 590 v60 M120 620 h60" stroke="#211E1B" stroke-width="8" stroke-linecap="round"/>
   <circle cx="1050" cy="170" r="40" fill="#7FA07A" opacity="0.5"/>
-  <circle cx="1050" cy="170" r="18" fill="#FAF5E9"/>
+  <circle cx="1050" cy="170" r="18" fill="#F7F4EF"/>
 </svg>
