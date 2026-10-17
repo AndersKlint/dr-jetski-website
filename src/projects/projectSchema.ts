@@ -1,4 +1,5 @@
 import { z } from 'astro/zod';
+import type { SchemaContext } from 'astro:content';
 
 const KEBAB_SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -25,10 +26,6 @@ function parseAbsoluteHttpsUrl(value: string): URL | null {
   return parsed;
 }
 
-function isRootRelativeMediaRef(value: string): boolean {
-  return value.startsWith('/') && !value.startsWith('//');
-}
-
 const nonBlankString = z.string().refine((value) => value.trim().length > 0, {
   message: 'Expected a non-blank string',
 });
@@ -40,11 +37,6 @@ const kebabSlug = nonBlankString.refine((value) => KEBAB_SLUG_PATTERN.test(value
 const actionUrl = z.string().refine((value) => parseAbsoluteHttpsUrl(value) !== null, {
   message: 'Expected a real absolute https URL',
 });
-
-const mediaRef = z.string().refine(
-  (value) => isRootRelativeMediaRef(value) || parseAbsoluteHttpsUrl(value) !== null,
-  { message: 'Expected a root-relative path or a real absolute https URL' },
-);
 
 const dimension = z.number().int().positive();
 
@@ -70,50 +62,50 @@ const linkSchema = z.object({
   url: actionUrl,
 });
 
-const gallerySchema = z.discriminatedUnion('kind', [
-  z.object({
-    kind: z.literal('image'),
-    src: mediaRef,
-    alt: nonBlankString,
-    width: dimension,
-    height: dimension,
-    isPlaceholder: z.boolean().optional(),
-  }),
-  z.object({
-    kind: z.literal('preview'),
-    src: mediaRef,
-    poster: mediaRef,
-    alt: nonBlankString,
-    width: dimension,
-    height: dimension,
-    isPlaceholder: z.boolean().optional(),
-  }),
-  z.object({
-    kind: z.literal('demo'),
-    src: mediaRef,
-    poster: mediaRef,
-    alt: nonBlankString,
-    width: dimension,
-    height: dimension,
-    hasAudio: z.boolean(),
-    isPlaceholder: z.boolean().optional(),
-  }),
-]);
+export function projectSchema({ image }: SchemaContext) {
+  const galleryItemSchema = z.discriminatedUnion('kind', [
+    z.object({
+      kind: z.literal('image'),
+      src: image(),
+      alt: nonBlankString,
+      isPlaceholder: z.boolean().optional(),
+    }),
+    z.object({
+      kind: z.literal('preview'),
+      src: actionUrl,
+      poster: image(),
+      alt: nonBlankString,
+      width: dimension,
+      height: dimension,
+      isPlaceholder: z.boolean().optional(),
+    }),
+    z.object({
+      kind: z.literal('demo'),
+      src: actionUrl,
+      poster: image(),
+      alt: nonBlankString,
+      width: dimension,
+      height: dimension,
+      hasAudio: z.boolean(),
+      isPlaceholder: z.boolean().optional(),
+    }),
+  ]);
 
-export const projectSchema = z.object({
-  slug: kebabSlug,
-  displayName: nonBlankString,
-  description: nonBlankString,
-  projectType: z.enum(['app', 'audio-plugin', 'cli', 'package', 'extension', 'utility']),
-  supportedPlatforms: z.array(nonBlankString),
-  releaseMaturity: z.enum(['stable', 'alpha', 'beta', 'mvp', 'prototype']),
-  visibility: z.enum(['public', 'draft']),
-  featuredRank: z.number().int().positive().optional(),
-  editorialOrder: z.number().int().positive(),
-  availability: availabilitySchema,
-  publicationNote: nonBlankString.optional(),
-  authoringNotes: z.array(nonBlankString).default([]),
-  downloads: z.array(downloadSchema).default([]),
-  links: z.array(linkSchema).default([]),
-  gallery: z.array(gallerySchema).default([]),
-});
+  return z.object({
+    slug: kebabSlug,
+    displayName: nonBlankString,
+    description: nonBlankString,
+    projectType: z.enum(['app', 'audio-plugin', 'cli', 'package', 'extension', 'utility']),
+    supportedPlatforms: z.array(nonBlankString),
+    releaseMaturity: z.enum(['stable', 'alpha', 'beta', 'mvp', 'prototype']),
+    visibility: z.enum(['public', 'draft']),
+    featuredRank: z.number().int().positive().optional(),
+    editorialOrder: z.number().int().positive(),
+    availability: availabilitySchema,
+    publicationNote: nonBlankString.optional(),
+    authoringNotes: z.array(nonBlankString).default([]),
+    downloads: z.array(downloadSchema).default([]),
+    links: z.array(linkSchema).default([]),
+    gallery: z.array(galleryItemSchema).default([]),
+  });
+}

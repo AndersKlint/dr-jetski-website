@@ -32,19 +32,25 @@ export interface ProjectLink {
   url: string;
 }
 
-export interface ImageGalleryItem {
-  kind: 'image';
+export interface ResponsiveImage {
   src: string;
-  alt: string;
+  srcSet?: string;
+  sizes?: string;
   width: number;
   height: number;
+}
+
+export interface ImageGalleryItem {
+  kind: 'image';
+  image: ResponsiveImage;
+  alt: string;
   isPlaceholder?: boolean;
 }
 
 export interface PreviewGalleryItem {
   kind: 'preview';
   src: string;
-  poster: string;
+  poster: ResponsiveImage;
   alt: string;
   width: number;
   height: number;
@@ -54,7 +60,7 @@ export interface PreviewGalleryItem {
 export interface DemoGalleryItem {
   kind: 'demo';
   src: string;
-  poster: string;
+  poster: ResponsiveImage;
   alt: string;
   width: number;
   height: number;

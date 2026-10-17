@@ -12,3 +12,9 @@ A project selected for prominent presentation on the homepage. Featured projects
 
 **Availability**:
 Whether a visitor can currently obtain or try a project, and through which public destinations. Availability is separate from development maturity: a finished private package can be unavailable, while an alpha or beta can be downloadable.
+
+**Looping preview**:
+A short, silent video that plays inline and repeats while visible, showing a project in motion without sound.
+
+**Demo**:
+A visitor-controlled video that may include audio and never plays automatically when a project page loads.

@@ -27,7 +27,7 @@ Design confirmed by the owner after the design interview. See [PLAN.md](PLAN.md)
 - Initial software downloads are estimated at 2–5 GB total. Use Cloudflare R2 Standard storage behind a downloads subdomain, with versioned files outside Git and current builds published first. Account/domain setup and the exact subdomain are launch tasks.
 - Project pages list explicit platform downloads, version and alpha/beta labels where applicable, file sizes, and concise installation notes when known. Only show real store or registry destinations.
 - Include both private Flutter packages in the compact launch collection, with informative pages and a clear publication-in-preparation message. Add source/registry actions only once public destinations exist.
-- Use the supplied orange/near-white Dr. Jetski Studios full logo as the homepage banner with no duplicate header mark: a jet-powered rider and wake emblem above bold Dr. Jetski lettering and a spaced Studios signature. Coordinate the interface with the full logo's colors. The existing compact wordmark and DRJ icon remain in use pending separate asset updates; light-theme artwork is deferred. Earlier artwork is preserved in `logo/alternative_arcade`, `logo/alternative_colorful`, and `logo/super_minimal`. Retain characterful readable headings, locally hosted fonts, and sparse wake-line artwork.
+- Use the supplied orange/near-white Dr. Jetski Studios full logo as the homepage banner with no duplicate header mark: a jet-powered rider and wake emblem above bold Dr. Jetski lettering and a spaced Studios signature. Coordinate the interface with the full logo's colors. Derive the compact wordmark from the lettering alone and the square icon from the complete emblem without lettering, preserving the shapes and proportions of `logo/dr-jetski-studios-logo-vector.svg`; light-theme artwork is deferred. Earlier artwork is preserved in `logo/alternative_arcade`, `logo/alternative_colorful`, and `logo/super_minimal`. Retain characterful readable headings, locally hosted fonts, and sparse wake-line artwork.
 - Use project-specific placeholder media initially. Personal/contact details remain explicitly marked for the owner to supply; do not invent identities or live destinations.
 - The remaining collection uses a compact, manually ordered grid with small media, concise descriptions, project-type labels, and relevant availability messages. Keep the two Flutter packages together. Visitors browse the small catalogue directly, without search or filter controls.
 - Project-page galleries use two or more columns where useful on wide screens and one column on phones. Retain project media aspect ratios, especially phone screenshots, rather than forcing everything into one crop.
@@ -76,11 +76,13 @@ On mobile the gallery becomes one column and stays before the substantive descri
 ## Content and delivery
 
 - Ten launch projects: the five featured projects and five compact projects. WORLD-vocoder-vst is a future draft, not a generated public launch page.
-- Each project has stable routing independent of its editable display name, short descriptive metadata, optional gallery content, and Markdown detail sections.
+- Each project is one folder named for its stable route slug under `src/content/projects/<slug>/`, containing `index.md` plus co-located local media. Stable routing is independent of the editable display name; local media are referenced explicitly, not discovered.
+- The `index.md` holds short descriptive metadata, the ordered gallery, Markdown detail sections, and real download references. Its first gallery item is the homepage card.
 - Track featured priority, release maturity, public availability, and page visibility separately. A private finished package can have a public explanatory page; an alpha can have a public download.
-- Download records identify platform and format, URL, and known version/size details. Only render actionable links when their destinations are real.
+- Download records identify platform and format, URL, and known version/size details. Only render actionable links when their destinations are real; records without a real URL render an honest pending state.
 - Keep public source/registry/store links optional. Do not imply that private projects are open source or that unreleased store listings exist.
-- Keep small optimized images and local fonts with the static site. Serve substantial preview video and binaries separately through R2; total R2 usage includes media as well as software.
+- Keep small optimized images, posters, diagrams, and local fonts with the static site. Serve substantial preview video and binaries separately through R2 under versioned paths; total R2 usage includes media as well as software.
+- [PROJECT-ASSETS.md](PROJECT-ASSETS.md) is the authoritative operational guide for the project folder layout, the `index.md` template, media dimensions, and preview/demo preparation. [PLAN.md](PLAN.md) names the sequence.
 - Build a static homepage, ten project routes, and a useful not-found page. The About/contact area is part of the homepage.
 
 ## Candidate launch inventory

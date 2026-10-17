@@ -1,839 +1,115 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   width="320"
-   height="100"
-   viewBox="40 25 1536 480"
-   role="img"
-   aria-labelledby="compact-title compact-description"
-   version="1.1"
-   id="svg97"
-   sodipodi:docname="dr-jetski-studios-logo-compact.svg"
-   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview97"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="1"
-     inkscape:cx="708"
-     inkscape:cy="341.5"
-     inkscape:window-width="3440"
-     inkscape:window-height="1371"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="g27" />
-  <title
-     id="compact-title">Dr. Jetski Studios — compact logo</title>
-  <desc
-     id="compact-description">Copper Dr. and warm-gold Jetski arcade lettering leans forward through muted blue water with ivory foam tracing the waves and a small crest on the right. Foreground J and e overlaps blend with the lower shading, and Studios appears in an enlarged cream italic signature beneath Jetski for small displays.</desc>
-  <defs
-     id="defs8">
-    <clipPath
-       inkscape:label="Doctor faces"
-       id="doctor-faces">
-      <path
-         fill-rule="evenodd"
-         d="M14 35H94Q176 35 176 116V179Q176 260 94 260H0V49Q0 35 14 35ZM60 90V205H84Q116 205 116 171V125Q116 90 84 90Z"
-         inkscape:label="Letter d"
-         id="path1" />
-      <path
-         d="M195 260V111Q195 99 207 99H250V123Q272 94 305 100L295 157Q265 150 250 176V260Z"
-         inkscape:label="Letter r"
-         id="path2" />
-      <rect
-         x="314"
-         y="207"
-         width="53"
-         height="53"
-         rx="10"
-         inkscape:label="Letter period"
-         id="rect2" />
-    </clipPath>
-    <clipPath
-       inkscape:label="Jetski faces"
-       id="jetski-faces">
-      <path
-         d="M420 0H582V177Q582 274 489 274Q409 274 401 205L399 187H463L465 200Q468 221 488 221Q514 221 514 189V58H420Z"
-         inkscape:label="Letter j"
-         id="path3" />
-      <path
-         fill-rule="evenodd"
-         d="M683 75Q769 75 769 167V185H660Q665 222 694 222Q724 222 746 204L771 245Q737 275 689 275Q596 275 596 176Q596 75 683 75ZM658 147H711Q707 122 685 122Q663 122 658 147Z"
-         inkscape:label="Letter e"
-         id="path4" />
-      <path
-         d="M809 24H871V80H918V130H871V198Q871 220 893 220H909V268Q888 275 869 275Q809 275 809 206V130H783V80H809Z"
-         inkscape:label="Letter t"
-         id="path5" />
-      <path
-         d="M1092 91L1071 138Q1042 122 1015 122Q995 122 995 135Q995 145 1018 151L1045 159Q1098 175 1098 216Q1098 276 1018 276Q962 276 925 253L947 207Q981 227 1015 227Q1037 227 1037 214Q1037 204 1014 198L984 190Q932 176 932 136Q932 75 1013 75Q1056 75 1092 91Z"
-         inkscape:label="Letter s"
-         id="path6" />
-      <path
-         d="M1116 0H1178V144L1227 80H1297L1226 160L1294 270H1222L1178 200V270H1116Z"
-         inkscape:label="Letter k"
-         id="path7" />
-      <path
-         d="M1317 80H1380V270H1317ZM1327 0H1370Q1380 0 1380 10V45Q1380 55 1370 55H1327Q1317 55 1317 45V10Q1317 0 1327 0Z"
-         inkscape:label="Letter i"
-         id="path8" />
-    </clipPath>
-  </defs>
-  <g
-     transform="matrix(0.94,0,-0.14054083,1,133,65)"
-     stroke-linejoin="round"
-     stroke-linecap="round"
-     id="layer-main-lettering"
-     inkscape:groupmode="layer"
-     inkscape:label="Dr. Jetski lettering"
-     style="display:inline">
-    <g
-       fill="#1b1612"
-       stroke="#f4e8d3"
-       stroke-width="45"
-       id="layer-cream-trim"
-       inkscape:groupmode="layer"
-       inkscape:label="Cream outer trim"
-       style="display:inline;fill:none;stroke:#f2dab6;stroke-opacity:1">
-      <g
-         inkscape:label="Name letters"
-         transform="translate(-7,14)"
-         id="g27"
-         style="display:inline;fill:none;stroke:#f2dab6;stroke-opacity:1">
-        <g
-           inkscape:label="Doctor letters"
-           id="g19"
-           style="display:inline;fill:none;stroke:#f2dab6;stroke-opacity:1">
-          <path
-             fill-rule="evenodd"
-             d="m 14,35 h 80 q 82,0 82,81 v 63 q 0,81 -82,81 H 0 V 49 Q 0,35 14,35 Z m 46,55 v 115 h 24 q 32,0 32,-34 V 125 Q 116,90 84,90 Z"
-             inkscape:label="Letter d"
-             id="path18"
-             style="fill:none;stroke:#f2dab6;stroke-opacity:1" />
-          <path
-             d="M 195,260 V 111 q 0,-12 12,-12 h 43 v 24 q 22,-29 55,-23 l -10,57 q -30,-7 -45,19 v 84 z"
-             inkscape:label="Letter r"
-             id="path19"
-             style="fill:none;stroke:#f2dab6;stroke-opacity:1" />
-          <rect
-             x="314"
-             y="207"
-             width="53"
-             height="53"
-             rx="10"
-             inkscape:label="Letter period"
-             id="rect19"
-             style="display:inline;fill:none;stroke:#f2dab6;stroke-opacity:1" />
-        </g>
-        <g
-           inkscape:label="Jetski letters"
-           id="g25"
-           style="display:inline;fill:none;fill-opacity:1;stroke:#f2dab6;stroke-width:44.9999;stroke-dasharray:none;stroke-opacity:1">
-          <path
-             d="m 420,0 h 162 v 177 c 0,28.7324 -61.51754,97 -93,97 -53.33333,0 -82.66667,-23 -88,-69 l -2,-18 h 64 l 2,13 c 2,14 9.66667,21 23,21 17.33333,0 26,-10.66667 26,-32 V 58 h -94 z"
-             inkscape:label="Letter j"
-             id="path20"
-             style="display:inline;fill:none;fill-opacity:1;stroke:#f2dab6;stroke-width:44.9999;stroke-dasharray:none;stroke-opacity:1"
-             sodipodi:nodetypes="ccssccccssccc" />
-          <path
-             d="m 809,24 h 62 v 56 h 47 v 50 h -47 v 68 c 0,14.66667 7.33333,22 22,22 h 16 v 48 c -14,4.66667 -27.33333,7 -40,7 -22.87947,0 -38.11263,-19.01538 -47.90534,-34.06515 C 813.76685,229.67323 809,225.68861 809,206 V 130 H 783 V 80 h 26 z"
-             inkscape:label="Letter t"
-             id="path22"
-             style="fill:none;fill-opacity:1;stroke:#f2dab6;stroke-width:44.9999;stroke-dasharray:none;stroke-opacity:1"
-             sodipodi:nodetypes="ccccccssccsssccccc" />
-          <path
-             d="m 1092,91 -21,47 q -29,-16 -56,-16 -20,0 -20,13 0,10 23,16 l 27,8 q 53,16 53,57 0,60 -80,60 -56,0 -93,-23 l 22,-46 q 34,20 68,20 22,0 22,-13 0,-10 -23,-16 l -30,-8 q -52,-14 -52,-54 0,-61 81,-61 43,0 79,16 z"
-             inkscape:label="Letter s"
-             id="path23"
-             style="fill:none;fill-opacity:1;stroke:#f2dab6;stroke-width:44.9999;stroke-dasharray:none;stroke-opacity:1" />
-          <path
-             d="m 1116,0 h 62 v 144 l 49,-64 h 70 l -71,80 68,110 h -72 l -44,-70 v 70 h -62 z"
-             inkscape:label="Letter k"
-             id="path24"
-             style="fill:none;fill-opacity:1;stroke:#f2dab6;stroke-width:44.9999;stroke-dasharray:none;stroke-opacity:1" />
-          <path
-             d="m 1317,80 h 63 v 190 h -63 z m 10,-80 h 43 q 10,0 10,10 v 35 q 0,10 -10,10 h -43 q -10,0 -10,-10 V 10 q 0,-10 10,-10 z"
-             inkscape:label="Letter i"
-             id="path25"
-             style="fill:none;fill-opacity:1;stroke:#f2dab6;stroke-width:44.9999;stroke-dasharray:none;stroke-opacity:1" />
-        </g>
-        <path
-           d="m 766,130 h 32 l 7,98 q -15,-8 -27,3 z"
-           id="path26"
-           style="display:none;fill:none;stroke:#f2dab6;stroke-opacity:1" />
-        <path
-           d="m 890,142 h 38 l 15,73 -29,17 -31,-25 z"
-           id="path27"
-           style="display:inline;fill:none;stroke:#f2dab6;stroke-opacity:1" />
-      </g>
-      <g
-         inkscape:label="Name letters"
-         id="g37"
-         style="display:inline;fill:none;stroke:#f2dab6;stroke-opacity:1">
-        <g
-           inkscape:label="Doctor letters"
-           id="g29"
-           style="fill:none;stroke:#f2dab6;stroke-opacity:1">
-          <path
-             fill-rule="evenodd"
-             d="m 14,35 h 80 q 82,0 82,81 v 63 q 0,81 -82,81 H 0 V 49 Q 0,35 14,35 Z m 46,55 v 115 h 24 q 32,0 32,-34 V 125 Q 116,90 84,90 Z"
-             inkscape:label="Letter d"
-             id="path28"
-             style="fill:none;stroke:#f2dab6;stroke-opacity:1" />
-          <path
-             d="M 195,260 V 111 q 0,-12 12,-12 h 43 v 24 q 22,-29 55,-23 l -10,57 q -30,-7 -45,19 v 84 z"
-             inkscape:label="Letter r"
-             id="path29"
-             style="fill:none;stroke:#f2dab6;stroke-opacity:1" />
-          <rect
-             x="314"
-             y="207"
-             width="53"
-             height="53"
-             rx="10"
-             inkscape:label="Letter period"
-             id="rect29"
-             style="fill:none;stroke:#f2dab6;stroke-opacity:1" />
-        </g>
-        <g
-           inkscape:label="Jetski letters"
-           id="g35"
-           style="display:inline;fill:none;stroke:#f2dab6;stroke-opacity:1">
-          <path
-             d="m 420,0 h 162 v 177 c 0,32.25677 -11.14926,33.48748 -26.57595,49.65405 C 539.92414,242.89737 520.0734,274 489,274 c -53.33333,0 -82.66667,-23 -88,-69 l -2,-18 h 64 l 2,13 c 2,14 9.66667,21 23,21 17.33333,0 26,-10.66667 26,-32 V 58 h -94 z"
-             inkscape:label="Letter j"
-             id="path30"
-             style="display:inline;fill:none;stroke:#f2dab6;stroke-opacity:1"
-             sodipodi:nodetypes="ccsssccccssccc" />
-          <path
-             fill-rule="evenodd"
-             d="m 683,75 q 86,0 86,92 v 18 H 660 q 5,37 34,37 30,0 52,-18 l 25,41 q -34,30 -82,30 -93,0 -93,-99 0,-101 87,-101 z m -25,72 h 53 q -4,-25 -26,-25 -22,0 -27,25 z"
-             inkscape:label="Letter e"
-             id="path31"
-             style="display:inline;fill:none;stroke:#f2dab6;stroke-opacity:1" />
-          <path
-             d="m 809,24 h 62 v 56 h 47 v 50 h -47 v 68 q 0,22 22,22 h 16 v 48 q -21,7 -40,7 -60,0 -60,-69 V 130 H 783 V 80 h 26 z"
-             inkscape:label="Letter t"
-             id="path32"
-             style="fill:none;stroke:#f2dab6;stroke-opacity:1" />
-          <path
-             d="m 1092,91 -21,47 q -29,-16 -56,-16 -20,0 -20,13 0,10 23,16 l 27,8 q 53,16 53,57 0,60 -80,60 -56,0 -93,-23 l 22,-46 q 34,20 68,20 22,0 22,-13 0,-10 -23,-16 l -30,-8 q -52,-14 -52,-54 0,-61 81,-61 43,0 79,16 z"
-             inkscape:label="Letter s"
-             id="path33"
-             style="fill:none;stroke:#f2dab6;stroke-opacity:1" />
-          <path
-             d="m 1116,0 h 62 v 144 l 49,-64 h 70 l -71,80 68,110 h -72 l -44,-70 v 70 h -62 z"
-             inkscape:label="Letter k"
-             id="path34"
-             style="fill:none;stroke:#f2dab6;stroke-opacity:1" />
-          <path
-             d="m 1317,80 h 63 v 190 h -63 z m 10,-80 h 43 q 10,0 10,10 v 35 q 0,10 -10,10 h -43 q -10,0 -10,-10 V 10 q 0,-10 10,-10 z"
-             inkscape:label="Letter i"
-             id="path35"
-             style="fill:none;stroke:#f2dab6;stroke-opacity:1" />
-        </g>
-        <path
-           d="m 766,130 h 32 l 7,98 q -15,-8 -27,3 z"
-           id="path36"
-           style="fill:none;stroke:#f2dab6;stroke-opacity:1" />
-        <path
-           d="m 890,142 h 38 l 15,73 -29,17 -31,-25 z"
-           id="path37"
-           style="fill:none;stroke:#f2dab6;stroke-opacity:1" />
-      </g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+     width="320" height="64" viewBox="536.5 1988 3000 600"
+     role="img" aria-labelledby="compact-title compact-description">
+  <title id="compact-title">Dr. Jetski Studios — compact wordmark</title>
+  <desc id="compact-description">Off-white Dr. Jetski lettering above a spaced orange Studios signature, taken from the full vector logo. Transparent background.</desc>
+
+  <g id="wordmark" inkscape:groupmode="layer" inkscape:label="05 · DR. JETSKI" fill="#F7F4EF" fill-rule="evenodd">
+    <g id="wordmark-dr">
+      <path id="letter-d" d="
+        M619 2040 H783
+        C891 2040 962 2095 962 2187
+        C962 2279 892 2335 783 2335
+        H619 Z
+        M718 2119 V2255 H777
+        C829 2255 859 2229 859 2187
+        C859 2145 829 2119 777 2119 Z"/>
+      <path id="letter-r" d="
+        M1031 2040 H1218
+        C1287 2040 1338 2071 1338 2137
+        C1338 2181 1315 2211 1279 2232
+        L1355 2335 H1249 L1182 2249 H1128 V2335 H1031 Z
+        M1128 2111 V2175 H1218
+        C1235 2175 1245 2158 1245 2142
+        C1245 2121 1227 2111 1200 2111 Z"/>
+      <circle id="wordmark-period" cx="1445.5" cy="2291" r="47"/>
     </g>
-    <g
-       fill="#1b1612"
-       stroke="#1b1612"
-       stroke-width="32"
-       id="layer-dark-outline"
-       inkscape:groupmode="layer"
-       inkscape:label="Dark outline and depth"
-       style="display:inline">
-      <g
-         inkscape:label="Name letters"
-         transform="translate(-7,14)"
-         id="g47"
-         style="display:inline">
-        <g
-           inkscape:label="Doctor letters"
-           id="g39">
-          <path
-             fill-rule="evenodd"
-             d="m 14,35 h 80 q 82,0 82,81 v 63 q 0,81 -82,81 H 0 V 49 Q 0,35 14,35 Z m 46,55 v 115 h 24 q 32,0 32,-34 V 125 Q 116,90 84,90 Z"
-             inkscape:label="Letter d"
-             id="path38" />
-          <path
-             d="M 195,260 V 111 q 0,-12 12,-12 h 43 v 24 q 22,-29 55,-23 l -10,57 q -30,-7 -45,19 v 84 z"
-             inkscape:label="Letter r"
-             id="path39" />
-          <rect
-             x="314"
-             y="207"
-             width="53"
-             height="53"
-             rx="10"
-             inkscape:label="Letter period"
-             id="rect39" />
-        </g>
-        <g
-           inkscape:label="Jetski letters"
-           id="g45"
-           style="display:inline">
-          <path
-             d="m 420,0 h 162 v 177 q 0,97 -93,97 -80,0 -88,-69 l -2,-18 h 64 l 2,13 q 3,21 23,21 26,0 26,-32 V 58 h -94 z"
-             inkscape:label="Letter j"
-             id="path40"
-             style="display:inline" />
-          <path
-             fill-rule="evenodd"
-             d="m 683,75 q 86,0 86,92 v 18 H 660 q 5,37 34,37 30,0 52,-18 l 25,41 q -34,30 -82,30 -93,0 -93,-99 0,-101 87,-101 z m -25,72 h 53 q -4,-25 -26,-25 -22,0 -27,25 z"
-             inkscape:label="Letter e"
-             id="path41"
-             style="display:inline" />
-          <path
-             d="m 809,24 h 62 v 56 h 47 v 50 h -47 v 68 c 0,14.66667 7.33333,22 22,22 h 16 v 48 c -14,4.66667 -29.34474,7.42916 -42.05315,7.12169 -39.0855,-0.94563 -61.26213,-22.20581 -60,-69 L 809,130 H 783 V 80 h 26 z"
-             inkscape:label="Letter t"
-             id="path42"
-             style="display:inline"
-             sodipodi:nodetypes="ccccccssccssccccc" />
-          <path
-             d="m 1092,91 -21,47 q -29,-16 -56,-16 -20,0 -20,13 0,10 23,16 l 27,8 q 53,16 53,57 0,60 -80,60 -56,0 -93,-23 l 22,-46 q 34,20 68,20 22,0 22,-13 0,-10 -23,-16 l -30,-8 q -52,-14 -52,-54 0,-61 81,-61 43,0 79,16 z"
-             inkscape:label="Letter s"
-             id="path43" />
-          <path
-             d="m 1116,0 h 62 v 144 l 49,-64 h 70 l -71,80 68,110 h -72 l -44,-70 v 70 h -62 z"
-             inkscape:label="Letter k"
-             id="path44" />
-          <path
-             d="m 1317,80 h 63 v 190 h -63 z m 10,-80 h 43 q 10,0 10,10 v 35 q 0,10 -10,10 h -43 q -10,0 -10,-10 V 10 q 0,-10 10,-10 z"
-             inkscape:label="Letter i"
-             id="path45" />
-        </g>
-        <path
-           d="m 766,130 h 32 l 7,98 q -15,-8 -27,3 z"
-           id="path46" />
-        <path
-           d="m 890,142 h 38 l 15,73 -29,17 -31,-25 z"
-           id="path47" />
-      </g>
-      <g
-         inkscape:label="Name letters"
-         id="g57"
-         style="display:inline">
-        <g
-           inkscape:label="Doctor letters"
-           id="g49">
-          <path
-             fill-rule="evenodd"
-             d="m 14,35 h 80 q 82,0 82,81 v 63 q 0,81 -82,81 H 0 V 49 Q 0,35 14,35 Z m 46,55 v 115 h 24 q 32,0 32,-34 V 125 Q 116,90 84,90 Z"
-             inkscape:label="Letter d"
-             id="path48" />
-          <path
-             d="M 195,260 V 111 q 0,-12 12,-12 h 43 v 24 q 22,-29 55,-23 l -10,57 q -30,-7 -45,19 v 84 z"
-             inkscape:label="Letter r"
-             id="path49" />
-          <rect
-             x="314"
-             y="207"
-             width="53"
-             height="53"
-             rx="10"
-             inkscape:label="Letter period"
-             id="rect49" />
-        </g>
-        <g
-           inkscape:label="Jetski letters"
-           id="g55">
-          <path
-             d="m 420,0 h 162 v 177 q 0,97 -93,97 -80,0 -88,-69 l -2,-18 h 64 l 2,13 q 3,21 23,21 26,0 26,-32 V 58 h -94 z"
-             inkscape:label="Letter j"
-             id="path50"
-             style="display:inline" />
-          <path
-             fill-rule="evenodd"
-             d="m 683,75 c 57.33333,0 86,30.66667 86,92 v 18 H 660 c 3.33333,24.66667 14.66667,37 34,37 20,0 37.33333,-6 52,-18 l 24.97341,44.28567 c -13.04258,30.06982 -47.7866,24.88896 -79.7866,24.88896 C 629.18681,273.17463 596,242 596,176 596,108.66667 625,75 683,75 Z m -25,72 h 53 c -2.66667,-16.66667 -11.33333,-25 -26,-25 -14.66667,0 -23.66667,8.33333 -27,25 z"
-             inkscape:label="Letter e"
-             id="path51"
-             sodipodi:nodetypes="ssccsccsssccsc" />
-          <path
-             d="m 809,24 h 62 v 56 h 47 v 50 h -47 v 68 q 0,22 22,22 h 16 v 48 q -21,7 -40,7 -60,0 -60,-69 V 130 H 783 V 80 h 26 z"
-             inkscape:label="Letter t"
-             id="path52" />
-          <path
-             d="m 1092,91 -21,47 q -29,-16 -56,-16 -20,0 -20,13 0,10 23,16 l 27,8 q 53,16 53,57 0,60 -80,60 -56,0 -93,-23 l 22,-46 q 34,20 68,20 22,0 22,-13 0,-10 -23,-16 l -30,-8 q -52,-14 -52,-54 0,-61 81,-61 43,0 79,16 z"
-             inkscape:label="Letter s"
-             id="path53" />
-          <path
-             d="m 1116,0 h 62 v 144 l 49,-64 h 70 l -71,80 68,110 h -72 l -44,-70 v 70 h -62 z"
-             inkscape:label="Letter k"
-             id="path54" />
-          <path
-             d="m 1317,80 h 63 v 190 h -63 z m 10,-80 h 43 q 10,0 10,10 v 35 q 0,10 -10,10 h -43 q -10,0 -10,-10 V 10 q 0,-10 10,-10 z"
-             inkscape:label="Letter i"
-             id="path55" />
-        </g>
-        <path
-           d="m 766,130 h 32 l 7,98 q -15,-8 -27,3 z"
-           id="path56" />
-        <path
-           d="m 890,142 h 38 l 15,73 -29,17 -31,-25 z"
-           id="path57" />
-      </g>
-      <rect
-         style="fill:#1b1612;fill-opacity:1;stroke-width:33.1884"
-         id="rect106"
-         width="14.240497"
-         height="32.23756"
-         x="1061.9622"
-         y="140.49948"
-         transform="matrix(1,0,0.14786797,0.98900711,0,0)" />
-    </g>
-    <g
-       inkscape:label="Dr. copper faces"
-       fill="#cc8152"
-       id="layer-doctor-faces"
-       inkscape:groupmode="layer">
-      <path
-         fill-rule="evenodd"
-         d="m 14,35 h 80 q 82,0 82,81 v 63 q 0,81 -82,81 H 0 V 49 Q 0,35 14,35 Z m 46,55 v 115 h 24 q 32,0 32,-34 V 125 Q 116,90 84,90 Z"
-         inkscape:label="Letter d"
-         id="path58" />
-      <path
-         d="M 195,260 V 111 q 0,-12 12,-12 h 43 v 24 q 22,-29 55,-23 l -10,57 q -30,-7 -45,19 v 84 z"
-         inkscape:label="Letter r"
-         id="path59" />
-      <rect
-         x="314"
-         y="207"
-         width="53"
-         height="53"
-         rx="10"
-         inkscape:label="Letter period"
-         id="rect59" />
-    </g>
-    <g
-       inkscape:label="Jetski parchment faces"
-       fill="#f0d59a"
-       id="layer-jetski-faces"
-       inkscape:groupmode="layer">
-      <path
-         d="m 420,0 h 162 v 177 q 0,97 -93,97 -80,0 -88,-69 l -2,-18 h 64 l 2,13 q 3,21 23,21 26,0 26,-32 V 58 h -94 z"
-         inkscape:label="Letter j"
-         id="path60"
-         style="display:inline" />
-      <path
-         fill-rule="evenodd"
-         d="m 683,75 q 86,0 86,92 v 18 H 660 q 5,37 34,37 30,0 52,-18 l 25,41 q -34,30 -82,30 -93,0 -93,-99 0,-101 87,-101 z m -25,72 h 53 q -4,-25 -26,-25 -22,0 -27,25 z"
-         inkscape:label="Letter e"
-         id="path61" />
-      <path
-         d="m 809,24 h 62 v 56 h 47 v 50 h -47 v 68 q 0,22 22,22 h 16 v 48 q -21,7 -40,7 -60,0 -60,-69 V 130 H 783 V 80 h 26 z"
-         inkscape:label="Letter t"
-         id="path62" />
-      <path
-         d="m 1092,91 -21,47 q -29,-16 -56,-16 -20,0 -20,13 0,10 23,16 l 27,8 q 53,16 53,57 0,60 -80,60 -56,0 -93,-23 l 22,-46 q 34,20 68,20 22,0 22,-13 0,-10 -23,-16 l -30,-8 q -52,-14 -52,-54 0,-61 81,-61 43,0 79,16 z"
-         inkscape:label="Letter s"
-         id="path63" />
-      <path
-         d="m 1116,0 h 62 v 144 l 49,-64 h 70 l -71,80 68,110 h -72 l -44,-70 v 70 h -62 z"
-         inkscape:label="Letter k"
-         id="path64" />
-      <path
-         d="m 1317,80 h 63 v 190 h -63 z m 10,-80 h 43 q 10,0 10,10 v 35 q 0,10 -10,10 h -43 q -10,0 -10,-10 V 10 q 0,-10 10,-10 z"
-         inkscape:label="Letter i"
-         id="path65" />
-    </g>
-    <g
-       clip-path="url(#doctor-faces)"
-       fill="#a45c38"
-       id="layer-doctor-shading"
-       inkscape:groupmode="layer"
-       inkscape:label="Dr. lower shading"
-       style="display:inline">
-      <path
-         d="m -15,222 q 103,23 195,-5 l 3,65 H -15 Z"
-         id="path66" />
-      <path
-         d="m 184,228 h 123 v 51 H 184 Z"
-         id="path67" />
-      <path
-         d="m 307,243 h 68 v 29 h -68 z"
-         id="path68" />
-    </g>
-    <g
-       clip-path="url(#jetski-faces)"
-       fill="#c59d61"
-       id="layer-jetski-shading"
-       inkscape:groupmode="layer"
-       inkscape:label="Jetski lower shading"
-       sodipodi:insensitive="true"
-       style="display:inline">
-      <path
-         d="m 388,239 q 98,17 200,-9 l 2,64 H 388 Z"
-         id="path69"
-         style="display:inline" />
-      <path
-         d="m 587,242 q 91,16 194,-13 v 65 H 587 Z"
-         id="path70"
-         style="display:inline" />
-      <path
-         d="m 777,238 q 70,13 147,0 v 55 H 777 Z"
-         id="path71" />
-      <path
-         d="m 919,239 q 94,20 186,-5 v 60 H 919 Z"
-         id="path72" />
-      <path
-         d="m 1108,236 h 192 v 55 h -192 z"
-         id="path73" />
-      <path
-         d="m 1308,237 h 79 v 53 h -79 z"
-         id="path74" />
-    </g>
-    <g
-       fill="#1b1612"
-       id="layer-dark-counters"
-       inkscape:groupmode="layer"
-       inkscape:label="Dark letter counters"
-       style="display:inline">
-      <path
-         d="m 60,90 v 115 h 24 q 32,0 32,-34 V 125 Q 116,90 84,90 Z"
-         id="path75" />
-      <path
-         d="m 658,147 h 53 q -4,-25 -26,-25 -22,0 -27,25 z"
-         id="path76" />
-    </g>
-    <g
-       id="layer-cream-gaps"
-       inkscape:groupmode="layer"
-       inkscape:label="Cream letter gaps"
-       style="display:inline">
-      <path
-         fill="#F4E8D3"
-         d="m 1240.8044,163.20421 56.9671,-65.355078 -2.5336,158.473918 z"
-         id="path77-2-8"
-         style="fill:#1b1612;fill-opacity:1;stroke-width:4.09456"
-         sodipodi:nodetypes="cccc" />
-    </g>
-    <g
-       fill="#e5a274"
-       id="layer-doctor-highlights"
-       inkscape:groupmode="layer"
-       inkscape:label="Dr. highlights"
-       style="display:inline">
-      <path
-         d="m 17,48 h 74 q 48,0 62,35 Q 120,66 88,67 H 17 Z"
-         id="path79" />
-      <path
-         d="m 207,111 h 31 v 16 h -31 z"
-         id="path80" />
-      <path
-         d="m 324,217 h 31 v 11 h -31 z"
-         id="path81" />
-    </g>
-    <g
-       fill="#fae8bc"
-       id="layer-jetski-highlights"
-       inkscape:groupmode="layer"
-       inkscape:label="Jetski highlights"
-       style="display:inline">
-      <path
-         d="M 433,12 H 568 V 29 H 433 Z"
-         id="path82" />
-      <path
-         d="m 621,118 q 23,-30 63,-30 34,0 55,21 -32,-10 -56,-6 -38,0 -62,15 z"
-         id="path83" />
-      <path
-         d="m 822,37 h 36 v 16 h -36 z"
-         id="path84" />
-      <path
-         d="m 950,115 q 23,-27 63,-27 34,0 64,11 l -6,14 q -35,-13 -61,-12 -33,0 -60,14 z"
-         id="path85" />
-      <path
-         d="m 1129,12 h 36 v 17 h -36 z"
-         id="path86" />
-      <path
-         d="m 1233,92 h 37 l -16,18 h -34 z"
-         id="path87" />
-      <path
-         d="m 1329,12 h 39 v 15 h -39 z"
-         id="path88" />
-      <path
-         d="m 1330,92 h 37 v 16 h -37 z"
-         id="path89" />
+    <g id="wordmark-jetski">
+      <path id="letter-j" d="
+        M1755 2042 H1852 V2209
+        C1852 2297 1803 2343 1712 2343
+        C1675 2343 1650 2337 1630 2327
+        L1654 2253
+        C1671 2259 1687 2261 1701 2261
+        C1738 2261 1755 2244 1755 2219 Z"/>
+      <path id="letter-e" d="M1940 2042 H2201 V2119 H2034 V2152 H2180 V2223 H2034 V2261 H2204 V2337 H1940 Z"/>
+      <path id="letter-t" d="M2281 2042 H2566 V2121 H2472 V2337 H2377 V2121 H2281 Z"/>
+      <path id="letter-s" d="
+        M2888 2057 L2863 2127
+        C2829 2117 2800 2112 2772 2112
+        C2743 2112 2731 2119 2731 2130
+        C2731 2141 2752 2146 2782 2153
+        C2850 2167 2899 2185 2899 2248
+        C2899 2309 2843 2344 2757 2344
+        C2705 2344 2667 2337 2628 2322
+        L2654 2248
+        C2687 2262 2723 2269 2756 2269
+        C2789 2269 2803 2264 2803 2253
+        C2803 2241 2788 2235 2755 2228
+        C2687 2214 2634 2197 2634 2134
+        C2634 2075 2688 2037 2774 2037
+        C2818 2037 2857 2043 2888 2057 Z"/>
+      <path id="letter-k" d="M2971 2042 H3068 V2155 L3177 2042 H3291 L3164 2179 L3295 2337 H3178 L3087 2230 L3068 2246 V2337 H2971 Z"/>
+      <path id="letter-i" d="M3359 2042 H3454 V2337 H3359 Z"/>
     </g>
   </g>
-  <g
-     stroke-linejoin="round"
-     stroke-linecap="round"
-     id="layer-water"
-     inkscape:groupmode="layer"
-     inkscape:label="Water and wake"
-     style="display:inline">
-    <g
-       id="layer-water-colors"
-       inkscape:groupmode="layer"
-       inkscape:label="Water shapes">
-      <path
-         d="m 53,357 q 132,22 258,-8 154,-28 314,-2 182,27 382,-1 161,-20 316,1 85,10 115,-40 23,-40 -6,-63 59,0 85,39 17,24 9,50 l 34,-14 q -11,63 -76,95 -63,33 -175,44 l 67,4 q -115,31 -258,12 l -135,-19 65,21 Q 887,465 765,450 l 52,20 Q 654,456 544,434 416,417 313,413 l 81,18 Q 244,417 110,389 l 124,-1 Q 140,376 53,357 Z"
-         inkscape:label="Water silhouette"
-         fill="#5d7d90"
-         stroke="#1b1612"
-         stroke-width="8"
-         id="path9"
-         style="display:inline" />
-      <path
-         fill="#7895a4"
-         d="m 116,366 q 149,21 271,-6 133,-22 268,3 176,32 379,0 170,-25 307,4 94,19 135,-48 20,-33 -5,-58 52,30 31,82 l 28,-5 q -69,73 -210,79 -130,5 -280,-15 Q 896,384 767,400 605,419 433,391 282,368 203,379 Z"
-         id="path10" />
-      <path
-         fill="#435f74"
-         d="m 247,393 q 190,14 389,34 268,34 518,27 209,1 323,-44 -58,33 -168,41 l 36,7 q -112,21 -227,8 l -163,-20 54,19 Q 866,452 746,439 l 33,17 Q 636,443 544,426 423,411 355,407 Z"
-         id="path11" />
-    </g>
-    <g
-       id="layer-water-foam"
-       inkscape:groupmode="layer"
-       inkscape:label="Wave foam"
-       style="display:inline">
-      <path
-         fill="#f2dab6"
-         d="m 91.735236,356.09776 q 139.000004,9 241.000004,-12 80,-15 153,-7 -88,6 -155,24 -112,22 -239.000004,-5 z"
-         id="path12" />
-      <path
-         fill="#f2dab6"
-         d="m 580,342 q 127,16 215,12 l 70,-5 q -59,23 -136,17 -80,-6 -149,-24 z"
-         id="path13" />
-      <path
-         fill="#f2dab6"
-         d="m 1445,248 c 40,8 62.6667,24.33333 68,49 4,14.66667 0,31 -12,49 l 23,-10 c -10.6667,16 -23.6667,27.33333 -39,34 l -15,-7 c 24,-28.66667 30.3333,-53 19,-73 -5.3333,-10 -13,-15.33333 -23,-16 0,0 -5,-11.33333 -21,-26 z"
-         id="path14"
-         sodipodi:nodetypes="ccccccccc" />
-      <path
-         fill="#f2dab6"
-         d="m 1375,398 q 44,-1 75,-14 -20,26 -75,33 l -43,-1 z"
-         id="path15" />
-    </g>
-    <g
-       inkscape:groupmode="layer"
-       id="layer1"
-       inkscape:label="Wave foam 1"
-       style="display:inline" />
-    <g
-       inkscape:groupmode="layer"
-       id="layer6"
-       inkscape:label="Wave under J"
-       style="display:inline" />
-    <g
-       inkscape:groupmode="layer"
-       id="layer2"
-       inkscape:label="Wave foam 2"
-       style="display:inline" />
-    <g
-       id="layer-water-highlights"
-       inkscape:groupmode="layer"
-       inkscape:label="Water highlights">
-      <path
-         fill="none"
-         stroke="#A2C2C5"
-         stroke-width="7"
-         d="m 436.97353,384.26476 q 142,13 259,17 m 62,9 q 157,20 275.00007,12"
-         id="path16"
-         style="stroke:#7895a4;stroke-opacity:1" />
-      <path
-         fill="none"
-         stroke="#6A9FA8"
-         stroke-width="7"
-         d="m 1065.4239,446.15058 q 162,13 279,-11"
-         id="path17"
-         style="display:inline;stroke:#7895a4;stroke-opacity:1" />
-    </g>
+
+  <g id="studios" inkscape:groupmode="layer" inkscape:label="06 · STUDIOS" fill="#EE7135" fill-rule="evenodd">
+    <path id="studios-s-first" d="
+      M1359 2426 L1350 2450
+      C1337 2445 1325 2443 1314 2443
+      C1301 2443 1295 2447 1295 2453
+      C1295 2460 1306 2464 1320 2467
+      C1347 2473 1361 2480 1361 2502
+      C1361 2527 1341 2539 1312 2539
+      C1295 2539 1278 2535 1265 2528
+      L1273 2504
+      C1287 2511 1300 2514 1313 2514
+      C1326 2514 1333 2511 1333 2505
+      C1333 2498 1325 2495 1310 2492
+      C1283 2486 1268 2478 1268 2455
+      C1268 2431 1288 2418 1317 2418
+      C1333 2418 1347 2421 1359 2426 Z"/>
+    <path id="studios-t" d="M1509 2422 H1608 V2448 H1573 V2537 H1545 V2448 H1509 Z"/>
+    <path id="studios-u" d="
+      M1753 2422 H1782 V2488
+      C1782 2504 1790 2512 1806 2512
+      C1821 2512 1829 2504 1829 2488
+      V2422 H1858 V2489
+      C1858 2520 1838 2539 1806 2539
+      C1773 2539 1753 2520 1753 2489 Z"/>
+    <path id="studios-d" d="
+      M2014 2422 H2063
+      C2098 2422 2121 2445 2121 2479
+      C2121 2513 2098 2537 2063 2537
+      H2014 Z
+      M2042 2448 V2511 H2058
+      C2081 2511 2093 2499 2093 2479
+      C2093 2459 2081 2448 2058 2448 Z"/>
+    <path id="studios-i" d="M2274 2422 H2301 V2537 H2274 Z"/>
+    <path id="studios-o" d="
+      M2511.5 2419
+      A60.5 60 0 1 1 2511.5 2539
+      A60.5 60 0 1 1 2511.5 2419 Z
+      M2511.5 2446
+      A32 33 0 1 0 2511.5 2512
+      A32 33 0 1 0 2511.5 2446 Z"/>
+    <path id="studios-s-last" transform="translate(1458 0)" d="
+      M1359 2426 L1350 2450
+      C1337 2445 1325 2443 1314 2443
+      C1301 2443 1295 2447 1295 2453
+      C1295 2460 1306 2464 1320 2467
+      C1347 2473 1361 2480 1361 2502
+      C1361 2527 1341 2539 1312 2539
+      C1295 2539 1278 2535 1265 2528
+      L1273 2504
+      C1287 2511 1300 2514 1313 2514
+      C1326 2514 1333 2511 1333 2505
+      C1333 2498 1325 2495 1310 2492
+      C1283 2486 1268 2478 1268 2455
+      C1268 2431 1288 2418 1317 2418
+      C1333 2418 1347 2421 1359 2426 Z"/>
   </g>
-  <g
-     stroke-linecap="round"
-     stroke-linejoin="round"
-     id="layer-front-splashes"
-     inkscape:groupmode="layer"
-     inkscape:label="Foreground splashes"
-     style="display:inline">
-    <path
-       fill="#7895a4"
-       d="m 700.28881,393.00225 q 142.59823,-26.88383 211.54666,-75.54556 -3.89668,31.17925 -30.20363,51.64121 l 69.23614,1.20201 q -118.5259,35.48048 -250.57917,22.70234 z"
-       id="path90"
-       style="stroke-width:1.90523" />
-    <path
-       fill="#E8BE8B"
-       d="m 778.05343,366.79666 c 53.30889,-12.44301 96.64867,-29.57969 123.82383,-43.83775 -10.50659,20.21069 -29.71225,32.54267 -67.56942,40.457 z"
-       id="path91"
-       style="fill:#f2dab6;fill-opacity:1;stroke-width:1.48416"
-       sodipodi:nodetypes="cccc" />
-  </g>
-  <g
-     transform="translate(1440,363) scale(1.25) translate(-1440,-363)">
-   <g
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      id="layer-studios"
-     inkscape:groupmode="layer"
-     inkscape:label="Studios"
-     transform="translate(-25.285804,-15.134072)"
-     style="display:inline">
-    <path
-       d="m 1241.1024,378.43363 c -5.7732,0 -10.1694,-1.12 -13.1886,-3.36 -3.0192,-2.2512 -4.8246,-5.7008 -5.4264,-10.3376 l 9.3534,-1.736 c 0.4488,2.6208 1.4484,4.5472 3.009,5.7568 1.5708,1.1984 3.8658,1.8032 6.885,1.8032 7.446,0 11.169,-2.352 11.169,-7.056 0,-1.8928 -0.6426,-3.3936 -1.938,-4.4912 -1.2954,-1.1088 -3.8658,-2.1952 -7.701,-3.2592 -3.978,-1.1536 -6.9156,-2.3632 -8.823,-3.6176 -1.9074,-1.2656 -3.366,-2.8 -4.3758,-4.6032 -0.9996,-1.8256 -1.4892,-4.0432 -1.4892,-6.6528 0,-4.2 1.683,-7.5824 5.0592,-10.136 3.3864,-2.5536 7.8846,-3.8304 13.4844,-3.8304 5.1306,0 9.2514,1.0304 12.3522,3.08 3.111,2.0384 5.0286,5.04 5.7426,8.9824 l -9.3228,2.3744 c -0.4794,-2.1392 -1.5096,-3.8304 -3.0906,-5.096 -1.5912,-1.2656 -3.6516,-1.904 -6.2016,-1.904 -2.6826,0 -4.7838,0.56 -6.3138,1.6576 -1.53,1.1088 -2.295,2.6096 -2.295,4.5024 0,1.12 0.2754,2.072 0.8262,2.856 0.561,0.784 1.3872,1.4672 2.4684,2.0496 1.0914,0.5824 3.2232,1.344 6.4158,2.2848 3.4272,1.0528 5.9568,2.0384 7.599,2.9456 1.6422,0.896 2.958,1.9152 3.9372,3.0576 0.9894,1.1312 1.734,2.4304 2.244,3.9088 0.5202,1.4672 0.7854,3.1584 0.7854,5.0736 0,5.1184 -1.7952,9.0272 -5.3754,11.7264 -3.5802,2.6768 -8.8434,4.0208 -15.7896,4.0208 z m 36.6078,0 c -2.6826,0 -4.7532,-0.6832 -6.222,-2.0496 -1.4586,-1.3664 -2.193,-3.3264 -2.193,-5.8576 0,-1.6576 0.1632,-3.4944 0.51,-5.4992 l 3.2946,-18.4576 h -4.7838 l 1.2036,-6.776 h 5.2428 l 4.4268,-9.52 h 5.7018 l -1.5606,9.52 h 6.5586 l -1.1526,6.776 h -6.63 l -3.366,18.6816 c -0.2448,1.3104 -0.3672,2.352 -0.3672,3.1248 0,1.0752 0.255,1.8816 0.765,2.408 0.51,0.5152 1.2036,0.7728 2.0604,0.7728 0.6936,0 1.8564,-0.1456 3.5088,-0.4592 l -1.0404,6.4736 c -1.7544,0.5712 -3.7434,0.8624 -5.9568,0.8624 z m 26.8362,-38.64 -3.825,20.8096 c -0.5508,2.8672 -0.8262,4.7936 -0.8262,5.768 0,3.0128 1.632,4.5248 4.9062,4.5248 2.1726,0 4.1922,-0.952 6.0384,-2.8448 1.8462,-1.8816 3.0192,-4.2336 3.5088,-7.0672 l 3.825,-21.1904 h 9.129 l -5.3652,29.9376 c -0.357,1.8592 -0.765,4.5696 -1.2342,8.1424 h -8.6802 c 0,-0.2128 0.102,-1.2208 0.306,-3.024 0.204,-1.8144 0.3672,-3.0352 0.4692,-3.6624 h -0.092 c -1.6422,2.52 -3.4374,4.3568 -5.3856,5.5104 -1.9584,1.1536 -4.1922,1.736 -6.6912,1.736 -3.2844,0 -5.7528,-0.8512 -7.4154,-2.5536 -1.6524,-1.7136 -2.4888,-4.1888 -2.4888,-7.4256 0,-0.5824 0.071,-1.5232 0.2244,-2.8112 0.153,-1.2992 0.2958,-2.2736 0.4488,-2.9232 l 4.1106,-22.9264 z m 48.4704,32.3904 c -1.53,2.2064 -3.1926,3.7968 -4.9776,4.7824 -1.7748,0.9744 -3.9678,1.4672 -6.579,1.4672 -3.3252,0 -5.967,-1.176 -7.905,-3.5504 -1.938,-2.3856 -2.907,-5.5664 -2.907,-9.5536 0,-4.4352 0.6936,-8.7808 2.0808,-13.0368 1.377,-4.256 3.3048,-7.504 5.7936,-9.7216 2.499,-2.2176 5.508,-3.3376 9.027,-3.3376 5.5182,0 8.9046,2.3408 10.1694,7.0336 h 0.153 c 0.041,-0.4928 0.1326,-1.2096 0.255,-2.1728 0.1326,-0.9632 0.3366,-2.1952 0.5916,-3.6848 l 2.7234,-15.176 h 8.9556 l -7.6908,44.4304 c -0.4386,2.6656 -0.7548,5.3984 -0.9486,8.2096 h -9.0984 c 0,-1.4896 0.1632,-3.3824 0.4998,-5.6896 z m -7.5786,-0.6272 c 1.7544,0 3.2538,-0.392 4.4982,-1.1872 1.2546,-0.7952 2.3154,-2.016 3.2028,-3.6624 0.8976,-1.6576 1.5912,-3.7296 2.1012,-6.216 0.5202,-2.4752 0.7854,-4.6592 0.7854,-6.5184 0,-2.7552 -0.51,-4.76 -1.53,-6.0256 -1.0098,-1.2544 -2.5296,-1.8928 -4.5594,-1.8928 -2.2032,0 -3.9984,0.7952 -5.3856,2.3856 -1.3974,1.5904 -2.4582,3.9088 -3.1926,6.9776 -0.7344,3.0576 -1.0914,5.8912 -1.0914,8.512 0,5.0848 1.7238,7.6272 5.1714,7.6272 z m 33.2622,-38.9536 1.326,-7.3696 h 9.0984 l -1.3158,7.3696 z m -7.9968,45.2704 6.8034,-38.08 h 9.0882 l -6.8238,38.08 z m 55.59,-24.0464 c 0,4.8272 -0.8874,9.128 -2.6418,12.88 -1.7544,3.7632 -4.2534,6.6528 -7.4766,8.68 -3.2232,2.0272 -6.8646,3.0464 -10.9242,3.0464 -4.7022,0 -8.4252,-1.3664 -11.169,-4.1104 -2.7438,-2.744 -4.1106,-6.496 -4.1106,-11.256 0,-4.6928 0.8568,-8.8368 2.5704,-12.4432 1.7136,-3.6064 4.1616,-6.4064 7.3236,-8.4 3.1824,-1.9936 6.7932,-2.9904 10.8528,-2.9904 5.0694,0 8.9352,1.2768 11.5872,3.8304 2.652,2.5536 3.9882,6.1376 3.9882,10.7632 z m -9.5166,0.784 c 0,-5.7008 -2.244,-8.5568 -6.7422,-8.5568 -2.448,0 -4.4064,0.6944 -5.865,2.0832 -1.4586,1.4 -2.5908,3.5056 -3.4272,6.3392 -0.816,2.8224 -1.224,5.544 -1.224,8.1536 0,5.9808 2.244,8.96 6.7422,8.96 2.4072,0 4.3248,-0.6496 5.7324,-1.9376 1.4178,-1.3104 2.5296,-3.2928 3.3354,-5.9584 0.816,-2.6544 1.2954,-5.6784 1.4484,-9.0832 z m 44.319,11.4464 c 0,4.0656 -1.377,7.1456 -4.1514,9.24 -2.7744,2.0944 -6.8136,3.136 -12.1176,3.136 -4.3452,0 -7.7724,-0.8288 -10.2816,-2.4976 -2.499,-1.68 -4.182,-4.2784 -5.0694,-7.7728 l 8.1294,-1.2432 c 0.4488,1.7248 1.275,2.9792 2.4888,3.7408 1.2138,0.7728 2.9988,1.1536 5.3754,1.1536 2.3562,0 4.1412,-0.4032 5.355,-1.2208 1.2138,-0.8176 1.8258,-1.9936 1.8258,-3.5392 0,-1.2096 -0.4386,-2.1392 -1.3362,-2.7776 -0.8874,-0.6384 -2.8662,-1.3104 -5.916,-2.016 -4.2942,-1.0304 -7.3236,-2.4752 -9.078,-4.3232 -1.7544,-1.848 -2.6316,-4.2448 -2.6316,-7.168 0,-3.7408 1.3566,-6.5856 4.0596,-8.5568 2.7132,-1.9824 6.579,-2.9792 11.6076,-2.9792 4.437,0 7.752,0.8288 9.9246,2.4864 2.193,1.6576 3.5394,4.2112 4.0494,7.6832 l -8.109,0.9968 c -0.3774,-1.6016 -1.0914,-2.7552 -2.1522,-3.4608 -1.0506,-0.728 -2.499,-1.0864 -4.335,-1.0864 -4.4268,0 -6.63,1.3888 -6.63,4.1776 0,0.7728 0.2142,1.4112 0.6324,1.9264 0.4386,0.5152 1.0608,0.952 1.8564,1.3328 0.7956,0.3584 2.7132,0.9296 5.763,1.6912 3.927,0.9744 6.7014,2.3408 8.3232,4.1104 1.6116,1.7696 2.4174,4.088 2.4174,6.9664 z"
-       inkscape:label="Studios lettering"
-       fill="#F4E8D3"
-       stroke="#1b1612"
-       stroke-width="11"
-       paint-order="stroke fill"
-       id="path94"
-       style="fill:#fae8bc;fill-opacity:1" />
-    <rect
-       style="fill:#1b1612;fill-opacity:1"
-       id="rect98"
-       width="4.4745426"
-       height="3.7861514"
-       x="1282.4727"
-       y="364.33102" />
-    <rect
-       style="fill:#1b1612;fill-opacity:1"
-       id="rect99"
-       width="7.4002047"
-       height="4.6466403"
-       x="1303.985"
-       y="362.95422" />
-    <rect
-       style="fill:#1b1612;fill-opacity:1"
-       id="rect100"
-       width="5.5071292"
-       height="3.9582491"
-       x="1344.2559"
-       y="364.6752" />
-    <rect
-       style="fill:#1b1612;fill-opacity:1"
-       id="rect101"
-       width="11.014258"
-       height="15.832996"
-       x="1402.9412"
-       y="350.90738" />
-    <rect
-       style="fill:#1b1612;fill-opacity:1"
-       id="rect102"
-       width="5.1629338"
-       height="4.818738"
-       x="1429.2721"
-       y="359.51227" />
-    <rect
-       style="fill:#1b1612;fill-opacity:1"
-       id="rect103"
-       width="14.284117"
-       height="7.4002047"
-       x="1236.3505"
-       y="360.02856" />
-    <ellipse
-       style="fill:#1b1612;fill-opacity:1"
-       id="path103"
-       cx="1235.0497"
-       cy="359.24655"
-       rx="5.2059579"
-       ry="2.7535646" />
-    <ellipse
-       style="fill:#1b1612;fill-opacity:1"
-       id="path104"
-       cx="1284.958"
-       cy="363.63504"
-       rx="2.4523935"
-       ry="1.6349289" />
-    <ellipse
-       style="fill:#1b1612;fill-opacity:1"
-       id="path105"
-       cx="1306.6853"
-       cy="362.8606"
-       rx="3.183809"
-       ry="2.5814669" />
-    <ellipse
-       style="fill:#1b1612;fill-opacity:1"
-       id="path106"
-       cx="1347.6016"
-       cy="363.63504"
-       rx="3.8291757"
-       ry="3.355907" />
-    <ellipse
-       style="fill:#1b1612;fill-opacity:1;stroke:none;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
-       id="path98"
-       cx="1285.6373"
-       cy="361.08606"
-       rx="2.320194"
-       ry="2.2980971" />
-    <rect
-       style="fill:#1b1612;fill-opacity:1;stroke:none;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
-       id="rect105"
-       width="6.8908248"
-       height="14.849242"
-       x="1307.845"
-       y="335.7186" />
-  </g>
-  </g>
-  <g
-     stroke-linecap="round"
-     stroke-linejoin="round"
-     id="layer-wake-streaks"
-     inkscape:groupmode="layer"
-     inkscape:label="Foreground wake streaks" />
-  <g
-     inkscape:groupmode="layer"
-     id="layer9"
-     inkscape:label="make j in front of water"
-     style="display:inline">
-    <path
-       style="display:none;fill:#f2dab6;fill-opacity:1;stroke:none;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
-       d="m 631.53474,340.36143 c 0,0 -16.05893,18.07691 -41.14412,27.23232 -29.51865,10.7735 -67.32499,9.85699 -92.15625,0.71875 -31.95759,-11.76082 -40.05127,-38.69025 -40.05127,-38.69025 l 35.51492,3.35465 89.36561,9.91479 z"
-       id="path92"
-       sodipodi:nodetypes="csscccc" />
-    <path
-       style="display:inline;fill:#1b1612;fill-opacity:1;stroke:none;stroke-width:0;stroke-dasharray:none"
-       d="m 630.3636,332.95891 c 0,0 -10.15986,15.99537 -38.81778,27.57097 -35.22396,14.22778 -77.54216,9.70133 -100.00772,-2.64644 -25.0313,-13.75798 -30.44924,-39.00038 -30.44924,-39.00038 l 31.76457,9.92159 121.79914,8.48529 z"
-       id="path78"
-       sodipodi:nodetypes="csscccc" />
-    <path
-       style="display:inline;fill:#c59d61;fill-opacity:1;stroke:none;stroke-width:0;stroke-dasharray:none"
-       d="m 505.43737,327.36778 c 0,0 15.81072,11.70532 42.93313,12.23461 28.62079,0.55854 46.09431,-7.1016 46.09431,-7.1016 l -1.76003,-8.52671 z"
-       id="path77"
-       sodipodi:nodetypes="csccc" />
-  </g>
-  <g
-     inkscape:groupmode="layer"
-     id="g96"
-     inkscape:label="make e in front of water"
-     style="display:inline"
-     transform="matrix(1.0663577,-0.11763334,0.12084291,1.0380354,122.94661,52.098162)">
-    <path
-       style="display:none;fill:#f2dab6;fill-opacity:1;stroke:none;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
-       d="m 632.59919,335.36273 c 0,0 -8.33549,17.3489 -40.96314,30.03503 -34.40773,13.37825 -68.96079,9.1158 -91.8813,1.49029 -41.28719,-13.73598 -47.29182,-54.76835 -47.29182,-54.76835 l 9.18002,-9.19675 29.15087,30.10582 102.69945,10.92442 z"
-       id="path93"
-       sodipodi:nodetypes="cssccccc" />
-    <path
-       style="display:inline;fill:#1b1612;fill-opacity:1;stroke:none;stroke-width:0;stroke-dasharray:none"
-       d="m 636.7079,329.46295 c 0,0 -16.46605,19.15505 -45.16208,31.06693 -35.09361,14.56755 -77.54216,9.70133 -100.00772,-2.64644 -25.0313,-13.75798 -34.13418,-39.29391 -36.20965,-58.38609 -0.84792,-7.79994 7.63872,-1.2882 7.63872,-1.2882 l 41.46121,33.7805 108.73068,2.96348 13.3934,-7.98051 z"
-       id="path95"
-       sodipodi:nodetypes="csssccccc" />
-    <path
-       style="display:inline;fill:#c59d61;fill-opacity:1;stroke:none;stroke-width:0;stroke-dasharray:none"
-       d="m 505.43737,327.36778 c 0,0 15.81072,11.70532 42.93313,12.23461 28.62079,0.55854 46.09431,-7.1016 46.09431,-7.1016 l -1.76003,-8.52671 z"
-       id="path96"
-       sodipodi:nodetypes="csccc" />
-  </g>
-  <path
-     style="display:none;fill:#1b1612;fill-opacity:1;stroke:none;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
-     d="m 842.5067,348.15089 6.32924,-2.25245 -8.61631,-26.99328 -6.45235,6.27557 c 0.0969,1.16077 1.47678,6.50478 4.48571,14.18633 1.74794,4.46234 4.25371,8.78383 4.25371,8.78383 z"
-     id="path108"
-     sodipodi:nodetypes="ccccsc" />
 </svg>

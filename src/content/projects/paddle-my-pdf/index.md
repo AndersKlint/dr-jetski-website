@@ -19,10 +19,8 @@ downloads: []
 links: []
 gallery:
   - kind: "image"
-    src: "/images/placeholders/paddle-my-pdf.svg"
+    src: "./preview.svg"
     alt: "Illustrative placeholder: concept mockup of a scanned page becoming a searchable document, not a real screenshot."
-    width: 1200
-    height: 800
     isPlaceholder: true
 ---
 

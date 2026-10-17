@@ -17,10 +17,8 @@ downloads: []
 links: []
 gallery:
   - kind: "image"
-    src: "/images/placeholders/spotify-screensave.svg"
+    src: "./preview.svg"
     alt: "Illustrative placeholder: concept mockup of the screensaver showing album artwork with track details, not a real screenshot."
-    width: 1200
-    height: 800
     isPlaceholder: true
 ---
 

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+     width="512" height="512" viewBox="0 0 512 512"
+     role="img" aria-labelledby="icon-alt-title icon-alt-description">
+  <title id="icon-alt-title">Dr. Jetski Studios — balanced rider icon</title>
+  <desc id="icon-alt-description">Orange and off-white jet-powered rider with shortened exhaust and a simplified wake, contained within a centered, symmetrical rounded-square frame. Transparent background.</desc>
+
+  <g id="frame" inkscape:groupmode="layer" inkscape:label="01 · Symmetrical frame" fill="#F7F4EF">
+    <path id="frame-outline" fill-rule="evenodd" d="
+      M96 32 H416
+      A64 64 0 0 1 480 96
+      V416
+      A64 64 0 0 1 416 480
+      H96
+      A64 64 0 0 1 32 416
+      V96
+      A64 64 0 0 1 96 32 Z
+      M96 48 H416
+      A48 48 0 0 1 464 96
+      V416
+      A48 48 0 0 1 416 464
+      H96
+      A48 48 0 0 1 48 416
+      V96
+      A48 48 0 0 1 96 48 Z"/>
+  </g>
+
+  <g id="jet-exhaust" inkscape:groupmode="layer" inkscape:label="02 · Shortened exhaust">
+    <path id="exhaust-flame" fill="#EE7135" d="
+      M80 180 L151 166 L126 144
+      C163 151 195 160 225 171
+      C220 182 220 195 224 207
+      L122 228 L150 208 Z"/>
+    <path id="exhaust-flame-core" fill="#F7F4EF" d="
+      M119 181 L183 175 L165 163 L212 177
+      C210 184 210 191 211 198
+      L162 211 L180 198 Z"/>
+    <path id="exhaust-collar" fill="#F7F4EF" d="
+      M249 142 H263
+      C257 158 254 180 258 198
+      H244
+      C239 183 240 159 249 142 Z"/>
+  </g>
+
+  <g id="rider" inkscape:groupmode="layer" inkscape:label="03 · Rider" fill="#F7F4EF" transform="translate(-184 11.7) scale(.22)">
+    <g id="rider-head">
+      <path id="hair-face-and-neck" d="
+        M2523 774
+        C2526 707 2510 667 2482 636
+        C2468 620 2455 606 2455 600
+        L2484 590
+        C2454 579 2426 562 2410 542
+        C2433 543 2452 542 2468 538
+        C2439 522 2413 498 2391 466
+        C2424 472 2458 476 2493 472
+        C2458 448 2435 421 2414 386
+        C2476 407 2536 407 2598 421
+        L2565 365
+        C2638 386 2691 413 2725 471
+        L2728 436 L2751 482 V537
+        C2724 531 2689 518 2661 520
+        C2636 521 2621 539 2621 569
+        L2547 563
+        C2543 573 2543 588 2546 600
+        L2623 613
+        C2623 641 2632 654 2666 667
+        C2691 676 2706 681 2717 676
+        L2715 691
+        C2697 705 2693 728 2681 750
+        C2674 754 2646 741 2603 722 Z"/>
+      <g id="goggles">
+        <path id="goggle-orange-rim" fill="#EE7135" d="
+          M2667 545
+          C2698 545 2743 562 2770 574
+          L2759 632
+          C2739 627 2722 650 2707 658
+          C2694 655 2663 643 2656 634
+          C2650 623 2651 573 2652 558
+          Q2657 545 2667 545 Z"/>
+        <path id="goggle-lens" d="
+          M2683 549
+          C2710 554 2743 563 2770 574
+          L2766 594
+          C2739 594 2722 605 2684 631
+          C2676 621 2673 590 2675 566
+          Q2676 550 2683 549 Z"/>
+      </g>
+    </g>
+    <path id="rider-back-contour" d="
+      M2076 625
+      C2175 618 2271 619 2355 617
+      C2420 613 2452 624 2478 665
+      C2508 709 2511 765 2488 819
+      C2490 744 2481 682 2435 660
+      C2400 643 2369 649 2318 646
+      C2224 643 2146 635 2076 625 Z"/>
+    <path id="rider-body-and-scarf" d="
+      M1741 1258
+      C1671 1153 1597 1078 1478 1034
+      C1618 970 1775 942 1943 920
+      L1901 938
+      C2055 929 2181 905 2295 860
+      C2201 879 2102 893 2007 906
+      L2287 710
+      C2357 663 2410 653 2440 692
+      C2470 728 2464 792 2464 831
+      C2464 869 2444 897 2416 923
+      C2372 965 2330 983 2258 1009
+      C2055 1075 1910 1145 1741 1258 Z"/>
+    <path id="rider-boot" d="
+      M2180 1414 L2295 1446 L2246 1508 L2320 1556
+      C2347 1575 2364 1588 2355 1622
+      L2081 1571
+      C2067 1567 2065 1553 2076 1536 Z"/>
+  </g>
+
+  <g id="wake" inkscape:groupmode="layer" inkscape:label="04 · Contained wake" fill="#F7F4EF">
+    <g id="spray">
+      <path id="spray-orange" fill="#EE7135" d="M103 266 C137 274 166 293 185 321 Z"/>
+      <path id="spray-middle" d="
+        M202 310
+        C225 314 244 324 258 344
+        C238 336 219 326 202 310 Z"/>
+      <path id="spray-right" d="
+        M352 365
+        C373 353 395 347 416 340
+        C400 356 382 368 365 375 Z"/>
+    </g>
+    <g id="sweeping-wake">
+      <path id="wake-silhouette" d="
+        M80 302
+        C115 312 153 326 191 346
+        L168 309
+        C213 337 249 361 289 373
+        C336 385 388 394 432 394
+        C410 410 382 420 351 420
+        H191
+        C159 411 137 396 114 385
+        L80 370 L128 365
+        C111 341 95 320 80 302 Z"/>
+      <path id="wake-orange-rear" fill="#EE7135" d="
+        M80 370
+        C137 366 179 380 223 397
+        L196 374
+        C241 386 276 402 304 416
+        C274 413 248 408 223 401
+        C243 410 260 416 279 420
+        H191
+        C159 411 137 396 114 385 Z"/>
+      <path id="wake-orange-front" fill="#EE7135" d="
+        M303 389
+        C350 397 393 410 432 394
+        C410 410 382 420 351 420
+        H331
+        C321 412 312 401 303 389 Z"/>
+    </g>
+  </g>
+</svg>

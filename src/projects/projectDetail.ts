@@ -10,9 +10,9 @@ export interface ProjectDetail {
 
 function socialSource(item: GalleryItem): { src: string; alt: string } {
   if (item.kind === 'image') {
-    return { src: item.src, alt: item.alt };
+    return { src: item.image.src, alt: item.alt };
   }
-  return { src: item.poster, alt: item.alt };
+  return { src: item.poster.src, alt: item.alt };
 }
 
 export function prepareProjectDetail(project: Project): ProjectDetail {

@@ -24,10 +24,8 @@ downloads:
 links: []
 gallery:
   - kind: "image"
-    src: "/images/placeholders/waytoclip.svg"
+    src: "./preview.svg"
     alt: "Illustrative placeholder: concept mockup of the WayToClip clipboard history popup at the cursor, not a real screenshot."
-    width: 1200
-    height: 800
     isPlaceholder: true
 ---
 

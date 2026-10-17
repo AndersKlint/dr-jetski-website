@@ -23,10 +23,8 @@ downloads:
 links: []
 gallery:
   - kind: "image"
-    src: "/images/placeholders/hanscan.svg"
+    src: "./preview.svg"
     alt: "Illustrative placeholder: concept mockup of HanScan overlaying recognition results on a phone photo, not a real screenshot."
-    width: 1200
-    height: 800
     isPlaceholder: true
 ---
 

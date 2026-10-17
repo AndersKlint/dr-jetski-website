@@ -5,10 +5,12 @@
 Phases 1 and 2 are complete: an Astro static site with ten validated project
 entries, a responsive staggered homepage, compact project grid, locally hosted
 fonts, studio identity, and About/contact area. Each project has a clearly
-labeled concept preview, replaceable through its content file.
+labeled concept preview, replaceable through its content folder.
 
-Phase 3 adds project detail pages, card navigation, and preview playback.
-See [PLAN.md](PLAN.md) for the implementation milestones and [AGENTS.md](AGENTS.md)
+Phase 3 provides project detail pages, card navigation, and preview playback.
+Project authoring uses one folder per project with co-located media; see
+[PROJECT-ASSETS.md](PROJECT-ASSETS.md) for the authoring guide. See
+[PLAN.md](PLAN.md) for the implementation milestones and [AGENTS.md](AGENTS.md)
 for source organization.
 
 ## Commands
@@ -26,17 +28,20 @@ Run checks with telemetry disabled if init fails in restricted environments:
 
 ## Authoring contract
 
-One file per project in `src/content/projects/`; the file stem is the stable
-route slug, independent of the editable `displayName`. Frontmatter must
-satisfy `src/projects/projectSchema.ts`; invalid content fails the build.
+One folder per project at `src/content/projects/<slug>/index.md`; the folder
+name is the stable route slug, independent of the editable `displayName`.
+Frontmatter must satisfy `src/projects/projectSchema.ts`; invalid content fails
+the build. [PROJECT-ASSETS.md](PROJECT-ASSETS.md) is the operational authoring
+guide for folder layout, the `index.md` template, image dimensions, and media
+and video rules.
 
 - `downloads` records are raw authored data: a record without a `url` is a
   known-planned artifact, never rendered as a link. Only records with real
   `https` URLs become actions.
 - `releaseMaturity` (dev state), `availability.status` (can a visitor get it
-  now), and `visibility` (included in the catalogue or not at this phase;
-  per-project routes arrive later) are independent: a finished private
-  package is `stable` + `pending`, an alpha/beta can carry real downloads.
+  now), and `visibility` (included in the catalogue or not) are independent: a
+  finished private package is `stable` + `pending`, an alpha/beta can carry
+  real downloads.
 - The first three public featured projects by rank are the leads; the
   remaining ranked projects are secondary.
 - Compact projects sort by `editorialOrder`: paddle-my-pdf, then the two
@@ -44,8 +49,8 @@ satisfy `src/projects/projectSchema.ts`; invalid content fails the build.
 - Unknowns go in frontmatter `authoringNotes`, never as public calls to
   action or invented links.
 - Homepage cards use the first `gallery` entry. To replace a concept preview,
-  update its `src`, `alt`, `width`, and `height` and remove `isPlaceholder: true`.
-  Video entries use their poster image until Phase 3 adds playback.
+  point its `src` at the new local file, update `alt`, and remove
+  `isPlaceholder: true`. Image dimensions are read automatically.
 
 ## Workflow
 

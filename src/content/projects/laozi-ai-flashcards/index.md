@@ -23,10 +23,8 @@ downloads:
 links: []
 gallery:
   - kind: "image"
-    src: "/images/placeholders/laozi-ai-flashcards.svg"
+    src: "./preview.svg"
     alt: "Illustrative placeholder: concept mockup of stacked study flashcards with review progress, not a real screenshot."
-    width: 1200
-    height: 800
     isPlaceholder: true
 ---
 

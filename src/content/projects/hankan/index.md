@@ -28,10 +28,8 @@ downloads:
 links: []
 gallery:
   - kind: "image"
-    src: "/images/placeholders/hankan.svg"
+    src: "./preview.svg"
     alt: "Illustrative placeholder: concept mockup of HanKan reading mode with a popup dictionary over a document, not a real screenshot."
-    width: 1200
-    height: 800
     isPlaceholder: true
 ---
 

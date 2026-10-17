@@ -1,12 +1,12 @@
 ---
-slug: "dart-paddle-ocr"
-displayName: "dart_paddle_ocr"
-description: "Flutter package for on-device OCR inference with PaddleOCR models, strong in Asian languages."
+slug: "chinese-popup-dict"
+displayName: "chinese_popup_dict"
+description: "Flutter package wrapping text widgets with tap-to-open Chinese popup-dictionary interaction."
 projectType: "package"
 supportedPlatforms: []
 releaseMaturity: "stable"
 visibility: "public"
-editorialOrder: 8
+editorialOrder: 7
 availability:
   status: "pending"
   message: "Finished implementation, still closed source and not yet polished for release. Publication on pub.dev is planned; no public package or source actions exist yet."
@@ -20,15 +20,13 @@ downloads: []
 links: []
 gallery:
   - kind: "image"
-    src: "/images/placeholders/dart-paddle-ocr.svg"
-    alt: "Illustrative placeholder: concept mockup of the on-device OCR pipeline from image input to text output, not a real screenshot."
-    width: 1200
-    height: 800
+    src: "./preview.svg"
+    alt: "Illustrative placeholder: concept mockup of wrapped text with a tap-to-open dictionary popup, not a real screenshot."
     isPlaceholder: true
 ---
 
-dart_paddle_ocr is a Flutter package providing end-to-end, optimized on-device OCR inference with PaddleOCR v6 and v5 models, with extensibility to other Paddle models.
+chinese_popup_dict is a Flutter package that wraps text widgets with Chinese popup-dictionary interaction: pressing a Chinese character opens the dictionary.
 
-It runs fully offline with particular strength in Chinese and other Asian languages, and handles text direction and input-image rotation.
+It is intended for developers building Chinese-learning interfaces who want lookup behavior attached to ordinary text widgets.
 
 Platform availability: the package is finished but closed source and unpublished. Package and source actions appear once the pub.dev publication exists.

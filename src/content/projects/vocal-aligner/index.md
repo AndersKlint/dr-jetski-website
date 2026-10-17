@@ -32,10 +32,8 @@ downloads:
 links: []
 gallery:
   - kind: "image"
-    src: "/images/placeholders/vocal-aligner.svg"
+    src: "./preview.svg"
     alt: "Illustrative placeholder: concept mockup of guide and dub vocal waveforms being aligned, not a real screenshot."
-    width: 1200
-    height: 800
     isPlaceholder: true
 ---
 

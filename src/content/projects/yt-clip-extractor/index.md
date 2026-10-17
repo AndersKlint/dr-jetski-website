@@ -24,10 +24,8 @@ downloads:
 links: []
 gallery:
   - kind: "image"
-    src: "/images/placeholders/yt-clip-extractor.svg"
+    src: "./preview.svg"
     alt: "Illustrative placeholder: concept mockup of selecting a clip between two timestamps on a timeline, not a real screenshot."
-    width: 1200
-    height: 800
     isPlaceholder: true
 ---
 

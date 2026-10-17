@@ -9,16 +9,18 @@ interface Props {
 
 const { media, isPriority = false, class: className } = Astro.props;
 const figureClass = className ? `media-preview ${className}` : 'media-preview';
-const staticSrc = media ? (media.kind === 'image' ? media.src : media.poster) : undefined;
+const poster = media ? (media.kind === 'image' ? media.image : media.poster) : undefined;
 const loading = isPriority ? 'eager' : 'lazy';
 const fetchPriority = isPriority ? 'high' : undefined;
 ---
-{media && staticSrc && media.kind === 'image' && (
+{media && poster && media.kind === 'image' && (
   <figure class={figureClass}>
     <img
-      src={staticSrc}
-      width={media.width}
-      height={media.height}
+      src={poster.src}
+      srcset={poster.srcSet}
+      sizes={poster.sizes}
+      width={poster.width}
+      height={poster.height}
       alt={media.alt}
       decoding="async"
       loading={loading}
@@ -27,12 +29,14 @@ const fetchPriority = isPriority ? 'high' : undefined;
     {media.isPlaceholder && <figcaption class="placeholder-label">Placeholder preview</figcaption>}
   </figure>
 )}
-{media && staticSrc && media.kind === 'preview' && (
+{media && poster && media.kind === 'preview' && (
   <figure class={`${figureClass} has-loop`} data-auto-preview>
     <img
-      src={staticSrc}
-      width={media.width}
-      height={media.height}
+      src={poster.src}
+      srcset={poster.srcSet}
+      sizes={poster.sizes}
+      width={poster.width}
+      height={poster.height}
       alt={media.alt}
       decoding="async"
       loading={loading}
@@ -42,7 +46,6 @@ const fetchPriority = isPriority ? 'high' : undefined;
       class="loop-video"
       data-preview-video
       data-src={media.src}
-      poster={staticSrc}
       width={media.width}
       height={media.height}
       muted
@@ -55,13 +58,13 @@ const fetchPriority = isPriority ? 'high' : undefined;
     {media.isPlaceholder && <figcaption class="placeholder-label">Placeholder preview</figcaption>}
   </figure>
 )}
-{media && staticSrc && media.kind === 'demo' && (
+{media && poster && media.kind === 'demo' && (
   <figure class={`${figureClass} has-demo`}>
     <video
       class="demo-video"
       controls
       preload="none"
-      poster={staticSrc}
+      poster={poster.src}
       src={media.src}
       width={media.width}
       height={media.height}
@@ -74,7 +77,7 @@ const fetchPriority = isPriority ? 'high' : undefined;
     {media.isPlaceholder && <figcaption class="placeholder-label">Placeholder preview</figcaption>}
   </figure>
 )}
-{(!media || !staticSrc) && (
+{(!media || !poster) && (
   <div class={figureClass} aria-label="Preview not available">
     <span class="empty-label" aria-hidden="true">Preview not available</span>
   </div>
