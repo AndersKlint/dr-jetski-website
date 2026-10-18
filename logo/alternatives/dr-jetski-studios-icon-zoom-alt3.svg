@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="512"
+   height="512"
+   viewBox="200 -453 3000 3000.0001"
+   role="img"
+   aria-labelledby="icon-title icon-description"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs1" />
+  <title
+     id="icon-title">Dr. Jetski Studios — rider icon</title>
+  <desc
+     id="icon-description">Orange and off-white jet-powered rider and sweeping wake inside an open rounded frame, taken from the full vector logo without lettering and centered on a transparent square canvas.</desc>
+  <g
+     id="g1"
+     transform="matrix(1.9283524,0,0,2.2626059,-2349.0234,-1063.4526)">
+    <g
+       id="frame"
+       fill="#f7f4ef">
+      <path
+         id="frame-outline"
+         d="M 1090,563 V 353 a 235,235 0 0 1 235,-235 h 1494 a 235,235 0 0 1 235,235 v 1388 a 235,235 0 0 1 -235,235 H 1325 a 235,235 0 0 1 -235,-235 v -76 l 72,24 v 52 a 163,163 0 0 0 163,163 h 1494 a 163,163 0 0 0 163,-163 V 353 A 163,163 0 0 0 2819,190 H 1325 a 163,163 0 0 0 -163,163 v 210 z"
+         style="stroke-width:0.999925;stroke-dasharray:none" />
+      <path
+         id="frame-left-middle"
+         d="m 1090,867 72,9 v 334 l -74,-73 z" />
+    </g>
+    <g
+       id="jet-exhaust">
+      <path
+         id="exhaust-flame"
+         fill="#ee7135"
+         d="m 346,757 c 258,-40 525,-75 766,-100 -82,-20 -170,-32 -263,-43 217,-18 433,-12 642,-6 l -120,-93 c 158,23 328,69 482,116 -21,63 -25,130 -9,188 -201,52 -405,91 -597,120 l 124,-85 C 1016,815 682,778 346,757 Z" />
+      <path
+         id="exhaust-flame-core"
+         fill="#f7f4ef"
+         d="m 917,744 c 227,-32 464,-56 696,-68 l -74,-58 c 91,14 184,30 270,48 -11,39 -14,82 -6,120 -118,23 -237,43 -356,61 l 72,-59 z" />
+      <g
+         id="exhaust-rings"
+         fill="#f7f4ef">
+        <path
+           id="exhaust-ring-rear"
+           d="m 1889,628 h 38 c -23,60 -26,133 -16,198 h -33 c -18,-56 -14,-138 11,-198 z" />
+        <path
+           id="exhaust-ring-front"
+           d="m 1977,591 h 44 c -28,72 -41,171 -23,256 h -42 c -20,-72 -16,-178 21,-256 z" />
+      </g>
+    </g>
+    <g
+       id="rider"
+       fill="#f7f4ef">
+      <g
+         id="rider-head">
+        <path
+           id="hair-face-and-neck"
+           d="m 2523,774 c 3,-67 -13,-107 -41,-138 -14,-16 -27,-30 -27,-36 l 29,-10 c -30,-11 -58,-28 -74,-48 23,1 42,0 58,-4 -29,-16 -55,-40 -77,-72 33,6 67,10 102,6 -35,-24 -58,-51 -79,-86 62,21 122,21 184,35 l -33,-56 c 73,21 126,48 160,106 l 3,-35 23,46 v 55 c -27,-6 -62,-19 -90,-17 -25,1 -40,19 -40,49 l -74,-6 c -4,10 -4,25 -1,37 l 77,13 c 0,28 9,41 43,54 25,9 40,14 51,9 l -2,15 c -18,14 -22,37 -34,59 -7,4 -35,-9 -78,-28 z" />
+        <g
+           id="goggles">
+          <path
+             id="goggle-orange-rim"
+             fill="#ee7135"
+             d="m 2667,545 c 31,0 76,17 103,29 l -11,58 c -20,-5 -37,18 -52,26 -13,-3 -44,-15 -51,-24 -6,-11 -5,-61 -4,-76 q 5,-13 15,-13 z" />
+          <path
+             id="goggle-lens"
+             d="m 2683,549 c 27,5 60,14 87,25 l -4,20 c -27,0 -44,11 -82,37 -8,-10 -11,-41 -9,-65 q 1,-16 8,-17 z" />
+        </g>
+      </g>
+      <path
+         id="rider-back-contour"
+         d="m 2076,625 c 99,-7 195,-6 279,-8 65,-4 97,7 123,48 30,44 33,100 10,154 2,-75 -7,-137 -53,-159 -35,-17 -66,-11 -117,-14 -94,-3 -172,-11 -242,-21 z" />
+      <path
+         id="rider-body-and-scarf"
+         d="m 1741,1258 c -70,-105 -144,-180 -263,-224 140,-64 297,-92 465,-114 l -42,18 c 154,-9 280,-33 394,-78 -94,19 -193,33 -288,46 l 280,-196 c 70,-47 123,-57 153,-18 30,36 24,100 24,139 0,38 -20,66 -48,92 -44,42 -86,60 -158,86 -203,66 -348,136 -517,249 z" />
+      <path
+         id="rider-collar-detail"
+         d="m 2495,847 c 10,-16 15,-35 24,-50 q 7,-9 18,-7 c -10,26 -22,42 -42,57 z" />
+      <path
+         id="rider-boot"
+         d="m 2191.5898,1331.686 115,32 -49,62 74,48 c 27,19 44,32 35,66 l -274,-51 c -14,-4 -16,-18 -5,-35 z" />
+    </g>
+    <g
+       id="wake"
+       fill="#f7f4ef" />
+  </g>
+  <metadata
+     id="metadata1">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Dr. Jetski Studios — rider icon</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>
