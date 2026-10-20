@@ -25,6 +25,13 @@ const IMAGE_OVERLAY_SOURCES = import.meta.glob('/src/content/projects/*/image_ov
   import: 'default',
 }) as Record<string, string>;
 
+const LOCAL_IMAGES = import.meta.glob<ImageMetadata>('/src/content/projects/*/*.{avif,gif,jpeg,jpg,png,svg,tiff,webp}', {
+  eager: true,
+  import: 'default',
+});
+// SVG component metadata omits fsPath; glob keys preserve original names for every image format.
+const IMAGE_SOURCE_PATHS = new Map(Object.entries(LOCAL_IMAGES).map(([path, image]) => [image.src, path]));
+
 type ProjectEntry = CollectionEntry<'projects'>;
 type AuthoredGalleryItem = ProjectEntry['data']['gallery'][number];
 
@@ -109,7 +116,10 @@ function featureOverlayForItem(
   item: AuthoredGalleryItem,
   overlayBySource: ReadonlyMap<string, FeatureOverlay>,
 ): FeatureOverlay | undefined {
-  const source = item.kind === 'image' ? item.originalSource : item.src;
+  const source = item.kind === 'image' ? IMAGE_SOURCE_PATHS.get(item.src.src) : item.src;
+  if (source === undefined) {
+    throw new Error('No original asset path for gallery image');
+  }
   const basename = mediaSourceBasename(source);
   return basename === null ? undefined : overlayBySource.get(basename);
 }
