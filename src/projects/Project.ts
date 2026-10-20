@@ -43,6 +43,7 @@ export interface ResponsiveImage {
 export interface ImageGalleryItem {
   kind: 'image';
   image: ResponsiveImage;
+  thumbnail: ResponsiveImage;
   alt: string;
   isPlaceholder?: boolean;
 }
@@ -51,6 +52,7 @@ export interface PreviewGalleryItem {
   kind: 'preview';
   src: string;
   poster: ResponsiveImage;
+  thumbnail: ResponsiveImage;
   alt: string;
   width: number;
   height: number;
@@ -61,6 +63,7 @@ export interface DemoGalleryItem {
   kind: 'demo';
   src: string;
   poster: ResponsiveImage;
+  thumbnail: ResponsiveImage;
   alt: string;
   width: number;
   height: number;

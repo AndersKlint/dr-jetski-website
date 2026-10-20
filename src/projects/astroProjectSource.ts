@@ -5,9 +5,18 @@ import type { ImageMetadata } from 'astro';
 import { projectHref, type GalleryItem, type Project, type ResponsiveImage } from './Project';
 import { ProjectCatalogService } from './ProjectCatalogService';
 
-const RESPONSIVE_WIDTHS = [480, 800, 1200, 1600];
-const RESPONSIVE_SIZES = '(min-width: 60rem) 50vw, (min-width: 40rem) 70vw, 100vw';
+const RESPONSIVE_WIDTHS = [640, 960, 1280, 1600, 2000];
+const RESPONSIVE_SIZES = '(min-width: 72rem) 70vw, 100vw';
+const SCREENSHOT_QUALITY = 92;
+const THUMBNAIL_WIDTHS = [160, 320];
+const THUMBNAIL_SIZES = '(min-width: 64rem) 10rem, (min-width: 40rem) 8rem, 6rem';
 const POSTER_ASPECT_RATIO_TOLERANCE = 0.02;
+
+const LOCAL_VIDEO_SOURCES = import.meta.glob('/src/content/projects/**/*.{mp4,webm,mov,m4v,ogv}', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+}) as Record<string, string>;
 
 type ProjectEntry = CollectionEntry<'projects'>;
 type AuthoredGalleryItem = ProjectEntry['data']['gallery'][number];
@@ -25,23 +34,72 @@ function canonicalSlugFromFile(entry: ProjectEntry): string | null {
   return segments[segments.length - 2] ?? null;
 }
 
-async function toResponsiveImage(image: ImageMetadata): Promise<ResponsiveImage> {
+async function toResponsiveImage(
+  image: ImageMetadata,
+  widths: number[] = RESPONSIVE_WIDTHS,
+  sizes: string = RESPONSIVE_SIZES,
+  quality?: number,
+): Promise<ResponsiveImage> {
   if (image.format === 'svg') {
     return { src: image.src, width: image.width, height: image.height };
   }
-  const widths = RESPONSIVE_WIDTHS.filter((width) => width <= image.width);
-  const baseWidth = widths.at(-1) ?? image.width;
+  const fittedWidths = widths.filter((width) => width <= image.width);
+  const baseWidth = fittedWidths.at(-1) ?? image.width;
   const result =
-    widths.length > 0
-      ? await getImage({ src: image, width: baseWidth, widths, sizes: RESPONSIVE_SIZES })
-      : await getImage({ src: image, width: baseWidth });
+    fittedWidths.length > 0
+      ? await getImage({
+          src: image,
+          width: baseWidth,
+          widths: fittedWidths,
+          sizes,
+          format: 'webp',
+          quality,
+        })
+      : await getImage({ src: image, width: baseWidth, format: 'webp', quality });
   return {
     src: result.src,
-    srcSet: widths.length > 0 ? result.srcSet.attribute : undefined,
-    sizes: widths.length > 0 ? RESPONSIVE_SIZES : undefined,
+    srcSet: fittedWidths.length > 0 ? result.srcSet.attribute : undefined,
+    sizes: fittedWidths.length > 0 ? sizes : undefined,
     width: Number(result.attributes.width),
     height: Number(result.attributes.height),
   };
+}
+
+function toScreenshot(image: ImageMetadata): Promise<ResponsiveImage> {
+  const widths = [...RESPONSIVE_WIDTHS.filter((width) => width < image.width), image.width];
+  return toResponsiveImage(image, widths, RESPONSIVE_SIZES, SCREENSHOT_QUALITY);
+}
+
+function toThumbnail(image: ImageMetadata): Promise<ResponsiveImage> {
+  return toResponsiveImage(image, THUMBNAIL_WIDTHS, THUMBNAIL_SIZES);
+}
+
+function projectDirectoryFromFile(entry: ProjectEntry): string {
+  const filePath = entry.filePath;
+  if (typeof filePath !== 'string') {
+    throw new Error(`Project "${entry.data.slug}" has no content file path`);
+  }
+  const normalized = filePath.replaceAll('\\', '/');
+  const directory = normalized.slice(0, normalized.lastIndexOf('/'));
+  if (!directory.startsWith('src/content/projects/')) {
+    throw new Error(`Project "${entry.data.slug}" is not inside src/content/projects`);
+  }
+  return directory;
+}
+
+function resolveVideoSource(source: string, entry: ProjectEntry): string {
+  if (!source.startsWith('./')) {
+    return source;
+  }
+  const directory = projectDirectoryFromFile(entry);
+  const assetPath = `/${directory}/${source.slice(2)}`;
+  const assetUrl = LOCAL_VIDEO_SOURCES[assetPath];
+  if (assetUrl === undefined) {
+    throw new Error(
+      `Project "${entry.data.slug}" references local video "${source}", but no supported video exists at ${assetPath}`,
+    );
+  }
+  return assetUrl;
 }
 
 function assertPosterAspectRatio(item: AuthoredGalleryItem, slug: string, index: number): void {
@@ -57,22 +115,30 @@ function assertPosterAspectRatio(item: AuthoredGalleryItem, slug: string, index:
   }
 }
 
-async function toGalleryItem(item: AuthoredGalleryItem, slug: string, index: number): Promise<GalleryItem> {
+async function toGalleryItem(
+  item: AuthoredGalleryItem,
+  entry: ProjectEntry,
+  index: number,
+): Promise<GalleryItem> {
   if (item.kind === 'image') {
     return {
       kind: 'image',
-      image: await toResponsiveImage(item.src),
+      image: await toScreenshot(item.src),
+      thumbnail: await toThumbnail(item.src),
       alt: item.alt,
       isPlaceholder: item.isPlaceholder,
     };
   }
-  assertPosterAspectRatio(item, slug, index);
+  assertPosterAspectRatio(item, entry.data.slug, index);
   const poster = await toResponsiveImage(item.poster);
+  const thumbnail = await toThumbnail(item.poster);
+  const src = resolveVideoSource(item.src, entry);
   if (item.kind === 'preview') {
     return {
       kind: 'preview',
-      src: item.src,
+      src,
       poster,
+      thumbnail,
       alt: item.alt,
       width: item.width,
       height: item.height,
@@ -81,8 +147,9 @@ async function toGalleryItem(item: AuthoredGalleryItem, slug: string, index: num
   }
   return {
     kind: 'demo',
-    src: item.src,
+    src,
     poster,
+    thumbnail,
     alt: item.alt,
     width: item.width,
     height: item.height,
@@ -112,7 +179,7 @@ async function toProject(entry: ProjectEntry): Promise<Project> {
     downloads: entry.data.downloads,
     links: entry.data.links,
     gallery: await Promise.all(
-      entry.data.gallery.map((item, index) => toGalleryItem(item, entry.data.slug, index)),
+      entry.data.gallery.map((item, index) => toGalleryItem(item, entry, index)),
     ),
     href: projectHref(entry.data.slug),
     body: entry.body ?? '',

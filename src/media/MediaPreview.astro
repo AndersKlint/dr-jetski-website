@@ -4,10 +4,18 @@ import type { GalleryItem } from '../projects/Project';
 interface Props {
   media?: GalleryItem;
   isPriority?: boolean;
+  isPlaybackManaged?: boolean;
+  previewId?: string;
   class?: string;
 }
 
-const { media, isPriority = false, class: className } = Astro.props;
+const {
+  media,
+  isPriority = false,
+  isPlaybackManaged = false,
+  previewId,
+  class: className,
+} = Astro.props;
 const figureClass = className ? `media-preview ${className}` : 'media-preview';
 const poster = media ? (media.kind === 'image' ? media.image : media.poster) : undefined;
 const loading = isPriority ? 'eager' : 'lazy';
@@ -30,7 +38,12 @@ const fetchPriority = isPriority ? 'high' : undefined;
   </figure>
 )}
 {media && poster && media.kind === 'preview' && (
-  <figure class={`${figureClass} has-loop`} data-auto-preview>
+  <figure
+    class={`${figureClass} has-loop`}
+    data-auto-preview
+    data-preview-managed={isPlaybackManaged ? 'true' : undefined}
+    data-preview-id={previewId}
+  >
     <img
       src={poster.src}
       srcset={poster.srcSet}

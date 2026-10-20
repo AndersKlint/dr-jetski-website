@@ -4,11 +4,13 @@
 
 Phases 1 and 2 are complete: an Astro static site with ten validated project
 entries, a responsive staggered homepage, compact project grid, locally hosted
-fonts, studio identity, and About/contact area. Each project has a clearly
-labeled concept preview, replaceable through its content folder.
+fonts, studio identity, and About/contact area. Project media is replaceable
+through each content folder; most entries still use clearly labeled concept
+previews, while JetAlign uses real media.
 
-Phase 3 provides project detail pages, card navigation, and preview playback.
-Project authoring uses one folder per project with co-located media; see
+Phase 3 provides project detail pages, card navigation, and preview playback;
+project galleries use a manual carousel with thumbnails, swipe, and keyboard
+access. Project authoring uses one folder per project with co-located media; see
 [PROJECT-ASSETS.md](PROJECT-ASSETS.md) for the authoring guide. See
 [PLAN.md](PLAN.md) for the implementation milestones and [AGENTS.md](AGENTS.md)
 for source organization.
@@ -46,11 +48,14 @@ and video rules.
   remaining ranked projects are secondary.
 - Compact projects sort by `editorialOrder`: paddle-my-pdf, then the two
   Flutter packages adjacent, then yt-clip-extractor, spotify-screensave.
+- JetAlign is canonical at `/projects/jetalign`; `/projects/vocal-aligner`
+  permanently redirects there. Its folder slug is `jetalign`.
 - Unknowns go in frontmatter `authoringNotes`, never as public calls to
   action or invented links.
-- Homepage cards use the first `gallery` entry. To replace a concept preview,
-  point its `src` at the new local file, update `alt`, and remove
-  `isPlaceholder: true`. Image dimensions are read automatically.
+- Homepage cards use the first `gallery` entry; the same order drives the
+  project carousel. To replace a concept preview, point its `src` at the new
+  local file, update `alt`, and remove `isPlaceholder: true`. Image dimensions
+  are read automatically; preview thumbnails are generated, not authored.
 
 ## Workflow
 
@@ -64,7 +69,6 @@ Marked per file in `authoringNotes`; still needed before launch:
 
 - Public download URLs, versions, sizes, filenames, install notes (all builds).
 - HanScan: whether English translation works offline (only OCR is offline).
-- Vocal aligner: final product name (working name only).
 - WayToClip: source URL (unknown — not linked) and GNOME listing URL.
 - LaoZi: desktop/web artifacts (only the Android APK is confirmed).
 - HanKan Windows/Linux, yt-clip-extractor: exact bundle/extension/installer formats.

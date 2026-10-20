@@ -9,13 +9,13 @@ Design confirmed by the owner after the design interview. See [PLAN.md](PLAN.md)
 - Dr. Jetski Studios is the primary brand and home for the project catalogue.
 - Visitors discovering and using software take priority over consulting prospects when homepage space competes. Professional background and technical detail should remain accessible.
 - The visual direction is a warm, slightly eccentric, carefully crafted independent studio, with generous spacing and personality in typography, the wordmark, and selected graphic details.
-- No purchasing flow is needed for launch. The vocal aligner may become paid later; that future change should not drive the launch design.
+- No purchasing flow is needed for launch. JetAlign may become paid later; that future change should not drive the launch design.
 - Content will be maintained in repository files and published through Git.
-- Project names are provisional. The inventory includes finished software, publicly downloadable prereleases, private packages awaiting publication, and a prototype excluded from launch.
+- Most project names are provisional. The inventory includes finished software, publicly downloadable prereleases, private packages awaiting publication, and a prototype excluded from launch.
 - Use placeholder media during design; screenshots and other real assets will come later.
 - The site should remain pragmatic, fast, lightweight, and extremely inexpensive to host.
 - The homepage will have a short studio introduction, selected prominent projects, and a more compact visual collection of the remaining public projects. Each public project gets its own page. The introduction should leave at least the first project visible immediately in a typical initial viewport.
-- Featured-project priority is HanScan, vocal aligner, WayToClip, LaoZi AI Flashcards, then HanKan.
+- Featured-project priority is HanScan, JetAlign, WayToClip, LaoZi AI Flashcards, then HanKan.
 - Project pages are media-first: a compact studio-identity banner, a substantial demo gallery, then project explanation, downloads, installation notes, and optional engineering detail.
 - Use a restrained abstract water/wake motif as the studio's distinctive visual thread.
 - Include a compact About/contact area with the creator's DevOps/full-stack background and professional links.
@@ -30,7 +30,8 @@ Design confirmed by the owner after the design interview. See [PLAN.md](PLAN.md)
 - Use the supplied orange/near-white Dr. Jetski Studios full logo as the homepage banner with no duplicate header mark: a jet-powered rider and wake emblem above bold Dr. Jetski lettering and a spaced Studios signature. Coordinate the interface with the full logo's colors. Derive the compact wordmark from the lettering alone and the square icon from the complete emblem without lettering, preserving the shapes and proportions of `logo/dr-jetski-studios-logo-vector.svg`; light-theme artwork is deferred. Earlier artwork is preserved in `logo/alternative_arcade`, `logo/alternative_colorful`, and `logo/super_minimal`. Retain characterful readable headings, locally hosted fonts, and sparse wake-line artwork.
 - Use project-specific placeholder media initially. Personal/contact details remain explicitly marked for the owner to supply; do not invent identities or live destinations.
 - The remaining collection uses a compact, manually ordered grid with small media, concise descriptions, project-type labels, and relevant availability messages. Keep the two Flutter packages together. Visitors browse the small catalogue directly, without search or filter controls.
-- Project-page galleries use two or more columns where useful on wide screens and one column on phones. Retain project media aspect ratios, especially phone screenshots, rather than forcing everything into one crop.
+- Every project page presents its gallery as a manual floating layered stack: one uncropped selected item whose height is at most about 60% of the viewport height, preserving its aspect ratio so its displayed size follows the media and portrait or landscape items do not fill the page. No panel, frame, border, or overlay arrows are shown. Up to two naturally available adjacent items per side sit behind the selected item as scaled-down, faded layers; the nearest layer is roughly half hidden by the selected item, and the outer layer is further overlapped, smaller, and fainter. The selected item stays above all neighbors. Depth-2 neighbors always remain behind depth-1 neighbors, including on hover or keyboard focus. Items never repeat to fill the stack, and the first item has no left neighbor while the last has no right neighbor; navigation is bounded and never wraps. Phones show at most one neighbor per side. Hovering or keyboard-focusing a neighbor may enlarge it and reduce its transparency while it keeps its depth order; the selected item stays static when hovered, and media show no hover outline or color change. Clicking a neighbor selects that exact item. No thumbnail strip is shown. Keyboard focus remains visibly indicated on interactive layers and controls. Navigation uses clickable round dots with accessible labels and current-state indication; the active dot is opaque and inactive dots are faded, and no visible slide counter is shown. Swipe and keyboard navigation are supported, and the gallery never advances automatically. A one-item gallery omits redundant navigation; an empty gallery is omitted.
+- Selected video previews play silently and inline only while near or within the viewport; inactive previews pause and are not eagerly downloaded. Neighbor layers show video posters only, without loading or playing their video. Explicit slide navigation restarts a video when its slide is returned to; scrolling away, backgrounding, or the global pause-motion control pauses playback, and returning resumes it. The page-wide three-preview cap, reduced-motion/data-saving posters, and global pause control still apply. Horizontal slide changes move with a natural transition rather than snapping or jumping pages; scale, position, opacity, and selected-size changes use a short transition, and all are disabled under reduced motion.
 - The project-page banner includes the studio identity, a return link, a small project identifier, and a Downloads jump link when downloads exist. The substantive information/download panel sits below the gallery.
 - Packages and scripts may use relevant diagrams, real usage examples, terminal output, or screenshots, with a shorter media section where appropriate.
 - Publish releases by manually uploading versioned files to R2, updating validated repository metadata and Markdown content, and pushing to deploy the site.
@@ -42,7 +43,7 @@ Dr. Jetski Studios                                  About/contact
 Independent apps, audio tools, and developer utilities.
 
 [ HanScan: large preview ]
-                          [ Vocal aligner: large preview ]
+                          [ JetAlign: large preview ]
 [ WayToClip: large preview ]
                           [ LaoZi: smaller preview ]
 [ HanKan: smaller preview ]
@@ -63,25 +64,24 @@ The homepage introduction is brief and plainspoken; the example line above is ed
 ```text
 Studio identity · Back to projects · project identifier · Downloads
 
-[ prominent screenshot / demo ] [ prominent screenshot / demo ]
-[ additional media as useful ]  [ additional media as useful ]
+[ carousel: floating layered stack of selected media with scaled neighbor layers, round navigation dots ]
 
 Project title and explanation · maturity / availability where useful
 Platform downloads · file details · source / store destinations
 Features · installation · optional engineering detail
 ```
 
-On mobile the gallery becomes one column and stays before the substantive description/download panel. The Downloads jump link gives repeat visitors a direct route past the gallery. Content sections are optional; avoid empty headings or artificial media galleries for packages and scripts.
+The carousel stays before the substantive description/download panel on all screens. The Downloads jump link gives repeat visitors a direct route past the gallery. Content sections are optional; avoid empty headings or artificial media galleries for packages and scripts.
 
 ## Content and delivery
 
 - Ten launch projects: the five featured projects and five compact projects. WORLD-vocoder-vst is a future draft, not a generated public launch page.
-- Each project is one folder named for its stable route slug under `src/content/projects/<slug>/`, containing `index.md` plus co-located local media. Stable routing is independent of the editable display name; local media are referenced explicitly, not discovered.
+- Each project is one folder named for its stable route slug under `src/content/projects/<slug>/`, containing `index.md` plus co-located local media. Stable routing is independent of the editable display name; local media are referenced explicitly, not discovered. JetAlign uses `/projects/jetalign`; the former `/projects/vocal-aligner` route permanently redirects there.
 - The `index.md` holds short descriptive metadata, the ordered gallery, Markdown detail sections, and real download references. Its first gallery item is the homepage card.
 - Track featured priority, release maturity, public availability, and page visibility separately. A private finished package can have a public explanatory page; an alpha can have a public download.
 - Download records identify platform and format, URL, and known version/size details. Only render actionable links when their destinations are real; records without a real URL render an honest pending state.
 - Keep public source/registry/store links optional. Do not imply that private projects are open source or that unreleased store listings exist.
-- Keep small optimized images, posters, diagrams, and local fonts with the static site. Serve substantial preview video and binaries separately through R2 under versioned paths; total R2 usage includes media as well as software.
+- Gallery media may reference small local files such as `./file.ext` or HTTPS R2 URLs. Each preview has a local generated poster plus alt text and intrinsic width/height. Keep small optimized images, posters, diagrams, local H.264 MP4 previews, and local fonts with the static site. Serve substantial preview video and binaries separately through R2 under versioned paths; total R2 usage includes media as well as software.
 - [PROJECT-ASSETS.md](PROJECT-ASSETS.md) is the authoritative operational guide for the project folder layout, the `index.md` template, media dimensions, and preview/demo preparation. [PLAN.md](PLAN.md) names the sequence.
 - Build a static homepage, ten project routes, and a useful not-found page. The About/contact area is part of the homepage.
 
@@ -105,9 +105,9 @@ Chinese-learning app with a simple text editor and a reading mode featuring a po
 
 Desktop command-line tool using PaddleOCR to convert large scanned PDFs into searchable, copyable PDFs by adding a recognized text layer. Particularly aimed at Asian languages. A user-facing GUI may be added later.
 
-### Vocal aligner — working name
+### JetAlign
 
-VST3/CLAP plugin that aligns a dub vocal track to a guide track for tightly timed vocal stacks. Linux support is a key intended differentiator. Windows and Linux beta builds are ready for public download. The final product name remains provisional; it may become paid later.
+VST3/CLAP plugin that aligns a dub vocal track to a guide track for tightly timed vocal stacks. Linux support is a key intended differentiator. Windows and Linux beta builds are ready for public download. It may become paid later.
 
 ### chinese_popup_dict
 
@@ -138,7 +138,7 @@ Small Linux desktop app displaying the current song's album artwork, title, and 
 | Project | Owner-reported readiness | Launch treatment |
 | --- | --- | --- |
 | HanScan | Finished; Android APK ready; not on Play Store | Featured priority 1; direct APK download destination needed |
-| Vocal aligner | Finished beta; Linux and Windows VST3/CLAP builds available | Featured priority 2; publish beta downloads at launch |
+| JetAlign | Finished beta; Linux and Windows VST3/CLAP builds available | Featured priority 2; publish beta downloads at launch |
 | WayToClip | Finished; submitted to GNOME Extensions and awaiting review | Featured priority 3; show pending-review note, GitHub link, manual-install instructions, and pluginbundle.zip download |
 | LaoZi AI Flashcards | Fully functional alpha; Android APK ready; not on Play Store | Featured priority 4; publish alpha download at launch; other platform downloads still to confirm |
 | HanKan | Finished; Windows, Linux, and Android builds available; not on Play Store | Featured priority 5; download destinations needed |

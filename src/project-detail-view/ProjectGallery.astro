@@ -1,37 +1,371 @@
 ---
 import type { GalleryItem } from '../projects/Project';
 import MediaPreview from '../media/MediaPreview.astro';
+import { ProjectCarouselService } from './ProjectCarouselService';
 
 interface Props {
   gallery: GalleryItem[];
   isCompact?: boolean;
 }
-
 const { gallery, isCompact = false } = Astro.props;
+const hasCarousel = gallery.length > 1;
+const slots = gallery.length > 0 ? new ProjectCarouselService(gallery.length).getVisibleSlots(2) : [];
+const slotByIndex = new Map(slots.map((slot) => [slot.index, slot]));
+
+function mediaAspectRatio(item: GalleryItem): number {
+  return item.kind === 'image' ? item.image.width / item.image.height : item.width / item.height;
+}
 ---
+
 {gallery.length > 0 && (
-  <section class="gallery" data-compact={isCompact} aria-label="Project previews">
-    {gallery.map((item, index) => (
-      <MediaPreview media={item} isPriority={index === 0} />
-    ))}
+  <section
+    class="gallery"
+    data-compact={isCompact}
+    data-media-carousel={hasCarousel ? '' : undefined}
+    aria-label="Project previews"
+    aria-roledescription={hasCarousel ? 'carousel' : undefined}
+  >
+    <div
+      class="stack-stage"
+      data-carousel-stage
+      style={`--selected-ratio: ${mediaAspectRatio(gallery[0])}`}
+    >
+      <div class="stack-sizer" data-carousel-sizer aria-hidden="true"></div>
+      {gallery.map((item, index) => {
+        const slot = slotByIndex.get(index);
+        const isSelected = index === 0;
+        return (
+          <div
+            class="stack-layer"
+            id={`gallery-slide-${index + 1}`}
+            data-carousel-layer
+            data-layer-index={index}
+            data-visible={slot ? 'true' : 'false'}
+            data-slot={slot?.name}
+            data-selected={isSelected ? '' : undefined}
+            data-media-ratio={mediaAspectRatio(item)}
+            style={`--media-ratio: ${mediaAspectRatio(item)}`}
+          >
+            <div class="stack-media" data-stack-media inert={!isSelected ? '' : undefined}>
+              <MediaPreview
+                media={item}
+                isPriority={index === 0}
+                isPlaybackManaged={hasCarousel && item.kind === 'preview'}
+                previewId={item.kind === 'preview' ? `project-carousel-preview-${index}` : undefined}
+              />
+            </div>
+            {hasCarousel && (
+              <button
+                type="button"
+                class="stack-select"
+                data-carousel-item
+                data-slide-target={index}
+                aria-label={`Show image ${index + 1} of ${gallery.length}: ${item.alt}`}
+                aria-current={isSelected ? 'true' : undefined}
+                tabindex={isSelected ? -1 : 0}
+              />
+            )}
+          </div>
+        );
+      })}
+    </div>
+    {hasCarousel && (
+      <>
+        <div class="carousel-dots" role="group" aria-label="Choose an image">
+          {gallery.map((_, index) => (
+            <button
+              type="button"
+              class="carousel-dot"
+              data-carousel-dot
+              data-slide-target={index}
+              aria-label={`Show image ${index + 1} of ${gallery.length}`}
+              aria-current={index === 0 ? 'true' : undefined}
+            >
+              <span class="dot-mark" aria-hidden="true"></span>
+            </button>
+          ))}
+        </div>
+        <p class="visually-hidden" data-carousel-status aria-live="polite" aria-atomic="true">
+          Image 1 of {gallery.length}: {gallery[0].alt}
+        </p>
+      </>
+    )}
   </section>
 )}
+<script>
+  import { initProjectCarousel } from './projectCarousel.client';
+  initProjectCarousel();
+</script>
 <style>
   .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
-    gap: 1.25rem;
-    align-items: start;
+    --media-height-cap: 60vh;
+    --stack-peek-room: clamp(1.25rem, 5vw, 6rem);
+    --stack-transition-duration: 260ms;
+    --stack-transition-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    min-width: 0;
+  }
+
+  @supports (height: 1svh) {
+    .gallery {
+      --media-height-cap: 60svh;
+    }
   }
 
   .gallery[data-compact='true'] {
-    grid-template-columns: minmax(0, 1fr);
     max-width: 44rem;
   }
 
+  .stack-stage {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    isolation: isolate;
+    touch-action: pan-y;
+  }
+
+  .gallery[data-media-carousel] .stack-stage {
+    margin-inline: -1.25rem;
+  }
+
+  .stack-sizer {
+    width: min(100%, calc(var(--media-height-cap) * var(--selected-ratio)));
+    aspect-ratio: var(--selected-ratio);
+    pointer-events: none;
+    transition:
+      width var(--stack-transition-duration) var(--stack-transition-ease),
+      height var(--stack-transition-duration) var(--stack-transition-ease);
+  }
+
+  .gallery[data-media-carousel] .stack-sizer {
+    width: min(
+      calc(100% - 2 * var(--stack-peek-room)),
+      calc(var(--media-height-cap) * var(--selected-ratio))
+    );
+  }
+
+  .stack-layer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(100%, calc(var(--media-height-cap) * var(--media-ratio)));
+    aspect-ratio: var(--media-ratio);
+    transform: translate(calc(-50% + var(--layer-x, 0px)), -50%)
+      scale(calc(var(--layer-scale, 1) * var(--layer-hover-scale, 1)));
+    transform-origin: center;
+    z-index: 2;
+    opacity: 0.4;
+    transition:
+      transform var(--stack-transition-duration) var(--stack-transition-ease),
+      opacity 180ms ease,
+      filter 180ms ease;
+  }
+
+  .gallery[data-media-carousel] .stack-layer {
+    width: min(
+      calc(100% - 2 * var(--stack-peek-room)),
+      calc(var(--media-height-cap) * var(--media-ratio))
+    );
+  }
+
+  .stack-layer[data-slot='left-1'],
+  .stack-layer[data-slot='right-1'] {
+    --layer-scale: 0.72;
+    z-index: 4;
+    opacity: 0.8;
+    filter: saturate(0.92) brightness(0.86);
+  }
+
+  .stack-layer[data-slot='left-1'] {
+    --layer-x: -58.333%;
+  }
+
+  .stack-layer[data-slot='right-1'] {
+    --layer-x: 58.333%;
+  }
+
+  .stack-layer[data-slot='left-2'],
+  .stack-layer[data-slot='right-2'] {
+    --layer-scale: 0.56;
+    z-index: 3;
+    opacity: 0.6;
+    filter: saturate(0.8) brightness(0.72);
+  }
+
+  .stack-layer[data-slot='left-2'] {
+    --layer-x: -146.429%;
+  }
+
+  .stack-layer[data-slot='right-2'] {
+    --layer-x: 146.429%;
+  }
+
+  .stack-layer[data-visible='false'] {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .stack-layer[data-selected] {
+    --layer-scale: 1;
+    --layer-x: 0px;
+    z-index: 6;
+    opacity: 1;
+    filter: none;
+  }
+
+  .stack-layer:not([data-selected]):not([data-visible='false']):is(:hover, :focus-within) {
+    --layer-hover-scale: 1.045;
+    opacity: 0.94;
+    filter: saturate(1) brightness(1);
+  }
+
+  .stack-media {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+  }
+
+  .stack-layer[data-selected] .stack-media {
+    filter: drop-shadow(0 18px 34px rgb(0 0 0 / 0.4));
+  }
+
+  .stack-layer:not([data-selected]) .stack-media {
+    filter: drop-shadow(0 12px 24px rgb(0 0 0 / 0.34));
+  }
+
+  .stack-media :global(.media-preview) {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+
+  .stack-media :global(img),
+  .stack-media :global(video) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: var(--media-height-cap);
+    object-fit: contain;
+  }
+
+  .stack-media :global(.has-loop .loop-video) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    object-fit: contain;
+  }
+
+  .stack-select {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .stack-select:focus {
+    outline: none;
+  }
+
+  .stack-select:focus-visible {
+    outline: 3px solid var(--ember);
+    outline-offset: 5px;
+  }
+
+  .stack-layer[data-selected] .stack-select {
+    pointer-events: none;
+  }
+
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.125rem;
+    margin-top: 0.5rem;
+  }
+
+  .carousel-dot {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-primary);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .carousel-dot:focus {
+    outline: none;
+  }
+
+  .carousel-dot:focus-visible {
+    outline: 3px solid var(--ember);
+    outline-offset: 2px;
+  }
+
+  .dot-mark {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.32;
+    transition:
+      opacity 160ms ease,
+      background-color 160ms ease;
+  }
+
+  .carousel-dot:hover .dot-mark {
+    opacity: 0.62;
+  }
+
+  .carousel-dot[aria-current='true'] .dot-mark {
+    opacity: 1;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   @media (max-width: 40rem) {
-    .gallery {
-      grid-template-columns: minmax(0, 1fr);
+    .stack-layer[data-slot='left-2'],
+    .stack-layer[data-slot='right-2'] {
+      display: none;
+    }
+  }
+
+  .gallery[data-instant] .stack-layer,
+  .gallery[data-instant] .stack-sizer {
+    transition: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stack-layer,
+    .stack-sizer {
+      transition: none;
     }
   }
 </style>

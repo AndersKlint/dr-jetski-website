@@ -7,6 +7,10 @@ Dr. Jetski Studios is the home for an independent developer's software and creat
 **Project**:
 A distinct piece of work presented by the studio, including an app, plugin, game, command-line tool, developer package, or desktop extension. A project may be available to users or still in development.
 
+**Project carousel**:
+A project page's ordered media presentation that shows one item at a time and changes only through visitor action.
+_Avoid_: Gallery grid, auto-advancing slideshow
+
 **Featured project**:
 A project selected for prominent presentation on the homepage. Featured projects have an explicit editorial priority, independent of their release maturity.
 

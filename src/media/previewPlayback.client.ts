@@ -11,11 +11,18 @@ interface PreviewNode {
   id: string;
   root: HTMLElement;
   video: HTMLVideoElement;
+  isManaged: boolean;
+}
+
+export interface PreviewPlaybackHandle {
+  dispose(): void;
+  setPreviewNearViewport(id: string, isNearViewport: boolean): void;
+  setPreviewVisible(id: string, isVisible: boolean): void;
 }
 
 declare global {
   interface Window {
-    __drJetskiPreviewPlayback?: { dispose: () => void };
+    __drJetskiPreviewPlayback?: PreviewPlaybackHandle;
   }
 }
 
@@ -42,7 +49,7 @@ function collectPreviews(doc: Document): PreviewNode[] {
       if (!(video instanceof HTMLVideoElement)) return null;
       const id = root.dataset.previewId ?? `auto-preview-${index}`;
       root.dataset.previewId = id;
-      return { id, root, video };
+      return { id, root, video, isManaged: root.dataset.previewManaged === 'true' };
     })
     .filter((entry): entry is PreviewNode => entry !== null);
 }
@@ -59,9 +66,9 @@ function isAbortError(error: unknown): boolean {
   );
 }
 
-export function initPreviewPlayback(doc: Document = document): () => void {
+export function initPreviewPlayback(doc: Document = document): PreviewPlaybackHandle {
   const active = window.__drJetskiPreviewPlayback;
-  if (active) return active.dispose;
+  if (active) return active;
 
   const previews = collectPreviews(doc);
   const controls = [...doc.querySelectorAll(CONTROL_SELECTOR)].filter(
@@ -131,6 +138,7 @@ export function initPreviewPlayback(doc: Document = document): () => void {
   service.setPageHidden(doc.visibilityState === 'hidden');
 
   const canObserve = typeof IntersectionObserver !== 'undefined' && previews.length > 0;
+  const observedPreviews = previews.filter((preview) => !preview.isManaged);
   let nearObserver: IntersectionObserver | null = null;
   let visibleObserver: IntersectionObserver | null = null;
   if (canObserve) {
@@ -152,7 +160,7 @@ export function initPreviewPlayback(doc: Document = document): () => void {
       },
       { threshold: 0.25 },
     );
-    for (const preview of previews) {
+    for (const preview of observedPreviews) {
       nearObserver.observe(preview.root);
       visibleObserver.observe(preview.root);
     }
@@ -215,6 +223,11 @@ export function initPreviewPlayback(doc: Document = document): () => void {
       delete window.__drJetskiPreviewPlayback;
     }
   };
-  window.__drJetskiPreviewPlayback = { dispose };
-  return dispose;
+  const handle: PreviewPlaybackHandle = {
+    dispose,
+    setPreviewNearViewport: (id, isNearViewport) => service.setNearViewport(id, isNearViewport),
+    setPreviewVisible: (id, isVisible) => service.setVisible(id, isVisible),
+  };
+  window.__drJetskiPreviewPlayback = handle;
+  return handle;
 }

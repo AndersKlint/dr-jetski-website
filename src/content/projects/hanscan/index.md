@@ -15,17 +15,30 @@ authoringNotes:
   - "Owner TODO: supply the public APK URL, version, file size, filename, and install notes."
   - "Only OCR is established as offline (PaddleOCR v6); do not claim English translation works offline."
   - "Possible future iOS support is unconfirmed, so supportedPlatforms lists Android only."
-  - "Owner TODO: replace the concept placeholder gallery entry with a real screenshot or preview when supplied."
 downloads:
   - label: "Android APK"
     platform: "Android"
     format: "APK"
 links: []
 gallery:
+  - kind: "preview"
+    src: "./hanscan-demo.mp4"
+    poster: "./hanscan-demo-poster.webp"
+    alt: "Short silent clip of HanScan recognizing a Chinese workbook exercise, then showing pinyin and English translation overlays."
+    width: 1440
+    height: 2560
   - kind: "image"
-    src: "./preview.svg"
-    alt: "Illustrative placeholder: concept mockup of HanScan overlaying recognition results on a phone photo, not a real screenshot."
-    isPlaceholder: true
+    src: "./slope.png"
+    alt: "HanScan translating a Chinese road sign in English mode, with the recognized text shown over a steep-slope warning sign."
+  - kind: "image"
+    src: "./workbook_popup.png"
+    alt: "HanScan dictionary popup on the Chinese word 准时 (zhǔnshí), showing its reading and English definitions over a workbook exercise."
+  - kind: "image"
+    src: "./workbook_pinyin.png"
+    alt: "HanScan pinyin mode overlaying readings on a Chinese workbook matching exercise, with a pinyin transcript below."
+  - kind: "image"
+    src: "./workbook_stack_translate.png"
+    alt: "HanScan English mode translating a Chinese workbook matching exercise, with translated labels over the text and a transcript below."
 ---
 
 HanScan recognizes Chinese text in photos taken with the camera or picked from the gallery, and overlays the results at their positions in the image.

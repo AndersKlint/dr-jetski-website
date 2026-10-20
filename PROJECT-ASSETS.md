@@ -48,38 +48,46 @@ Short paragraph describing the project.
 Platform availability: not yet released.
 ```
 
-`gallery` is optional; its first entry becomes the homepage card. Set
-`visibility: "public"` to publish. Add `featuredRank` to place the card in the
-homepage featured set; other public projects appear in the compact grid ordered
-by `editorialOrder`. Every referenced file must exist.
+`gallery` is optional; its first entry becomes the homepage card and its order
+is the carousel order. Project pages show one uncropped item at a time with
+previous/next navigation and thumbnails; a one-item gallery omits navigation and
+an empty gallery is not rendered. Set `visibility: "public"` to publish. Add
+`featuredRank` to place the card in the homepage featured set; other public
+projects appear in the compact grid ordered by `editorialOrder`. Every
+referenced file must exist.
 
 ## Gallery media
 
 - `image`: a local `./file.ext` with `alt`.
-- `preview`: a silent looping preview that plays while visible; remote R2 `src`,
-  local `poster`, and `width`/`height` matching the video and poster aspect.
+- `preview`: a silent looping preview that plays while active and visible; `src`
+  may be a local `./file.mp4` or an HTTPS R2 URL, with a local `poster`, `alt`,
+  and `width`/`height` matching the video and poster aspect.
 - `demo`: visitor-controlled and never autoplays; same fields as `preview` with
   `kind: "demo"` and required `hasAudio` (`true` when it has sound, else `false`).
 
 ```yaml
 gallery:
   - kind: "preview"
-    src: "https://REPLACE-WITH-R2-HOST/previews/my-project/v1/loop.mp4"
-    poster: "./preview.webp"
+    src: "./video.mp4"
+    poster: "./video-poster.webp"
     alt: "Short silent clip of My Project in use."
     width: 1280
     height: 720
 ```
 
-Replace the placeholder URL before use; never invent a destination.
+Keep small local preview videos as H.264 MP4 files. For substantial video,
+replace `src` with a real HTTPS R2 URL; local `./file.mp4` references remain
+valid. Never invent a destination. Posters are local files; thumbnails are
+generated during ingestion and are not authored fields.
 
 ## Preparation
 
 | Asset | Format | Guidance |
 | --- | --- | --- |
 | Images | PNG, JPEG, WebP; SVG diagrams | longest edge 1600–2400px when available, preserve aspect, no upscaling |
-| Looping preview | WebM or MP4 (H.264) | 5–15s, silent, ≤1280px longest edge, 24–30fps, a few MB |
-| Demo | WebM or MP4 (H.264) | may be longer and include audio; never autoplays |
+| Looping preview | MP4 (H.264) | 5–15s, silent, ≤1280px longest edge, 24–30fps, a few MB |
+| Preview poster | PNG, JPEG, WebP | local, same aspect as the video, with authored `alt`, `width`, and `height` |
+| Demo | MP4 (H.264) | may be longer and include audio; never autoplays |
 
 ## Downloads
 

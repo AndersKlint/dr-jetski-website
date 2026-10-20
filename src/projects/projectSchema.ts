@@ -38,6 +38,15 @@ const actionUrl = z.string().refine((value) => parseAbsoluteHttpsUrl(value) !== 
   message: 'Expected a real absolute https URL',
 });
 
+const LOCAL_VIDEO_PATH_PATTERN = /^\.\/[^/]+\.(?:mp4|webm|mov|m4v|ogv)$/;
+
+const videoSource = nonBlankString.refine(
+  (value) => parseAbsoluteHttpsUrl(value) !== null || LOCAL_VIDEO_PATH_PATTERN.test(value),
+  {
+    message: 'Expected a real absolute https URL or a co-located local video path such as ./clip.mp4',
+  },
+);
+
 const dimension = z.number().int().positive();
 
 const availabilitySchema = z.object({
@@ -72,7 +81,7 @@ export function projectSchema({ image }: SchemaContext) {
     }),
     z.object({
       kind: z.literal('preview'),
-      src: actionUrl,
+      src: videoSource,
       poster: image(),
       alt: nonBlankString,
       width: dimension,
@@ -81,7 +90,7 @@ export function projectSchema({ image }: SchemaContext) {
     }),
     z.object({
       kind: z.literal('demo'),
-      src: actionUrl,
+      src: videoSource,
       poster: image(),
       alt: nonBlankString,
       width: dimension,
