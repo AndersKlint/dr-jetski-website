@@ -214,6 +214,10 @@ function mediaAspectRatio(item: GalleryItem): number {
     filter: none;
   }
 
+  .stack-layer:not([data-selected]) :global([data-feature-overlay]) {
+    display: none;
+  }
+
   .stack-layer:not([data-selected]):not([data-visible='false']):is(:hover, :focus-within) {
     --layer-hover-scale: 1.045;
     opacity: 0.94;

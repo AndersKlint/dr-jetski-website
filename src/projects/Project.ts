@@ -40,12 +40,18 @@ export interface ResponsiveImage {
   height: number;
 }
 
+export interface FeatureOverlay {
+  text: string;
+  y: number;
+}
+
 export interface ImageGalleryItem {
   kind: 'image';
   image: ResponsiveImage;
   thumbnail: ResponsiveImage;
   alt: string;
   isPlaceholder?: boolean;
+  featureOverlay?: FeatureOverlay;
 }
 
 export interface PreviewGalleryItem {
@@ -57,6 +63,7 @@ export interface PreviewGalleryItem {
   width: number;
   height: number;
   isPlaceholder?: boolean;
+  featureOverlay?: FeatureOverlay;
 }
 
 export interface DemoGalleryItem {
@@ -69,6 +76,7 @@ export interface DemoGalleryItem {
   height: number;
   hasAudio: boolean;
   isPlaceholder?: boolean;
+  featureOverlay?: FeatureOverlay;
 }
 
 export type GalleryItem = ImageGalleryItem | PreviewGalleryItem | DemoGalleryItem;

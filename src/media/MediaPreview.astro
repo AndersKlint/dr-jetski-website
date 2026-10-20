@@ -1,5 +1,6 @@
 ---
 import type { GalleryItem } from '../projects/Project';
+import FeatureOverlay from './FeatureOverlay.astro';
 
 interface Props {
   media?: GalleryItem;
@@ -34,6 +35,7 @@ const fetchPriority = isPriority ? 'high' : undefined;
       loading={loading}
       fetchpriority={fetchPriority}
     />
+    {media.featureOverlay && <FeatureOverlay overlay={media.featureOverlay} />}
     {media.isPlaceholder && <figcaption class="placeholder-label">Placeholder preview</figcaption>}
   </figure>
 )}
@@ -68,6 +70,7 @@ const fetchPriority = isPriority ? 'high' : undefined;
       disablepictureinpicture
       aria-label={media.alt}
     />
+    {media.featureOverlay && <FeatureOverlay overlay={media.featureOverlay} />}
     {media.isPlaceholder && <figcaption class="placeholder-label">Placeholder preview</figcaption>}
   </figure>
 )}
@@ -87,6 +90,7 @@ const fetchPriority = isPriority ? 'high' : undefined;
     >
       {media.alt}
     </video>
+    {media.featureOverlay && <FeatureOverlay overlay={media.featureOverlay} />}
     {media.isPlaceholder && <figcaption class="placeholder-label">Placeholder preview</figcaption>}
   </figure>
 )}

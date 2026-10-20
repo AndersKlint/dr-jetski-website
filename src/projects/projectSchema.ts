@@ -71,34 +71,45 @@ const linkSchema = z.object({
   url: actionUrl,
 });
 
+function captureOriginalSource(value: unknown): unknown {
+  if (typeof value !== 'object' || value === null || !('src' in value)) {
+    return value;
+  }
+  return { ...value, originalSource: value.src };
+}
+
 export function projectSchema({ image }: SchemaContext) {
-  const galleryItemSchema = z.discriminatedUnion('kind', [
-    z.object({
-      kind: z.literal('image'),
-      src: image(),
-      alt: nonBlankString,
-      isPlaceholder: z.boolean().optional(),
-    }),
-    z.object({
-      kind: z.literal('preview'),
-      src: videoSource,
-      poster: image(),
-      alt: nonBlankString,
-      width: dimension,
-      height: dimension,
-      isPlaceholder: z.boolean().optional(),
-    }),
-    z.object({
-      kind: z.literal('demo'),
-      src: videoSource,
-      poster: image(),
-      alt: nonBlankString,
-      width: dimension,
-      height: dimension,
-      hasAudio: z.boolean(),
-      isPlaceholder: z.boolean().optional(),
-    }),
-  ]);
+  const galleryItemSchema = z.preprocess(
+    captureOriginalSource,
+    z.discriminatedUnion('kind', [
+      z.object({
+        kind: z.literal('image'),
+        src: image(),
+        originalSource: z.string(),
+        alt: nonBlankString,
+        isPlaceholder: z.boolean().optional(),
+      }),
+      z.object({
+        kind: z.literal('preview'),
+        src: videoSource,
+        poster: image(),
+        alt: nonBlankString,
+        width: dimension,
+        height: dimension,
+        isPlaceholder: z.boolean().optional(),
+      }),
+      z.object({
+        kind: z.literal('demo'),
+        src: videoSource,
+        poster: image(),
+        alt: nonBlankString,
+        width: dimension,
+        height: dimension,
+        hasAudio: z.boolean(),
+        isPlaceholder: z.boolean().optional(),
+      }),
+    ]),
+  );
 
   return z.object({
     slug: kebabSlug,

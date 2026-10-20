@@ -20,5 +20,8 @@ Whether a visitor can currently obtain or try a project, and through which publi
 **Looping preview**:
 A short, silent video that plays inline and repeats while visible, showing a project in motion without sound.
 
+**Feature overlay**:
+Short text identifying a project capability, displayed over the prominent preview media it describes. It is distinct from the media's alternative text.
+
 **Demo**:
 A visitor-controlled video that may include audio and never plays automatically when a project page loads.

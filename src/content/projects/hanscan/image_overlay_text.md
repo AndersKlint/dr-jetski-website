@@ -1,4 +1,4 @@
-```hanscan-demo.mp4
+```hanscan-demo.mp4 y=0.3
 Overlay Chinese, Pinyin or English
 ```
 

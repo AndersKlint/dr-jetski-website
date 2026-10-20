@@ -2,8 +2,9 @@ import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import { projectHref, type GalleryItem, type Project, type ResponsiveImage } from './Project';
+import { projectHref, type FeatureOverlay, type GalleryItem, type Project, type ResponsiveImage } from './Project';
 import { ProjectCatalogService } from './ProjectCatalogService';
+import { mediaSourceBasename, parseImageOverlayText } from './imageOverlayText';
 
 const RESPONSIVE_WIDTHS = [640, 960, 1280, 1600, 2000];
 const RESPONSIVE_SIZES = '(min-width: 72rem) 70vw, 100vw';
@@ -15,6 +16,12 @@ const POSTER_ASPECT_RATIO_TOLERANCE = 0.02;
 const LOCAL_VIDEO_SOURCES = import.meta.glob('/src/content/projects/**/*.{mp4,webm,mov,m4v,ogv}', {
   eager: true,
   query: '?url',
+  import: 'default',
+}) as Record<string, string>;
+
+const IMAGE_OVERLAY_SOURCES = import.meta.glob('/src/content/projects/*/image_overlay_text.md', {
+  eager: true,
+  query: '?raw',
   import: 'default',
 }) as Record<string, string>;
 
@@ -87,6 +94,26 @@ function projectDirectoryFromFile(entry: ProjectEntry): string {
   return directory;
 }
 
+function featureOverlaysForProject(entry: ProjectEntry): Map<string, FeatureOverlay> {
+  const directory = projectDirectoryFromFile(entry);
+  const overlayPath = `/${directory}/image_overlay_text.md`;
+  const raw = IMAGE_OVERLAY_SOURCES[overlayPath];
+  if (raw === undefined) {
+    return new Map();
+  }
+  const entries = parseImageOverlayText(raw, overlayPath);
+  return new Map(entries.map((entry) => [entry.mediaSource, { text: entry.text, y: entry.y }]));
+}
+
+function featureOverlayForItem(
+  item: AuthoredGalleryItem,
+  overlayBySource: ReadonlyMap<string, FeatureOverlay>,
+): FeatureOverlay | undefined {
+  const source = item.kind === 'image' ? item.originalSource : item.src;
+  const basename = mediaSourceBasename(source);
+  return basename === null ? undefined : overlayBySource.get(basename);
+}
+
 function resolveVideoSource(source: string, entry: ProjectEntry): string {
   if (!source.startsWith('./')) {
     return source;
@@ -119,7 +146,9 @@ async function toGalleryItem(
   item: AuthoredGalleryItem,
   entry: ProjectEntry,
   index: number,
+  overlayBySource: ReadonlyMap<string, FeatureOverlay>,
 ): Promise<GalleryItem> {
+  const featureOverlay = featureOverlayForItem(item, overlayBySource);
   if (item.kind === 'image') {
     return {
       kind: 'image',
@@ -127,6 +156,7 @@ async function toGalleryItem(
       thumbnail: await toThumbnail(item.src),
       alt: item.alt,
       isPlaceholder: item.isPlaceholder,
+      featureOverlay,
     };
   }
   assertPosterAspectRatio(item, entry.data.slug, index);
@@ -143,6 +173,7 @@ async function toGalleryItem(
       width: item.width,
       height: item.height,
       isPlaceholder: item.isPlaceholder,
+      featureOverlay,
     };
   }
   return {
@@ -155,6 +186,7 @@ async function toGalleryItem(
     height: item.height,
     hasAudio: item.hasAudio,
     isPlaceholder: item.isPlaceholder,
+    featureOverlay,
   };
 }
 
@@ -163,6 +195,7 @@ async function toProject(entry: ProjectEntry): Promise<Project> {
   if (fileSlug !== null && fileSlug !== entry.data.slug) {
     throw new Error(`Project slug "${entry.data.slug}" does not match its folder name "${fileSlug}"`);
   }
+  const overlayBySource = featureOverlaysForProject(entry);
   return {
     slug: entry.data.slug,
     displayName: entry.data.displayName,
@@ -179,7 +212,7 @@ async function toProject(entry: ProjectEntry): Promise<Project> {
     downloads: entry.data.downloads,
     links: entry.data.links,
     gallery: await Promise.all(
-      entry.data.gallery.map((item, index) => toGalleryItem(item, entry, index)),
+      entry.data.gallery.map((item, index) => toGalleryItem(item, entry, index, overlayBySource)),
     ),
     href: projectHref(entry.data.slug),
     body: entry.body ?? '',
