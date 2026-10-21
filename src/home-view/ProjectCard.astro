@@ -1,10 +1,10 @@
 ---
-import type { Project } from '../projects/Project';
+import type { HomeProject } from './HomeProject';
 import MediaPreview from '../media/MediaPreview.astro';
 import { isTrialMaturity, maturityLabel, typeLabel } from '../projects/projectLabels';
 
 interface Props {
-  project: Project;
+  project: HomeProject;
   isPriority?: boolean;
   size?: 'lead' | 'secondary';
 }
@@ -14,7 +14,7 @@ const note = project.publicationNote ?? project.availability.message;
 ---
 <article class="card" data-size={size}>
   <div class="card-media">
-    <MediaPreview media={project.gallery[0]} isPriority={isPriority} />
+    <MediaPreview media={project.gallery[0]} crop={project.previewCrop} isPriority={isPriority} />
   </div>
   <div class="card-body">
     <p class="card-kicker">
@@ -51,12 +51,6 @@ const note = project.publicationNote ?? project.availability.message;
   .card:hover,
   .card:focus-within {
     border-color: var(--ember);
-  }
-
-  .card-media :global(img) {
-    display: block;
-    width: 100%;
-    height: auto;
   }
 
   .card-body {

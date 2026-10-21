@@ -1,10 +1,10 @@
 ---
-import type { Project } from '../projects/Project';
+import type { HomeProject } from './HomeProject';
 import MediaPreview from '../media/MediaPreview.astro';
 import { maturityLabel, typeLabel } from '../projects/projectLabels';
 
 interface Props {
-  projects: Project[];
+  projects: HomeProject[];
 }
 
 const { projects } = Astro.props;
@@ -16,7 +16,7 @@ const { projects } = Astro.props;
       <li>
         <article class="compact-card">
           <div class="compact-media">
-            <MediaPreview media={project.gallery[0]} />
+            <MediaPreview media={project.gallery[0]} crop={project.previewCrop} />
           </div>
           <div class="compact-body">
             <p class="compact-kicker">
@@ -78,12 +78,6 @@ const { projects } = Astro.props;
   .compact-card:hover,
   .compact-card:focus-within {
     border-color: var(--ember);
-  }
-
-  .compact-media :global(img) {
-    display: block;
-    width: 100%;
-    height: auto;
   }
 
   .compact-body {

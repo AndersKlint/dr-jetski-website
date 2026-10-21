@@ -60,6 +60,8 @@ This describes relative position and hierarchy, not fixed dimensions. Stagger ca
 
 The homepage introduction is brief and plainspoken; the example line above is editable. Give attention and screen space to the projects. Featured cards contain prominent media, a title, a concise explanation, useful type/status context, and a clear route to the project page.
 
+Homepage first-media previews, both featured and compact, support optional hardcoded per-project crops in `src/home-view/projectPreviewCrops.ts`, off by default. Define a normalized rectangle in property order `xStart`, `xEnd`, `yStart`, `yEnd`; HanScan uses `{xStart:0,xEnd:1,yStart:0.16,yEnd:0.8}`. Apply the same CSS crop to poster and video without modifying the source video, adjusting the displayed aspect ratio and layout height to the visible area rather than merely hiding media inside the original footprint. Feature-overlay coordinates are relative to that visible cropped area. Project-detail carousels remain uncropped.
+
 ## Project-page composition
 
 ```text

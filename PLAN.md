@@ -34,6 +34,8 @@ Feature overlays are implemented. Each project may add an optional `image_overla
 
 The visual-only feature-overlay refinement is implemented following DESIGN.md. Existing media-relative positioning and edge clamping are retained. Code review, content/type checks (35 files, 0 errors/warnings/hints), the production build (12 pages), and `git diff --check` pass; visual and interaction review remain reserved for the owner.
 
+Optional per-project homepage preview crops are implemented following [DESIGN.md](DESIGN.md), with HanScan configured. Orchestrator verification: `ASTRO_TELEMETRY_DISABLED=1 npm run check` passes (38 files, 0 errors/warnings/hints), `ASTRO_TELEMETRY_DISABLED=1 npm run build` passes (12 pages), and `git diff --check` passes. Quick code review found no major issues. Manual desktop/mobile visual and playback acceptance remains pending.
+
 ## 1. Static foundation and project content
 
 - Initialize Astro with TypeScript and static output.

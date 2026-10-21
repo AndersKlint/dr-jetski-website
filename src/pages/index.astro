@@ -3,11 +3,18 @@ import { loadProjectRecords } from '../projects/astroProjectSource';
 import { ProjectCatalogService } from '../projects/ProjectCatalogService';
 import HomeView from '../home-view/HomeView.astro';
 import SiteLayout from '../site/SiteLayout.astro';
+import { projectPreviewCrops } from '../home-view/projectPreviewCrops';
+import type { HomeProject } from '../home-view/HomeProject';
+import type { Project } from '../projects/Project';
 
 const catalog = new ProjectCatalogService(await loadProjectRecords());
-const lead = catalog.leadFeatured();
-const secondary = catalog.secondaryFeatured();
-const compact = catalog.compactProjects();
+const prepareProject = (project: Project): HomeProject => ({
+  ...project,
+  previewCrop: projectPreviewCrops[project.slug]?.crop,
+});
+const lead = catalog.leadFeatured().map(prepareProject);
+const secondary = catalog.secondaryFeatured().map(prepareProject);
+const compact = catalog.compactProjects().map(prepareProject);
 ---
 <SiteLayout
   title="Dr. Jetski Studios"

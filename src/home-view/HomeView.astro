@@ -1,14 +1,14 @@
 ---
-import type { Project } from '../projects/Project';
+import type { HomeProject } from './HomeProject';
 import StudioIdentity from '../banner/StudioIdentity.astro';
 import AboutContact from '../about/AboutContact.astro';
 import ProjectShowcase from './project-showcase/ProjectShowcase.astro';
 import CompactProjectGrid from './CompactProjectGrid.astro';
 
 interface Props {
-  lead: Project[];
-  secondary: Project[];
-  compact: Project[];
+  lead: HomeProject[];
+  secondary: HomeProject[];
+  compact: HomeProject[];
 }
 
 const { lead, secondary, compact } = Astro.props;

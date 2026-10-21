@@ -1,9 +1,11 @@
 ---
 import type { GalleryItem } from '../projects/Project';
 import FeatureOverlay from './FeatureOverlay.astro';
+import type { PreviewCrop } from './PreviewCrop';
 
 interface Props {
   media?: GalleryItem;
+  crop?: PreviewCrop;
   isPriority?: boolean;
   isPlaybackManaged?: boolean;
   previewId?: string;
@@ -12,18 +14,23 @@ interface Props {
 
 const {
   media,
+  crop,
   isPriority = false,
   isPlaybackManaged = false,
   previewId,
   class: className,
 } = Astro.props;
-const figureClass = className ? `media-preview ${className}` : 'media-preview';
+const figureClass = ['media-preview', className, crop && media ? 'is-cropped' : undefined].filter(Boolean).join(' ');
 const poster = media ? (media.kind === 'image' ? media.image : media.poster) : undefined;
 const loading = isPriority ? 'eager' : 'lazy';
 const fetchPriority = isPriority ? 'high' : undefined;
+const dimensions = media?.kind === 'image' ? media.image : media;
+const cropStyle = crop && dimensions
+  ? `--crop-aspect: ${dimensions.width * (crop.xEnd - crop.xStart)} / ${dimensions.height * (crop.yEnd - crop.yStart)}; --crop-width: ${100 / (crop.xEnd - crop.xStart)}%; --crop-height: ${100 / (crop.yEnd - crop.yStart)}%; --crop-left: ${-100 * crop.xStart / (crop.xEnd - crop.xStart)}%; --crop-top: ${-100 * crop.yStart / (crop.yEnd - crop.yStart)}%`
+  : undefined;
 ---
 {media && poster && media.kind === 'image' && (
-  <figure class={figureClass}>
+  <figure class={figureClass} style={cropStyle}>
     <img
       src={poster.src}
       srcset={poster.srcSet}
@@ -42,6 +49,7 @@ const fetchPriority = isPriority ? 'high' : undefined;
 {media && poster && media.kind === 'preview' && (
   <figure
     class={`${figureClass} has-loop`}
+    style={cropStyle}
     data-auto-preview
     data-preview-managed={isPlaybackManaged ? 'true' : undefined}
     data-preview-id={previewId}
@@ -75,7 +83,7 @@ const fetchPriority = isPriority ? 'high' : undefined;
   </figure>
 )}
 {media && poster && media.kind === 'demo' && (
-  <figure class={`${figureClass} has-demo`}>
+  <figure class={`${figureClass} has-demo`} style={cropStyle}>
     <video
       class="demo-video"
       controls
@@ -149,6 +157,22 @@ const fetchPriority = isPriority ? 'high' : undefined;
     font-size: 0.78rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
+  }
+
+  .media-preview.is-cropped {
+    aspect-ratio: var(--crop-aspect);
+    overflow: hidden;
+  }
+
+  .media-preview.is-cropped > img,
+  .media-preview.is-cropped > video {
+    position: absolute;
+    inset: auto;
+    left: var(--crop-left);
+    top: var(--crop-top);
+    width: var(--crop-width);
+    height: var(--crop-height);
+    max-width: none;
   }
 
   .empty-label {
