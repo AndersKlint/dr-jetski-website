@@ -1,0 +1,19 @@
+- media: jetalign_default.png
+  text: Vocal and instrument alignment made easy
+  text_pos_y: 0.26
+
+- media: jetalign_selections.png
+  text: Selective alginment using drawable regions
+  text_pos_y: 0.47
+
+- media: jetalign_recording_and_aligning.mp4
+  text: Record audio directly from DAW
+  text_pos_y: 0.8
+
+- media: jetalign_editing.mp4
+  text: Quick and easy fine-tuning
+  text_pos_y: 0.26
+
+- preview: jetalign_default.png
+  text: Vocal and instrument alignment made easy
+  text_pos_y: 0.26

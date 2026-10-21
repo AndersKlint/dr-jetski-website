@@ -1,10 +1,10 @@
 ---
-import type { HomeProject } from './HomeProject';
+import type { Project } from '../projects/Project';
 import MediaPreview from '../media/MediaPreview.astro';
 import { maturityLabel, typeLabel } from '../projects/projectLabels';
 
 interface Props {
-  projects: HomeProject[];
+  projects: Project[];
 }
 
 const { projects } = Astro.props;
@@ -16,7 +16,7 @@ const { projects } = Astro.props;
       <li>
         <article class="compact-card">
           <div class="compact-media">
-            <MediaPreview media={project.gallery[0]} crop={project.previewCrop} />
+            <MediaPreview media={project.homepagePreview} crop={project.homepagePreview?.homepageCrop} />
           </div>
           <div class="compact-body">
             <p class="compact-kicker">
@@ -71,7 +71,6 @@ const { projects } = Astro.props;
     background: var(--charcoal-raised);
     border: 1px solid var(--line);
     border-radius: var(--radius);
-    overflow: hidden;
     transition: border-color 0.15s ease-in;
   }
 
@@ -82,6 +81,10 @@ const { projects } = Astro.props;
 
   .compact-body {
     padding: 1rem 1.1rem 1.25rem;
+  }
+
+  .compact-media {
+    --media-radius: calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0;
   }
 
   .compact-kicker {

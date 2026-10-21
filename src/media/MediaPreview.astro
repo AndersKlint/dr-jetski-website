@@ -1,11 +1,10 @@
 ---
-import type { GalleryItem } from '../projects/Project';
+import type { GalleryItem, MediaCrop } from '../projects/Project';
 import FeatureOverlay from './FeatureOverlay.astro';
-import type { PreviewCrop } from './PreviewCrop';
 
 interface Props {
   media?: GalleryItem;
-  crop?: PreviewCrop;
+  crop?: MediaCrop;
   isPriority?: boolean;
   isPlaybackManaged?: boolean;
   previewId?: string;
@@ -31,17 +30,19 @@ const cropStyle = crop && dimensions
 ---
 {media && poster && media.kind === 'image' && (
   <figure class={figureClass} style={cropStyle}>
-    <img
-      src={poster.src}
-      srcset={poster.srcSet}
-      sizes={poster.sizes}
-      width={poster.width}
-      height={poster.height}
-      alt={media.alt}
-      decoding="async"
-      loading={loading}
-      fetchpriority={fetchPriority}
-    />
+    <div class="media-clip">
+      <img
+        src={poster.src}
+        srcset={poster.srcSet}
+        sizes={poster.sizes}
+        width={poster.width}
+        height={poster.height}
+        alt={media.alt}
+        decoding="async"
+        loading={loading}
+        fetchpriority={fetchPriority}
+      />
+    </div>
     {media.featureOverlay && <FeatureOverlay overlay={media.featureOverlay} />}
     {media.isPlaceholder && <figcaption class="placeholder-label">Placeholder preview</figcaption>}
   </figure>
@@ -54,50 +55,54 @@ const cropStyle = crop && dimensions
     data-preview-managed={isPlaybackManaged ? 'true' : undefined}
     data-preview-id={previewId}
   >
-    <img
-      src={poster.src}
-      srcset={poster.srcSet}
-      sizes={poster.sizes}
-      width={poster.width}
-      height={poster.height}
-      alt={media.alt}
-      decoding="async"
-      loading={loading}
-      fetchpriority={fetchPriority}
-    />
-    <video
-      class="loop-video"
-      data-preview-video
-      data-src={media.src}
-      width={media.width}
-      height={media.height}
-      muted
-      playsinline
-      loop
-      preload="none"
-      disablepictureinpicture
-      aria-label={media.alt}
-    />
+    <div class="media-clip">
+      <img
+        src={poster.src}
+        srcset={poster.srcSet}
+        sizes={poster.sizes}
+        width={poster.width}
+        height={poster.height}
+        alt={media.alt}
+        decoding="async"
+        loading={loading}
+        fetchpriority={fetchPriority}
+      />
+      <video
+        class="loop-video"
+        data-preview-video
+        data-src={media.src}
+        width={media.width}
+        height={media.height}
+        muted
+        playsinline
+        loop
+        preload="none"
+        disablepictureinpicture
+        aria-label={media.alt}
+      />
+    </div>
     {media.featureOverlay && <FeatureOverlay overlay={media.featureOverlay} />}
     {media.isPlaceholder && <figcaption class="placeholder-label">Placeholder preview</figcaption>}
   </figure>
 )}
 {media && poster && media.kind === 'demo' && (
   <figure class={`${figureClass} has-demo`} style={cropStyle}>
-    <video
-      class="demo-video"
-      controls
-      preload="none"
-      poster={poster.src}
-      src={media.src}
-      width={media.width}
-      height={media.height}
-      playsinline
-      muted={!media.hasAudio || undefined}
-      aria-label={media.alt}
-    >
-      {media.alt}
-    </video>
+    <div class="media-clip">
+      <video
+        class="demo-video"
+        controls
+        preload="none"
+        poster={poster.src}
+        src={media.src}
+        width={media.width}
+        height={media.height}
+        playsinline
+        muted={!media.hasAudio || undefined}
+        aria-label={media.alt}
+      >
+        {media.alt}
+      </video>
+    </div>
     {media.featureOverlay && <FeatureOverlay overlay={media.featureOverlay} />}
     {media.isPlaceholder && <figcaption class="placeholder-label">Placeholder preview</figcaption>}
   </figure>
@@ -122,6 +127,12 @@ const cropStyle = crop && dimensions
     display: block;
     width: 100%;
     height: auto;
+  }
+
+  .media-clip {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--media-radius, 0);
   }
 
   .has-loop .loop-video {
@@ -161,11 +172,15 @@ const cropStyle = crop && dimensions
 
   .media-preview.is-cropped {
     aspect-ratio: var(--crop-aspect);
-    overflow: hidden;
   }
 
-  .media-preview.is-cropped > img,
-  .media-preview.is-cropped > video {
+  .is-cropped > .media-clip {
+    width: 100%;
+    height: 100%;
+  }
+
+  .media-preview.is-cropped > .media-clip > img,
+  .media-preview.is-cropped > .media-clip > video {
     position: absolute;
     inset: auto;
     left: var(--crop-left);

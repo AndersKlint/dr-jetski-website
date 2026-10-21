@@ -2,9 +2,9 @@ import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import { projectHref, type FeatureOverlay, type GalleryItem, type Project, type ResponsiveImage } from './Project';
+import { projectHref, type GalleryItem, type Project, type ResponsiveImage } from './Project';
 import { ProjectCatalogService } from './ProjectCatalogService';
-import { mediaSourceBasename, parseImageOverlayText } from './imageOverlayText';
+import { mediaSourceBasename, parseMediaPresentation, type MediaPresentation, type ProjectMediaPresentation } from './mediaPresentation';
 
 const RESPONSIVE_WIDTHS = [640, 960, 1280, 1600, 2000];
 const RESPONSIVE_SIZES = '(min-width: 72rem) 70vw, 100vw';
@@ -19,7 +19,7 @@ const LOCAL_VIDEO_SOURCES = import.meta.glob('/src/content/projects/**/*.{mp4,we
   import: 'default',
 }) as Record<string, string>;
 
-const IMAGE_OVERLAY_SOURCES = import.meta.glob('/src/content/projects/*/image_overlay_text.md', {
+const MEDIA_PRESENTATION_SOURCES = import.meta.glob('/src/content/projects/*/media.yaml', {
   eager: true,
   query: '?raw',
   import: 'default',
@@ -101,27 +101,22 @@ function projectDirectoryFromFile(entry: ProjectEntry): string {
   return directory;
 }
 
-function featureOverlaysForProject(entry: ProjectEntry): Map<string, FeatureOverlay> {
+function mediaPresentationForProject(entry: ProjectEntry): ProjectMediaPresentation {
   const directory = projectDirectoryFromFile(entry);
-  const overlayPath = `/${directory}/image_overlay_text.md`;
-  const raw = IMAGE_OVERLAY_SOURCES[overlayPath];
+  const presentationPath = `/${directory}/media.yaml`;
+  const raw = MEDIA_PRESENTATION_SOURCES[presentationPath];
   if (raw === undefined) {
-    return new Map();
+    return { mediaBySource: new Map() };
   }
-  const entries = parseImageOverlayText(raw, overlayPath);
-  return new Map(entries.map((entry) => [entry.mediaSource, { text: entry.text, y: entry.y }]));
+  return parseMediaPresentation(raw, presentationPath);
 }
 
-function featureOverlayForItem(
-  item: AuthoredGalleryItem,
-  overlayBySource: ReadonlyMap<string, FeatureOverlay>,
-): FeatureOverlay | undefined {
+function galleryItemSourceBasename(item: AuthoredGalleryItem): string | null {
   const source = item.kind === 'image' ? IMAGE_SOURCE_PATHS.get(item.src.src) : item.src;
   if (source === undefined) {
     throw new Error('No original asset path for gallery image');
   }
-  const basename = mediaSourceBasename(source);
-  return basename === null ? undefined : overlayBySource.get(basename);
+  return mediaSourceBasename(source);
 }
 
 function resolveVideoSource(source: string, entry: ProjectEntry): string {
@@ -156,9 +151,10 @@ async function toGalleryItem(
   item: AuthoredGalleryItem,
   entry: ProjectEntry,
   index: number,
-  overlayBySource: ReadonlyMap<string, FeatureOverlay>,
+  presentationBySource: ReadonlyMap<string, MediaPresentation>,
 ): Promise<GalleryItem> {
-  const featureOverlay = featureOverlayForItem(item, overlayBySource);
+  const basename = galleryItemSourceBasename(item);
+  const presentation = basename === null ? undefined : presentationBySource.get(basename);
   if (item.kind === 'image') {
     return {
       kind: 'image',
@@ -166,7 +162,7 @@ async function toGalleryItem(
       thumbnail: await toThumbnail(item.src),
       alt: item.alt,
       isPlaceholder: item.isPlaceholder,
-      featureOverlay,
+      ...presentation,
     };
   }
   assertPosterAspectRatio(item, entry.data.slug, index);
@@ -183,7 +179,7 @@ async function toGalleryItem(
       width: item.width,
       height: item.height,
       isPlaceholder: item.isPlaceholder,
-      featureOverlay,
+      ...presentation,
     };
   }
   return {
@@ -196,7 +192,7 @@ async function toGalleryItem(
     height: item.height,
     hasAudio: item.hasAudio,
     isPlaceholder: item.isPlaceholder,
-    featureOverlay,
+    ...presentation,
   };
 }
 
@@ -205,7 +201,21 @@ async function toProject(entry: ProjectEntry): Promise<Project> {
   if (fileSlug !== null && fileSlug !== entry.data.slug) {
     throw new Error(`Project slug "${entry.data.slug}" does not match its folder name "${fileSlug}"`);
   }
-  const overlayBySource = featureOverlaysForProject(entry);
+  const { mediaBySource, preview } = mediaPresentationForProject(entry);
+  const previewIndex = preview === undefined ? 0 : entry.data.gallery.findIndex(
+    (item) => galleryItemSourceBasename(item) === preview.mediaSource,
+  );
+  if (previewIndex === -1) {
+    throw new Error(`/${projectDirectoryFromFile(entry)}/media.yaml: preview: No gallery item matches "${preview?.mediaSource}"`);
+  }
+  const gallery = await Promise.all(
+    entry.data.gallery.map((item, index) => toGalleryItem(item, entry, index, mediaBySource)),
+  );
+  const homepagePreview = preview === undefined ? gallery[0] : {
+    ...gallery[previewIndex]!,
+    featureOverlay: preview.featureOverlay,
+    homepageCrop: preview.homepageCrop,
+  };
   return {
     slug: entry.data.slug,
     displayName: entry.data.displayName,
@@ -221,9 +231,8 @@ async function toProject(entry: ProjectEntry): Promise<Project> {
     authoringNotes: entry.data.authoringNotes,
     downloads: entry.data.downloads,
     links: entry.data.links,
-    gallery: await Promise.all(
-      entry.data.gallery.map((item, index) => toGalleryItem(item, entry, index, overlayBySource)),
-    ),
+    gallery,
+    homepagePreview,
     href: projectHref(entry.data.slug),
     body: entry.body ?? '',
   };

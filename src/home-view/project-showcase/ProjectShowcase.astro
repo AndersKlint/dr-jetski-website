@@ -1,9 +1,9 @@
 ---
-import type { HomeProject } from '../HomeProject';
+import type { Project } from '../../projects/Project';
 import ProjectCard from '../ProjectCard.astro';
 
 interface Props {
-  projects: HomeProject[];
+  projects: Project[];
 }
 
 const { projects } = Astro.props;

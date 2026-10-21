@@ -43,6 +43,15 @@ export interface ResponsiveImage {
 export interface FeatureOverlay {
   text: string;
   y: number;
+  offset: { x: number; y: number };
+  style: 'dark' | 'light';
+}
+
+export interface MediaCrop {
+  xStart: number;
+  xEnd: number;
+  yStart: number;
+  yEnd: number;
 }
 
 export interface ImageGalleryItem {
@@ -52,6 +61,7 @@ export interface ImageGalleryItem {
   alt: string;
   isPlaceholder?: boolean;
   featureOverlay?: FeatureOverlay;
+  homepageCrop?: MediaCrop;
 }
 
 export interface PreviewGalleryItem {
@@ -64,6 +74,7 @@ export interface PreviewGalleryItem {
   height: number;
   isPlaceholder?: boolean;
   featureOverlay?: FeatureOverlay;
+  homepageCrop?: MediaCrop;
 }
 
 export interface DemoGalleryItem {
@@ -77,6 +88,7 @@ export interface DemoGalleryItem {
   hasAudio: boolean;
   isPlaceholder?: boolean;
   featureOverlay?: FeatureOverlay;
+  homepageCrop?: MediaCrop;
 }
 
 export type GalleryItem = ImageGalleryItem | PreviewGalleryItem | DemoGalleryItem;
@@ -97,6 +109,7 @@ export interface Project {
   downloads: ProjectDownload[];
   links: ProjectLink[];
   gallery: GalleryItem[];
+  homepagePreview?: GalleryItem;
   href: string;
   body: string;
 }

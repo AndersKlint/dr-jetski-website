@@ -1,0 +1,28 @@
+- media: hanscan-demo.mp4
+  text: "Chinese OCR with Pinyin and Translation"
+  text_pos_y: 0.12
+  text_offset: { x: 0, y: 0 }
+  style: dark
+
+- media: slope.png
+  text: "Fully offline.\nScan from anywhere"
+  text_pos_y: 0.12
+
+- media: workbook_popup.png
+  text: Built-in popup dictionary
+  text_pos_y: 0.12
+
+- media: workbook_pinyin.png
+  text: Select and copy scanned text
+  text_pos_y: 0.12
+
+- media: workbook_stack_translate.png
+  text: Effortlessly quick translations
+  text_pos_y: 0.12
+
+- preview: hanscan-demo.mp4
+  text: "Chinese OCR with Pinyin and Translation"
+  text_pos_y: 0.12
+  text_offset: { x: 0, y: 0 }
+  preview_crop: { xStart: 0, xEnd: 1, yStart: 0.16, yEnd: 0.84 }
+  style: dark

@@ -30,11 +30,41 @@ The floating layered-stack carousel redesign is implemented. The orchestrator re
 
 The bounded layered-stack carousel refinement is implemented. Navigation stops at the first and last items, depth-2 neighbors remain behind depth-1 during hover/focus, and clickable round dots replace thumbnails and the visible counter. Mouse hover adds no outline; the selected item stays static and keyboard focus remains visible. Persistent layer geometry provides horizontal transform transitions without page jumps, retaining the uncropped 60%-viewport-height cap and selected-only silent looping behavior. Independent content/type checks pass (33 files, 0 errors/warnings/hints), the production build generates 12 pages, and `git diff --check` is clean. Chrome verification covered HanScan and JetAlign at 1440×900, 390px, and 320px: bounded navigation, dots, hover depth, keyboard and emulated swipe, intermediate animation positions with stable page geometry, playback pause/resume/restart, reduced motion, and no horizontal overflow. Height-only viewport resizing correctly updates the stage; mixed-aspect height transitions were checked synthetically. Physical touchscreens, save-data, and background behavior were not rechecked in this refinement.
 
-Feature overlays are implemented. Each project may add an optional `image_overlay_text.md` sidecar, ingested as a watched raw asset and not registered in `index.md`. Blocks match exact, case-sensitive original media filenames; unmatched names are ignored. The centered banner uses a fractional `y` coordinate clamped to stay inside the media. Overlays render on the homepage's first-media preview and the selected carousel item only. Authoring is defined in [PROJECT-ASSETS.md](PROJECT-ASSETS.md) and visual policy in [DESIGN.md](DESIGN.md). `ASTRO_TELEMETRY_DISABLED=1 npm run check` passes (35 files, 0 errors/warnings/hints), the production build generates 12 pages, and `git diff --check` is clean. Final visual and interaction acceptance is reserved for the owner; no further browser or manual verification was performed.
+The initial feature-overlay implementation used an optional `image_overlay_text.md` sidecar per project, ingested as a watched raw asset and not registered in `index.md`. Blocks matched exact, case-sensitive original media filenames; unmatched names were ignored. The centered banner used a fractional `y` coordinate clamped to stay inside the media. Overlays rendered on the homepage's first-media preview and the selected carousel item only. This historical format is superseded by the approved milestone below; current authoring is defined in [PROJECT-ASSETS.md](PROJECT-ASSETS.md) and visual policy in [DESIGN.md](DESIGN.md). `ASTRO_TELEMETRY_DISABLED=1 npm run check` passed (35 files, 0 errors/warnings/hints), the production build generated 12 pages, and `git diff --check` was clean. Final visual and interaction acceptance was reserved for the owner; no further browser or manual verification was performed.
 
 The visual-only feature-overlay refinement is implemented following DESIGN.md. Existing media-relative positioning and edge clamping are retained. Code review, content/type checks (35 files, 0 errors/warnings/hints), the production build (12 pages), and `git diff --check` pass; visual and interaction review remain reserved for the owner.
 
 Optional per-project homepage preview crops are implemented following [DESIGN.md](DESIGN.md), with HanScan configured. Orchestrator verification: `ASTRO_TELEMETRY_DISABLED=1 npm run check` passes (38 files, 0 errors/warnings/hints), `ASTRO_TELEMETRY_DISABLED=1 npm run build` passes (12 pages), and `git diff --check` passes. Quick code review found no major issues. Manual desktop/mobile visual and playback acceptance remains pending.
+
+## YAML per-media settings
+
+Implemented and integrated; review found no major issues. Watched `media.yaml`
+sidecars replace all three Markdown sidecars and their parser, preserving captions
+and positions and adding pixel offsets, dark/light styles, and authored homepage
+crops. HanScan's crop now lives in its media entry; the old format, hardcoded crop
+map, and crop-specific `HomeProject` plumbing are removed. Current authoring is
+defined in [PROJECT-ASSETS.md](PROJECT-ASSETS.md).
+
+Final orchestrator verification passed: `ASTRO_TELEMETRY_DISABLED=1 npm run check`
+covered 35 files with 0 errors, 0 warnings, and 0 hints;
+`ASTRO_TELEMETRY_DISABLED=1 npm run build` generated 12 pages; and
+`git diff --check` passed. Owner manual desktop/mobile visual, overflow, carousel,
+and playback acceptance remains pending.
+
+## Current milestone: independent homepage preview selection
+
+Implemented; quick integration review found no major issues. Preview selection
+and independent settings follow [PROJECT-ASSETS.md](PROJECT-ASSETS.md) and
+[DESIGN.md](DESIGN.md). All three existing `media.yaml` files have explicit preview
+entries seeded with current settings to preserve homepage appearance: HanScan
+retains its `yEnd: 0.84` crop, JetAlign selects `jetalign_default.png` at
+`text_pos_y: 0.26`, and WayToClip selects `1_waytoclip_demo.mp4` with its current
+caption, `text_pos_y: 0.1`, and offset `y: -38`. HanScan's normal media entry
+retains its gallery caption without a crop. Final orchestrator verification passed:
+`ASTRO_TELEMETRY_DISABLED=1 npm run check` covered 35 files with 0 errors,
+0 warnings, and 0 hints; `npm run build` generated 12 pages; and
+`git diff --check` was clean. Manual desktop/mobile visual, overflow, carousel,
+and playback acceptance remains pending with the owner.
 
 ## 1. Static foundation and project content
 
