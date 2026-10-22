@@ -8,9 +8,10 @@ interface Props {
   project: Project;
   downloads: ProjectDownload[];
   isCompactMedia?: boolean;
+  privacyHref?: string;
 }
 
-const { project, downloads, isCompactMedia = false } = Astro.props;
+const { project, downloads, isCompactMedia = false, privacyHref } = Astro.props;
 const hasBody = project.body.trim().length > 0;
 ---
 <main class="detail" id="main-content">
@@ -40,6 +41,7 @@ const hasBody = project.body.trim().length > 0;
       <slot />
     </section>
   )}
+  {privacyHref && <p class="policy-link"><a href={privacyHref}>Privacy policy</a></p>}
 </main>
 <style>
   .detail {
@@ -110,6 +112,11 @@ const hasBody = project.body.trim().length > 0;
   .body {
     margin-top: 2.5rem;
     max-width: 62ch;
+  }
+
+  .policy-link {
+    margin-top: 2rem;
+    font-size: 0.9rem;
   }
 
   .body :global(ul) {

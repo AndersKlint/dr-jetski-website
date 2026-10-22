@@ -246,15 +246,27 @@ export async function loadProjectRecords(): Promise<Project[]> {
 export interface ProjectDetailSource {
   project: Project;
   entry: ProjectEntry;
+  privacyEntry?: CollectionEntry<'projectPolicies'>;
 }
 
 export async function loadPublicProjectDetails(): Promise<ProjectDetailSource[]> {
   const entries = await getCollection('projects');
   const bySlug = new Map(entries.map((entry) => [entry.data.slug, entry]));
+  const policies = await getCollection('projectPolicies');
+  const policyBySlug = new Map(policies.map((entry) => [entry.id, entry]));
+  for (const policy of policies) {
+    if (!bySlug.has(policy.id)) {
+      throw new Error(`Privacy policy "${policy.id}" has no matching project`);
+    }
+    if (!policy.body?.trim()) {
+      throw new Error(`Privacy policy "${policy.id}" must not be empty`);
+    }
+  }
   const projects = await Promise.all(entries.map(toProject));
   const catalog = new ProjectCatalogService(projects);
   return catalog.publicProjects().map((project) => ({
     project,
     entry: bySlug.get(project.slug) as ProjectEntry,
+    privacyEntry: policyBySlug.get(project.slug),
   }));
 }

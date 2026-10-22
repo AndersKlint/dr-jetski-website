@@ -123,6 +123,18 @@ exists. The initial `make prod` command and its verification above are historica
   staging/production deployment, custom-domain HTTPS,
   deployed routes, redirects, and media verification remain pending.
 
+## HanScan privacy policy
+
+Confirmed scope is defined in [DESIGN.md](DESIGN.md); policy authoring and
+manual synchronization are defined in [PROJECT-ASSETS.md](PROJECT-ASSETS.md).
+
+Implemented; orchestrator quick code review found no major issues. `cmp` confirmed
+the bundled policy is byte-for-byte equal to `../hanscan/privacy-policy.md`.
+`make check` passed content/type checks (37 files, 0 errors/warnings/hints) and
+the production build (13 pages, including `/projects/hanscan/privacy`).
+`git diff --check` passed before this final documentation edit. Manual
+desktop/mobile and keyboard review and publication verification remain pending.
+
 ## 1. Static foundation and project content
 
 - Initialize Astro with TypeScript and static output.

@@ -61,6 +61,15 @@ an empty gallery is not rendered. Set `visibility: "public"` to publish. Add
 projects appear in the compact grid ordered by `editorialOrder`. Every
 referenced file must exist.
 
+## HanScan privacy policy
+
+Copy `../hanscan/privacy-policy.md` verbatim into
+`src/content/projects/hanscan/privacy.md`, preserving all legal text.
+Manually synchronize the bundled copy when the source policy changes;
+the website build must not depend on the sibling repository.
+This support file is not a project entry. Page presentation and placement
+are defined in [DESIGN.md](DESIGN.md).
+
 ## Gallery media
 
 - `image`: a local `./file.ext` with `alt`.

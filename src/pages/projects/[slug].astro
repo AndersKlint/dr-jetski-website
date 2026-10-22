@@ -10,17 +10,18 @@ import SiteLayout from '../../site/SiteLayout.astro';
 interface Props {
   project: Project;
   entry: CollectionEntry<'projects'>;
+  privacyHref?: string;
 }
 
 export async function getStaticPaths() {
   const details = await loadPublicProjectDetails();
-  return details.map(({ project, entry }) => ({
+  return details.map(({ project, entry, privacyEntry }) => ({
     params: { slug: project.slug },
-    props: { project, entry },
+    props: { project, entry, privacyHref: privacyEntry ? `${project.href}/privacy` : undefined },
   }));
 }
 
-const { project, entry } = Astro.props as Props;
+const { project, entry, privacyHref } = Astro.props as Props;
 const { Content } = await render(entry);
 const detail = prepareProjectDetail(project);
 ---
@@ -35,6 +36,7 @@ const detail = prepareProjectDetail(project);
     project={project}
     downloads={detail.downloads}
     isCompactMedia={detail.isCompactMedia}
+    privacyHref={privacyHref}
   >
     <Content />
   </ProjectDetailView>

@@ -1,0 +1,32 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import { loadPublicProjectDetails } from '../../../projects/astroProjectSource';
+import type { Project } from '../../../projects/Project';
+import ProjectPolicyView from '../../../project-detail-view/ProjectPolicyView.astro';
+import SiteLayout from '../../../site/SiteLayout.astro';
+
+interface Props {
+  project: Project;
+  entry: CollectionEntry<'projectPolicies'>;
+}
+
+export async function getStaticPaths() {
+  const details = await loadPublicProjectDetails();
+  return details.flatMap(({ project, privacyEntry }) => privacyEntry ? [{
+    params: { slug: project.slug },
+    props: { project, entry: privacyEntry },
+  }] : []);
+}
+
+const { project, entry } = Astro.props;
+const { Content } = await render(entry);
+---
+<SiteLayout
+  title={`${project.displayName} Privacy Policy — Dr. Jetski Studios`}
+  description={`Privacy policy for ${project.displayName}.`}
+  projectBanner={{ displayName: project.displayName, hasDownloads: false }}
+>
+  <ProjectPolicyView projectName={project.displayName} projectHref={project.href}>
+    <Content />
+  </ProjectPolicyView>
+</SiteLayout>
