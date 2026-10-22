@@ -134,7 +134,7 @@ Early work-in-progress voice-processing and synthesis plugin. An initial analysi
 
 Small desktop app using yt-dl to download and cut a video between two timestamped YouTube URLs.
 
-### spotify-screensave
+### spotify-screensaver
 
 Small Linux desktop app displaying the current song's album artwork, title, and artist as a styled screensaver.
 
@@ -152,7 +152,7 @@ Small Linux desktop app displaying the current song's album artwork, title, and 
 | chinese_popup_dict | Finished implementation; package not yet polished, still closed source; pub.dev publication planned | Include an informative page with publication-in-preparation status; no public package/source actions yet |
 | WORLD-vocoder-vst | Prototype | Exclude from the launch site; future project |
 | yt-clip-extractor | Minimal MVP; Linux and Windows builds available | Include in compact collection; supply current download destinations |
-| spotify-screensave | Finished script; screenshot available | Confirm source/install destination |
+| spotify-screensaver | Finished script; screenshot available | Confirm source/install destination |
 
 ## Execution details and owner-supplied content
 

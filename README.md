@@ -106,7 +106,7 @@ and video rules.
 - The first three public featured projects by rank are the leads; the
   remaining ranked projects are secondary.
 - Compact projects sort by `editorialOrder`: paddle-my-pdf, then the two
-  Flutter packages adjacent, then yt-clip-extractor, spotify-screensave.
+  Flutter packages adjacent, then yt-clip-extractor, spotify-screensaver.
 - JetAlign is canonical at `/projects/jetalign`; `/projects/vocal-aligner`
   permanently redirects there. Its folder slug is `jetalign`.
 - Unknowns go in frontmatter `authoringNotes`, never as public calls to
@@ -158,7 +158,7 @@ Marked per file in `authoringNotes`; still needed before the full public launch
 - WayToClip: source URL (unknown — not linked) and GNOME listing URL.
 - LaoZi: desktop/web artifacts (only the Android APK is confirmed).
 - HanKan Windows/Linux, yt-clip-extractor: exact bundle/extension/installer formats.
-- Paddle-my-pdf / spotify-screensave: source/install destinations.
+- Paddle-my-pdf / spotify-screensaver: source/install destinations.
 - Flutter packages: pub.dev URLs once published.
 - Contact details, professional links, and real screenshots/previews to replace
   the initial concept placeholders.

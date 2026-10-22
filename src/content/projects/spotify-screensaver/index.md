@@ -1,6 +1,6 @@
 ---
-slug: "spotify-screensave"
-displayName: "spotify-screensave"
+slug: "spotify-screensaver"
+displayName: "spotify-screensaver"
 description: "Small Linux app showing the current song's artwork, title, and artist as a styled screensaver."
 projectType: "utility"
 supportedPlatforms: ["Linux"]
@@ -22,6 +22,6 @@ gallery:
     isPlaceholder: true
 ---
 
-spotify-screensave is a small Linux desktop app that displays the current song's album artwork, title, and artist as a styled screensaver.
+spotify-screensaver is a small Linux desktop app that displays the current song's album artwork, title, and artist as a styled screensaver.
 
 Platform availability: Linux. The install destination is still to confirm, so there are no actionable downloads yet.
