@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="512"
+   height="512"
+   viewBox="200 -453 3000 3000.0001"
+   role="img"
+   aria-labelledby="icon-title icon-description"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="dr-jetski-studios-icon.svg"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.1123047"
+     inkscape:cx="356.91659"
+     inkscape:cy="348.37577"
+     inkscape:window-width="3440"
+     inkscape:window-height="1371"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="rider" />
+  <defs
+     id="defs1" />
+  <title
+     id="icon-title">Dr. Jetski Studios — rider icon</title>
+  <desc
+     id="icon-description">Orange and off-white jet-powered rider and sweeping wake inside an open rounded frame, taken from the full vector logo without lettering and centered on a transparent square canvas.</desc>
+  <rect
+     style="opacity:1;fill:#211e1b;stroke-width:1.30664;fill-opacity:1"
+     id="rect1"
+     width="3360.843"
+     height="3229.1484"
+     x="41.966633"
+     y="-526.7489"
+     transform="translate(-1.3802083e-6)" />
+  <g
+     id="g1"
+     transform="matrix(5.7350318,0,0,5.7350318,-13050.647,-2234.5725)">
+    <g
+       id="rider"
+       fill="#f7f4ef">
+      <g
+         id="rider-head">
+        <path
+           id="hair-face-and-neck"
+           d="m 2523,774 c 3,-67 -13,-107 -41,-138 -14,-16 -27,-30 -27,-36 l 29,-10 c -30,-11 -58,-28 -74,-48 23,1 42,0 58,-4 -29,-16 -55,-40 -77,-72 33,6 67,10 102,6 -35,-24 -58,-51 -79,-86 62,21 122,21 184,35 l -33,-56 c 73,21 126,48 160,106 l 3,-35 23,46 v 55 c -27,-6 -62,-19 -90,-17 -25,1 -40,19 -40,49 l -74,-6 c -4,10 -4,25 -1,37 l 77,13 c 0,28 9,41 43,54 25,9 40,14 51,9 l -2,15 c -18,14 -22,37 -34,59 -7,4 -35,-9 -78,-28 z" />
+        <g
+           id="goggles">
+          <path
+             id="goggle-orange-rim"
+             fill="#ee7135"
+             d="m 2667,545 c 31,0 76,17 103,29 l -11,58 c -20,-5 -37,18 -52,26 -13,-3 -44,-15 -51,-24 -6,-11 -5,-61 -4,-76 q 5,-13 15,-13 z" />
+          <path
+             id="goggle-lens"
+             d="m 2683,549 c 27,5 60,14 87,25 l -4,20 c -27,0 -44,11 -82,37 -8,-10 -11,-41 -9,-65 q 1,-16 8,-17 z" />
+        </g>
+      </g>
+      <path
+         id="rider-back-contour"
+         d="m 2076,625 c 99,-7 195,-6 279,-8 65,-4 97,7 123,48 30,44 33,100 10,154 2,-75 -7,-137 -53,-159 -35,-17 -66,-11 -117,-14 -94,-3 -172,-11 -242,-21 z" />
+      <path
+         id="rider-body-and-scarf"
+         d="m 1741,1258 c -70,-105 -144,-180 -263,-224 140,-64 297,-92 465,-114 l -42,18 c 154,-9 280,-33 394,-78 -94,19 -193,33 -288,46 l 280,-196 c 70,-47 123,-57 153,-18 30,36 24,100 24,139 0,38 -20,66 -48,92 -44,42 -86,60 -158,86 -203,66 -348,136 -517,249 z" />
+      <path
+         id="rider-collar-detail"
+         d="m 2495,847 c 10,-16 15,-35 24,-50 q 7,-9 18,-7 c -10,26 -22,42 -42,57 z" />
+    </g>
+  </g>
+  <metadata
+     id="metadata1">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Dr. Jetski Studios — rider icon</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>
