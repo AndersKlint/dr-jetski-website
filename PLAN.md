@@ -51,7 +51,7 @@ covered 35 files with 0 errors, 0 warnings, and 0 hints;
 `git diff --check` passed. Owner manual desktop/mobile visual, overflow, carousel,
 and playback acceptance remains pending.
 
-## Current milestone: independent homepage preview selection
+## Independent homepage preview selection
 
 Implemented; quick integration review found no major issues. Preview selection
 and independent settings follow [PROJECT-ASSETS.md](PROJECT-ASSETS.md) and
@@ -65,6 +65,63 @@ retains its gallery caption without a crop. Final orchestrator verification pass
 0 warnings, and 0 hints; `npm run build` generated 12 pages; and
 `git diff --check` was clean. Manual desktop/mobile visual, overflow, carousel,
 and playback acceptance remains pending with the owner.
+
+## Early WIP deployment milestone
+
+Accepted scope: publish the current static site to the confirmed domain in
+[DESIGN.md](DESIGN.md), allowing existing pending downloads and clearly marked
+content/media placeholders. This is an early WIP, not completion of phase 4.
+
+- Historical initial repository preparation used root `make prod` for sequential
+  content/type checks and a static production build into `dist/`, Astro's `site`
+  is `https://drjetski.com`, and [README.md](README.md) documents local preparation
+  and Git deployment. The main orchestrator reviewed the full diff and Makefile
+  with no major issues. `make prod` passed: Astro checked 35 files with 0 errors,
+  warnings, or hints, and the production static build generated 12 pages.
+  `git diff --check` also passed.
+- Manual Cloudflare setup remains unperformed: verify account access, connect
+  the existing GitHub repository to a static Pages project with production
+  branch `release` and preview branch `main`, configure the build, deploy, and attach the domain through Pages
+  Custom domains. Domain activation and actual deployment remain pending; verify
+  HTTPS, routes, redirects, and media on the deployed site afterward.
+- Defer R2 provisioning and binary publication until needed for substantial
+  media/downloads; full release metadata and final content remain phase 4 work.
+
+## Current milestone: staging and production promotion workflow
+
+The revised branch decision is recorded in [DESIGN.md](DESIGN.md); operational
+instructions are in [README.md](README.md). The owner confirms `release` already
+exists. The initial `make prod` command and its verification above are historical.
+
+- Replace `make prod` with `make check`, with no compatibility alias: run
+  content/type checks and then the production static build to ignored `dist/`,
+  sequentially and stopping on failure. This command does not publish.
+- Add `make deploy-prod` with `check` as a prerequisite: content/type checks and
+  the production build must succeed before any Git command runs, including with
+  `make -j`; failure stops deployment. Then run the exact sequence `git fetch origin`,
+  `git switch release`, `git pull --ff-only origin release`,
+  `git merge --ff-only origin/main`, `git push origin release`, `git switch main`.
+  Document a committed clean worktree and already-pushed desired `main` commits
+  as prerequisites. Promotion uses fetched `origin/main`, excludes unpushed
+  commits, stops on failure, and may leave `release` checked out. The push triggers
+  an asynchronous Pages deployment; the target does not wait for it.
+- Configure source-only Pages Git integration with production branch `release`,
+  staging previews for `main` (optionally all non-production branches), and the
+  same `npm run check && npm run build`, output `dist`, and existing Node setting
+  for both. Do not commit or upload `dist/`.
+- Verify a successful `main.<project>.pages.dev` preview using the actual project
+  name. Optionally register `staging.drjetski.com` in Pages Custom domains, then
+  update the CNAME created by Pages to target that branch alias and ensure it is
+  proxied. Previews are public by default;
+  Access is optional. Production uses `drjetski.com`; R2 assets may be shared.
+- Final orchestrator verification passed: `make -n deploy-prod` shows the exact
+  six requested commands, and `make -n check` shows the expected checks/build.
+  `make check` passed Astro content/type checks (35 files, 0 errors, 0 warnings,
+  0 hints) and the static production build (12 pages); `git diff --check` passed.
+  Quick review found no major issues. `deploy-prod` was only dry-run; no fetch,
+  switch, pull, merge, or push was executed. Cloudflare configuration,
+  staging/production deployment, custom-domain HTTPS,
+  deployed routes, redirects, and media verification remain pending.
 
 ## 1. Static foundation and project content
 
@@ -102,13 +159,13 @@ and playback acceptance remains pending with the owner.
 
 ## 4. Downloads and deployment
 
-- Connect the repository to Cloudflare Pages for static Git-based deployment.
+- Connect the source repository to Cloudflare Pages with `release` production and `main` staging previews, following the current workflow milestone.
 - Configure the studio domain and an R2 Standard bucket with a production downloads subdomain.
 - Upload current software builds under versioned paths, keeping binaries out of Git and the Pages build.
 - Serve substantial preview video through R2 as needed; retain small optimized imagery in the static site.
 - Set appropriate content types and download filenames; verify real file delivery and video playback from the published origin.
 - Populate actual release versions, sizes, installation notes, source links, and store/registry destinations as available.
-- Document the routine publishing steps: upload artifact, edit project metadata/content, validate locally, commit/push, and check the deployed page.
+- Document the routine publishing steps: upload artifact, edit project metadata/content, run `make check`, commit/push `main`, review staging, run `make deploy-prod`, and check the asynchronous production deployment and deployed page.
 
 ## 5. Verification and completion criteria
 

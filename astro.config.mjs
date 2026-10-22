@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 import { readFile } from 'node:fs/promises';
 
 export default defineConfig({
+  site: 'https://drjetski.com',
   output: 'static',
   vite: {
     plugins: [{
