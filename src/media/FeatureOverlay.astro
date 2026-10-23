@@ -8,7 +8,7 @@ interface Props {
 
 const { overlay } = Astro.props;
 const direction = overlay.y <= 0.5 ? "column" : "column-reverse";
-const style = `--feature-overlay-y: ${overlay.y}; --feature-overlay-direction: ${direction}; --feature-overlay-offset-x: ${overlay.offset.x}px; --feature-overlay-offset-y: ${overlay.offset.y}px`;
+const style = `--feature-overlay-y: ${overlay.y}; --feature-overlay-direction: ${direction}; --feature-overlay-offset-x: ${overlay.offset.x}px; --feature-overlay-offset-y: ${overlay.offset.y}px${overlay.highlightColor === undefined ? "" : `; --feature-overlay-highlight-color: ${overlay.highlightColor}`}`;
 ---
 
 <div

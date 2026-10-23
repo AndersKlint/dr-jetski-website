@@ -40,6 +40,9 @@ const presentationFields = {
     y: z.number().default(0),
   }).strict().default({ x: 0, y: 0 }),
   style: z.enum(['dark', 'light']).default('dark'),
+  'highlight-color': z.string().regex(/^#?[0-9a-fA-F]{6}$/, {
+    message: 'Expected exactly six hex digits, optionally prefixed with #',
+  }).transform((value) => `#${value.replace(/^#/, '')}`).optional(),
   preview_crop: mediaCropSchema.optional(),
 };
 
@@ -120,6 +123,7 @@ export function parseMediaPresentation(raw: string, filePath: string): ProjectMe
         y: entry.text_pos_y,
         offset: entry.text_offset,
         style: entry.style,
+        highlightColor: entry['highlight-color'],
       },
       homepageCrop: entry.preview_crop,
     };
@@ -133,7 +137,7 @@ export function parseMediaPresentation(raw: string, filePath: string): ProjectMe
         throw new Error(`${filePath}: ${index}.media: Duplicate media filename "${entry.media}"`);
       }
       presentations.set(entry.media, presentation);
-      const { text, text_pos_y, text_offset, style, preview_crop, ...media } = entry;
+      const { text, text_pos_y, text_offset, style, 'highlight-color': highlightColor, preview_crop, ...media } = entry;
       gallery.push({ ...media, ...presentation });
     }
   }

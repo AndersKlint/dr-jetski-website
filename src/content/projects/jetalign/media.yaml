@@ -1,14 +1,17 @@
 - media: jetalign_default.png
+  highlight-color: "#ECAA52"
   alt: "JetAlign plugin showing aligned dub, guide, and output waveforms."
   text: Vocal and instrument alignment made easy
   text_pos_y: 0.26
 
 - media: jetalign_selections.png
+  highlight-color: "#ECAA52"
   alt: "JetAlign timeline with don't-align and keep regions selected for re-alignment."
   text: Selective alginment using drawable regions
   text_pos_y: 0.47
 
 - media: jetalign_recording_and_aligning.mp4
+  highlight-color: "#ECAA52"
   kind: preview
   poster: jetalign_recording_and_aligning_poster.webp
   alt: "Silent clip of JetAlign recording a dub take and aligning it to the guide."
@@ -18,6 +21,7 @@
   text_pos_y: 0.8
 
 - media: jetalign_editing.mp4
+  highlight-color: "#ECAA52"
   kind: preview
   poster: jetalign_editing_poster.webp
   alt: "Silent clip of JetAlign editing alignment regions on the dub, guide, and output tracks."
@@ -27,5 +31,6 @@
   text_pos_y: 0.26
 
 - preview: jetalign_default.png
+  highlight-color: "#ECAA52"
   text: Vocal and instrument alignment made easy
   text_pos_y: 0.26

@@ -45,6 +45,7 @@ export interface FeatureOverlay {
   y: number;
   offset: { x: number; y: number };
   style: 'dark' | 'light';
+  highlightColor?: string;
 }
 
 export interface MediaCrop {

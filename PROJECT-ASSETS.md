@@ -115,12 +115,14 @@ Use a top-level YAML sequence of normal `media` records and at most one optional
 
 ```yaml
 - preview: hanscan-demo.mp4
+  highlight-color: "#3A8DFF"
   text: "Chinese, Pinyin & English OCR"
   text_pos_y: 0.12
   text_offset: {x: 0, y: 0}
   style: dark
   preview_crop: {xStart: 0, xEnd: 1, yStart: 0.16, yEnd: 0.84}
 - media: hanscan-demo.mp4
+  highlight-color: "#3A8DFF"
   kind: preview
   poster: hanscan-demo-poster.webp
   alt: "HanScan recognizing Chinese text."
@@ -199,7 +201,11 @@ Use a top-level YAML sequence of normal `media` records and at most one optional
 - `style` is optional and accepts only `dark` (default) or `light`. Dark retains
   the existing opaque cool-neutral gradient and near-white text; light uses a
   light-neutral background and dark text. Both retain the same typography,
-  orange left rule, rounded shape, padding, and shadow.
+  authored left-accent color, rounded shape, padding, and shadow.
+- `highlight-color` is optional on normal `media` and independent `preview`
+  records: a quoted six-digit `#hex` string such as `"#3A8DFF"`. It sets the
+  feature overlay's left accent in either style; omission defaults to the site's
+  orange `--ember` token. An independent preview does not inherit the media color.
 - Text settings apply to the homepage preview (featured and compact) according to
    the selection rules above, and normal media text applies to the selected
   project-carousel item, never faded neighbors. The banner
@@ -250,7 +256,8 @@ the site's Inter font and shared [feature-overlay CSS](src/media/featureOverlay.
 - `--highlight-color` is optional: exactly six hexadecimal digits, optionally
   prefixed with `#` (quote a leading `#` in the shell). It overrides the caption's
   left accent in dark and light styles, with or without a phone frame, only in
-  the generated document. Omission retains the website's `--ember` token.
+  the generated document. Precedence: explicit CLI override, then each normal
+  media record's authored `highlight-color`, then the website's `--ember` token.
 - `--text-offset <x,y>` optionally replaces both YAML `text_offset` coordinates
   for every existing caption in the export. Supply two comma-separated finite
   numbers in CSS pixels; negative and decimal values are allowed. Positive `x`
@@ -285,9 +292,9 @@ the site's Inter font and shared [feature-overlay CSS](src/media/featureOverlay.
   the current working directory.
 - The tool processes original images in `media.yaml` normal-record order, including
   images without captions, and skips all videos. Author captions in normal
-  `media` records in `media.yaml` using `text`, `text_pos_y`, `text_offset`, and
-  `style` as documented above. It uses the shared parser's gallery items and ignores
-  homepage-specific captions and crops.
+  `media` records in `media.yaml` using `text`, `text_pos_y`, `text_offset`,
+  `style`, and `highlight-color` as documented above. It uses the shared parser's
+  gallery items and ignores homepage-specific captions and crops.
 - Final output is 1440×2560 for portrait or square originals and 2560×1440 for
   landscape originals. Without `--phone-frame`, uniformly fit the full source
   image inside the selected padding and center the image itself on the canvas.
