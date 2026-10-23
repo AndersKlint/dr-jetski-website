@@ -28,7 +28,7 @@ async function main() {
   --highlight-color <hex>     Six hex digits, optionally prefixed with #; default site ember
   --output-dir <directory>    Output directory relative to invocation cwd
   --padding <percent>        Minimum image/phone-edge short-edge margin per side; 0 <= percent < 50, default 8
-  --phone-frame              Add a rounded generic phone bezel with square screen corners; default false
+  --phone-frame              Add the silver SVG phone frame with rounded screen corners; default false
   --help                     Show this help
 
 Default output: store-screenshot-generator/output/<slug>/<original-basename>.png
@@ -37,7 +37,7 @@ PNG: 1440×2560 portrait/square sources, 2560×1440 landscape sources.
 Transparent by default; use --background-color 211e1b for opaque RGB Google Play exports.
 Transparent outputs are generic assets, not Google Play-compliant screenshots.
 Full source image is centered with at least 8% short-edge padding by default.
-With --phone-frame, padding measures the outer phone edges; the full image shrinks to fit.
+With --phone-frame, padding measures the outer phone edges; screen corners are rounded and the camera overlays the image.
 Captions follow the image and may overflow its padding or clip at the canvas edge.
 Example: ./store-screenshot-generator/store-screenshot-generator --project-name hanscan --padding 2.5
 Matching outputs are overwritten; unrelated files are retained.
@@ -110,6 +110,8 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
     return;
   }
   const overlayCss = await readFile(resolve(root, 'src/media/featureOverlay.css'), 'utf8');
+  const phoneFrameSvg = values['phone-frame']
+    ? await readFile(resolve(scriptDirectory, 'phone-frame.svg'), 'utf8') : undefined;
   const globalCss = await readFile(resolve(root, 'src/site/global.css'), 'utf8');
   const tokens = ['font-body', 'text-primary', 'ember'].map(name => {
     const match = globalCss.match(new RegExp(`--${name}:\\s*([^;]+);`));
@@ -137,11 +139,6 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
       await measuringPage.close();
       const canvas = dimensions.width > dimensions.height
         ? { width: 2560, height: 1440 } : { width: 1440, height: 2560 };
-      const hasPhoneFrame = values['phone-frame'];
-      const isLandscape = dimensions.width > dimensions.height;
-      const bezelUnit = Math.min(360, 360 * dimensions.height / dimensions.width);
-      const bezelX = hasPhoneFrame ? bezelUnit * (isLandscape ? 0.055 : 0.025) : 0;
-      const bezelY = hasPhoneFrame ? bezelUnit * (isLandscape ? 0.025 : 0.055) : 0;
       const context = await browser.newContext({ deviceScaleFactor: 1, viewport: canvas });
       try {
         const page = await context.newPage();
@@ -151,20 +148,54 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
           body{margin:0;background:${color ? `#${color.replace(/^#/, '')}` : 'transparent'};font-family:var(--font-body);line-height:1.6}
           #composition{position:absolute;left:0;top:0;width:360px;height:${360 * dimensions.height / dimensions.width}px}
           #composition>img{display:block;width:100%;height:100%;border-radius:min(8px,${360 * dimensions.height / dimensions.width / 20}px)}
-          ${hasPhoneFrame ? `
-          #composition{isolation:isolate}
-          #composition>img{border-radius:0}
-          #composition::before{content:"";position:absolute;inset:-${bezelY}px -${bezelX}px;border-radius:${Math.max(bezelX, bezelY)}px;background:#202124;border:1px solid #62656a;z-index:-1}
-          #composition::after{content:"";position:absolute;background:#08090a;${isLandscape
-            ? `width:${bezelX * 0.18}px;height:${bezelUnit * 0.12}px;left:-${bezelX * 0.6}px;top:50%;transform:translateY(-50%)`
-            : `height:${bezelY * 0.18}px;width:${bezelUnit * 0.12}px;top:-${bezelY * 0.6}px;left:50%;transform:translateX(-50%)`}}
-          ` : ''}
+          #phone-frame{position:absolute;z-index:1;pointer-events:none}
+          #phone-frame>svg{display:block;transform-origin:top left}
           ${overlayCss}` });
-        await page.evaluate(async ({ dataUrl, overlay }) => {
+        const phoneBounds = await page.evaluate(async ({ dataUrl, overlay, phoneFrameSvg, dimensions }) => {
           const composition = document.querySelector('#composition');
           const image = composition.querySelector('img');
           image.src = dataUrl;
           await image.decode();
+          const imageWidth = 360, imageHeight = 360 * dimensions.height / dimensions.width;
+          let bounds = { x: 0, y: 0, width: imageWidth, height: imageHeight };
+          if (phoneFrameSvg) {
+            const svg = new DOMParser().parseFromString(phoneFrameSvg, 'image/svg+xml').documentElement;
+            const screen = svg.querySelector('#screen-opening');
+            const screenX = screen.x.baseVal.value, screenY = screen.y.baseVal.value;
+            const screenWidth = screen.width.baseVal.value, originalScreenHeight = screen.height.baseVal.value;
+            const isLandscape = dimensions.width > dimensions.height;
+            const screenHeight = screenWidth * (isLandscape
+              ? dimensions.width / dimensions.height : dimensions.height / dimensions.width);
+            const heightChange = screenHeight - originalScreenHeight;
+            const frameWidth = svg.viewBox.baseVal.width, frameHeight = svg.viewBox.baseVal.height + heightChange;
+            const frameScale = Math.min(imageWidth, imageHeight) / screenWidth;
+            svg.setAttribute('height', String(frameHeight));
+            svg.setAttribute('viewBox', `0 0 ${frameWidth} ${frameHeight}`);
+            const mask = svg.querySelector('#frame-cutout');
+            mask.setAttribute('height', String(frameHeight));
+            for (const rectangle of svg.querySelectorAll('#frame > rect, #frame-cutout > rect')) {
+              rectangle.setAttribute('height', String(rectangle.height.baseVal.value + heightChange));
+            }
+            for (const button of svg.querySelectorAll('#buttons > rect')) {
+              button.setAttribute('y', String(button.y.baseVal.value * screenHeight / originalScreenHeight));
+            }
+            svg.querySelector('#bottom-antenna-bands').setAttribute('transform', `translate(0 ${heightChange})`);
+            image.style.borderRadius = `${screen.rx.baseVal.value * frameScale}px`;
+            bounds = isLandscape
+              ? { x: -screenY * frameScale, y: -(frameWidth - screenX - screenWidth) * frameScale,
+                  width: frameHeight * frameScale, height: frameWidth * frameScale }
+              : { x: -screenX * frameScale, y: -screenY * frameScale,
+                  width: frameWidth * frameScale, height: frameHeight * frameScale };
+            const frame = document.createElement('div');
+            frame.id = 'phone-frame';
+            frame.style.left = `${bounds.x}px`;
+            frame.style.top = `${bounds.y}px`;
+            svg.style.transform = isLandscape
+              ? `translateY(${frameWidth * frameScale}px) rotate(-90deg) scale(${frameScale})`
+              : `scale(${frameScale})`;
+            frame.append(svg);
+            composition.append(frame);
+          }
           if (overlay) {
             const wrapper = document.createElement('div');
             wrapper.className = 'feature-overlay';
@@ -183,17 +214,17 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
             composition.append(wrapper);
           }
           await document.fonts.ready;
-        }, image);
-        await page.evaluate(({ canvas, dimensions, paddingPercentage, bezelX, bezelY }) => {
+          return bounds;
+        }, { ...image, phoneFrameSvg, dimensions });
+        await page.evaluate(({ canvas, paddingPercentage, phoneBounds }) => {
           const composition = document.querySelector('#composition');
-          const width = 360, height = 360 * dimensions.height / dimensions.width;
           const padding = Math.min(canvas.width, canvas.height) * paddingPercentage / 100;
-          const scale = Math.min((canvas.width - 2 * padding) / (width + 2 * bezelX), (canvas.height - 2 * padding) / (height + 2 * bezelY));
-          composition.style.left = `${(canvas.width - width * scale) / 2}px`;
-          composition.style.top = `${(canvas.height - height * scale) / 2}px`;
+          const scale = Math.min((canvas.width - 2 * padding) / phoneBounds.width, (canvas.height - 2 * padding) / phoneBounds.height);
+          composition.style.left = `${(canvas.width - phoneBounds.width * scale) / 2 - phoneBounds.x * scale}px`;
+          composition.style.top = `${(canvas.height - phoneBounds.height * scale) / 2 - phoneBounds.y * scale}px`;
           composition.style.transformOrigin = 'top left';
           composition.style.transform = `scale(${scale})`;
-        }, { canvas, dimensions, paddingPercentage, bezelX, bezelY });
+        }, { canvas, paddingPercentage, phoneBounds });
         const outputPath = resolve(outputDirectory, image.filename);
         await page.screenshot({ path: outputPath, type: 'png', omitBackground: color === undefined,
           clip: { x: 0, y: 0, ...canvas }, scale: 'device' });

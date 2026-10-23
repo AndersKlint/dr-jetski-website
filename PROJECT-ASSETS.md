@@ -239,11 +239,12 @@ the site's Inter font and shared [feature-overlay CSS](src/media/featureOverlay.
   entire phone's outer edges, so the screenshot shrinks within the phone.
   Captions and shadows do not count toward this inset.
 - `--phone-frame` is an optional boolean flag, off by default. It requests a
-  plain, mathematically drawn, unbranded phone bezel that adapts around the
-  source aspect ratio. Keep the full source uncropped and undistorted, with no
-   screenshot-corner rounding and rounded outer phone-body corners in this mode.
-   Thicker end bezels accommodate the body radius outside the square screen;
-   the bezel and earpiece do not occlude or clip the image.
+  silver phone frame from `store-screenshot-generator/phone-frame.svg`, with
+  flat side buttons, rounded screen corners, and a black camera dot over the
+  image. Its native screen opening is 1440×2560, matching HanScan screenshots.
+  Adapt the straight frame sections to other source aspect ratios without
+  distorting the screenshot, corner radii, or camera; rotate the frame for
+  landscape images. Only screen-corner rounding and the camera obscure content.
 - Output defaults to `store-screenshot-generator/output/<slug>/`, relative to
   the tool, with each image named `<original-basename>.png`. The default output
   folder is ignored by Git; reruns overwrite matching generated outputs.
@@ -267,7 +268,7 @@ the site's Inter font and shared [feature-overlay CSS](src/media/featureOverlay.
 - Without `--phone-frame`, the only intentional image clipping remains subtle corner rounding: an 8 CSS-pixel
   image-only radius at the 360 CSS-pixel image-width reference, scaled with the
   image and optionally capped for a narrow shorter dimension. With the flag,
-   the screenshot stays square while only the outer phone body is rounded. The final output canvas
+  the screenshot corners match the SVG screen opening. The final output canvas
   keeps square corners in both modes. The inset adds background padding;
   it does not guarantee protection from unspecified Google Play UI behavior.
 - With an explicit background color, outputs target Google Play phone screenshot geometry and format, following

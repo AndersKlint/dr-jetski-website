@@ -166,11 +166,12 @@ and caption authoring are defined in [PROJECT-ASSETS.md](PROJECT-ASSETS.md).
   overlay and shadow when computing fit, centering, and padding. They follow the
   image's scale and authored placement, may extend into the padding, and may
   clip at the output canvas edge; they are not part of the minimum inset.
-- With `--phone-frame`, draw a plain mathematical, unbranded phone bezel adapting
-  around the source aspect ratio, retaining the full uncropped, undistorted image.
-  Use rounded outer phone-body corners and square screenshot corners with no
-  screenshot rounding or clipping; thicker end bezels accommodate the body
-  radius outside the screen, and the earpiece never occludes the image.
+- With `--phone-frame`, use `store-screenshot-generator/phone-frame.svg` with
+  its metallic rim, flat side buttons, rounded screen opening, and black camera
+  dot. Its native opening matches 1440×2560 HanScan screenshots. Adapt straight
+  frame sections to the source aspect ratio and rotate for landscape images,
+  preserving screenshot proportions, corner radii, and the circular camera.
+  Screen-corner rounding and the camera may obscure the screenshot.
   Uniformly fit and center the entire phone's outer edges within the selected
   padding, shrinking the screenshot within the phone. Caption geometry remains
   relative to the actual screen/image box, excluded from fit and padding, and
@@ -190,7 +191,7 @@ and caption authoring are defined in [PROJECT-ASSETS.md](PROJECT-ASSETS.md).
   platform-compatibility work. Chrome is installed separately, with `CHROME_PATH`
   available to override discovery.
 
-Optional phone framing with rounded outer corners, square unclipped screens,
+The initial CSS phone framing with rounded outer corners, square unclipped screens,
 and highlight-color support is implemented. Orchestrator quick review found no
 major issues. Running the CLI with `--project-name hanscan --phone-frame
 --highlight-color 33aaff --output-dir /tmp/opencode/store-rounded-phone` produced
@@ -202,6 +203,21 @@ passed. Final orchestrator verification passed:
 `ASTRO_TELEMETRY_DISABLED=1 npm run check` covered 37 files with 0 errors,
 warnings, or hints, and `npm run build` generated 13 pages. Owner final visual
 acceptance remains pending.
+
+The silver SVG frame replaces the initial CSS bezel. The generator adapts the
+SVG's straight sections to the source aspect ratio, preserves its corner radii
+and camera circle, and rotates it for landscape images. HanScan portrait and
+JetAlign landscape exports were rendered and visually inspected in
+`/tmp/opencode/store-svg-phone-hanscan` and
+`/tmp/opencode/store-svg-phone-landscape`. Content/type checks passed with
+39 files and no errors, warnings, or hints; the production build generated
+13 pages.
+
+## Feature-overlay ribbon wrap (overruled)
+
+Reverted in favor of the original flat label. The final design, reference image,
+and restoration code are archived in
+[wrap-around-ribbon.md](overruled_design_decisions/wrap-around-ribbon.md).
 
 ## 1. Static foundation and project content
 
