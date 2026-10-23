@@ -1,0 +1,213 @@
+#!/usr/bin/env node
+import { readFile, mkdir, stat } from 'node:fs/promises';
+import { dirname, resolve, basename, extname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { parseArgs } from 'node:util';
+import { parseDocument } from 'yaml';
+import { chromium } from 'playwright-core';
+import { parseMediaPresentation, mediaSourceBasename } from '../src/projects/mediaPresentation.ts';
+
+const scriptDirectory = dirname(fileURLToPath(import.meta.url));
+const root = resolve(scriptDirectory, '..');
+
+async function main() {
+  const { values } = parseArgs({ options: {
+    'project-name': { type: 'string' },
+    'background-color': { type: 'string' },
+    'highlight-color': { type: 'string' },
+    'output-dir': { type: 'string' },
+    padding: { type: 'string' },
+    'phone-frame': { type: 'boolean', default: false },
+    help: { type: 'boolean' },
+  }, allowPositionals: false });
+  if (values.help) {
+    console.log(`Usage: ./store-screenshot-generator/store-screenshot-generator --project-name <slug> [options]
+
+  --project-name <slug>       Required stable project slug
+  --background-color <hex>    Six hex digits, optionally prefixed with #; default transparent
+  --highlight-color <hex>     Six hex digits, optionally prefixed with #; default site ember
+  --output-dir <directory>    Output directory relative to invocation cwd
+  --padding <percent>        Minimum image/phone-edge short-edge margin per side; 0 <= percent < 50, default 8
+  --phone-frame              Add a rounded generic phone bezel with square screen corners; default false
+  --help                     Show this help
+
+Default output: store-screenshot-generator/output/<slug>/<original-basename>.png
+Exports gallery images in order, using original sources and normal media.yaml captions.
+PNG: 1440×2560 portrait/square sources, 2560×1440 landscape sources.
+Transparent by default; use --background-color 211e1b for opaque RGB Google Play exports.
+Transparent outputs are generic assets, not Google Play-compliant screenshots.
+Full source image is centered with at least 8% short-edge padding by default.
+With --phone-frame, padding measures the outer phone edges; the full image shrinks to fit.
+Captions follow the image and may overflow its padding or clip at the canvas edge.
+Example: ./store-screenshot-generator/store-screenshot-generator --project-name hanscan --padding 2.5
+Matching outputs are overwritten; unrelated files are retained.
+Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
+    return;
+  }
+  const slug = values['project-name'];
+  if (!slug || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+    throw new Error('--project-name must be a stable lowercase, hyphen-separated project slug');
+  }
+  const color = values['background-color'];
+  if (color !== undefined && !/^#?[0-9a-fA-F]{6}$/.test(color)) {
+    throw new Error('--background-color must contain exactly six hex digits, optionally prefixed with #');
+  }
+  const highlightColor = values['highlight-color'];
+  if (highlightColor !== undefined && !/^#?[0-9a-fA-F]{6}$/.test(highlightColor)) {
+    throw new Error('--highlight-color must contain exactly six hex digits, optionally prefixed with #');
+  }
+  if (values['output-dir'] === '') throw new Error('--output-dir must not be empty');
+  const paddingInput = values.padding === undefined ? '8' : values.padding.trim();
+  const paddingPercentage = Number(paddingInput);
+  if (!paddingInput || !Number.isFinite(paddingPercentage) || paddingPercentage < 0 || paddingPercentage >= 50) {
+    throw new Error('--padding must be a finite number greater than or equal to 0 and less than 50');
+  }
+  const outputDirectory = values['output-dir'] === undefined
+    ? resolve(scriptDirectory, 'output', slug) : resolve(values['output-dir']);
+  const projectDirectory = resolve(root, 'src/content/projects', slug);
+  const indexPath = resolve(projectDirectory, 'index.md');
+  const markdown = await readFile(indexPath, 'utf8');
+  const frontmatter = markdown.match(/^\uFEFF?---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
+  if (!frontmatter) throw new Error(`${indexPath}: missing YAML frontmatter`);
+  const document = parseDocument(frontmatter[1], { uniqueKeys: true });
+  if (document.errors.length) throw new Error(`${indexPath}: ${document.errors.map(error => error.message).join('; ')}`);
+  const data = document.toJS();
+  if (!data || data.slug !== slug) throw new Error(`${indexPath}: slug must match "${slug}"`);
+  const gallery = data.gallery === undefined ? [] : data.gallery;
+  if (!Array.isArray(gallery)) throw new Error(`${indexPath}: gallery must be a sequence`);
+  for (const item of gallery) {
+    if (!item || !['image', 'preview', 'demo'].includes(item.kind) || typeof item.src !== 'string') {
+      throw new Error(`${indexPath}: each gallery entry needs a valid kind and source`);
+    }
+  }
+  const sidecarPath = resolve(projectDirectory, 'media.yaml');
+  let sidecar = '';
+  try {
+    sidecar = await readFile(sidecarPath, 'utf8');
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error;
+  }
+  const presentation = parseMediaPresentation(sidecar, sidecarPath);
+  if (presentation.preview && !gallery.some(item => mediaSourceBasename(item.src) === presentation.preview.mediaSource)) {
+    throw new Error(`${sidecarPath}: preview must match an existing gallery source`);
+  }
+  const outputs = new Set();
+  const images = [];
+  for (const item of gallery.filter(item => item.kind === 'image')) {
+    if (!/^\.\/[^/\\]+$/.test(item.src)) throw new Error(`${indexPath}: image source must be a flat local ./filename: ${item.src}`);
+    const source = resolve(projectDirectory, item.src);
+    const filename = `${basename(source, extname(source))}.png`;
+    if (outputs.has(filename.toLowerCase())) throw new Error(`Colliding output basename: ${filename}`);
+    outputs.add(filename.toLowerCase());
+    if (!(await stat(source)).isFile()) throw new Error(`Image source is not a file: ${source}`);
+    const mime = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.avif': 'image/avif' }[extname(source).toLowerCase()];
+    if (!mime) throw new Error(`Unsupported image source: ${source}`);
+    images.push({ filename, source, dataUrl: `data:${mime};base64,${(await readFile(source)).toString('base64')}`,
+      overlay: presentation.mediaBySource.get(basename(source))?.featureOverlay });
+  }
+  if (!images.length) {
+    console.log(`No gallery images to export for ${slug}.`);
+    return;
+  }
+  const overlayCss = await readFile(resolve(root, 'src/media/featureOverlay.css'), 'utf8');
+  const globalCss = await readFile(resolve(root, 'src/site/global.css'), 'utf8');
+  const tokens = ['font-body', 'text-primary', 'ember'].map(name => {
+    const match = globalCss.match(new RegExp(`--${name}:\\s*([^;]+);`));
+    if (!match) throw new Error(`Missing site token --${name}`);
+    return `--${name}:${match[1]};`;
+  }).join('');
+  const fontDirectory = resolve(root, 'node_modules/@fontsource-variable/inter');
+  let fontCss = await readFile(resolve(fontDirectory, 'index.css'), 'utf8');
+  for (const match of [...fontCss.matchAll(/url\(([^)]+)\)/g)]) {
+    const font = await readFile(resolve(fontDirectory, match[1]));
+    fontCss = fontCss.replace(match[0], `url(data:font/woff2;base64,${font.toString('base64')})`);
+  }
+  const browser = await chromium.launch(process.env.CHROME_PATH
+    ? { executablePath: process.env.CHROME_PATH } : { channel: 'chrome' });
+  try {
+    await mkdir(outputDirectory, { recursive: true });
+    for (const image of images) {
+      const measuringPage = await browser.newPage();
+      const dimensions = await measuringPage.evaluate(async dataUrl => {
+        const image = new Image();
+        image.src = dataUrl;
+        await image.decode();
+        return { width: image.naturalWidth, height: image.naturalHeight };
+      }, image.dataUrl);
+      await measuringPage.close();
+      const canvas = dimensions.width > dimensions.height
+        ? { width: 2560, height: 1440 } : { width: 1440, height: 2560 };
+      const hasPhoneFrame = values['phone-frame'];
+      const isLandscape = dimensions.width > dimensions.height;
+      const bezelUnit = Math.min(360, 360 * dimensions.height / dimensions.width);
+      const bezelX = hasPhoneFrame ? bezelUnit * (isLandscape ? 0.055 : 0.025) : 0;
+      const bezelY = hasPhoneFrame ? bezelUnit * (isLandscape ? 0.025 : 0.055) : 0;
+      const context = await browser.newContext({ deviceScaleFactor: 1, viewport: canvas });
+      try {
+        const page = await context.newPage();
+        await page.setContent('<!doctype html><html><head><meta charset="utf-8"></head><body><div id="composition"><img></div></body></html>');
+        await page.addStyleTag({ content: `:root{${tokens}${highlightColor ? `--ember:#${highlightColor.replace(/^#/, '')};` : ''}} ${fontCss}
+          *,*::before,*::after{box-sizing:border-box}
+          body{margin:0;background:${color ? `#${color.replace(/^#/, '')}` : 'transparent'};font-family:var(--font-body);line-height:1.6}
+          #composition{position:absolute;left:0;top:0;width:360px;height:${360 * dimensions.height / dimensions.width}px}
+          #composition>img{display:block;width:100%;height:100%;border-radius:min(8px,${360 * dimensions.height / dimensions.width / 20}px)}
+          ${hasPhoneFrame ? `
+          #composition{isolation:isolate}
+          #composition>img{border-radius:0}
+          #composition::before{content:"";position:absolute;inset:-${bezelY}px -${bezelX}px;border-radius:${Math.max(bezelX, bezelY)}px;background:#202124;border:1px solid #62656a;z-index:-1}
+          #composition::after{content:"";position:absolute;background:#08090a;${isLandscape
+            ? `width:${bezelX * 0.18}px;height:${bezelUnit * 0.12}px;left:-${bezelX * 0.6}px;top:50%;transform:translateY(-50%)`
+            : `height:${bezelY * 0.18}px;width:${bezelUnit * 0.12}px;top:-${bezelY * 0.6}px;left:50%;transform:translateX(-50%)`}}
+          ` : ''}
+          ${overlayCss}` });
+        await page.evaluate(async ({ dataUrl, overlay }) => {
+          const composition = document.querySelector('#composition');
+          const image = composition.querySelector('img');
+          image.src = dataUrl;
+          await image.decode();
+          if (overlay) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'feature-overlay';
+            wrapper.dataset.style = overlay.style;
+            wrapper.style.setProperty('--feature-overlay-y', String(overlay.y));
+            wrapper.style.setProperty('--feature-overlay-direction', overlay.y <= 0.5 ? 'column' : 'column-reverse');
+            wrapper.style.setProperty('--feature-overlay-offset-x', `${overlay.offset.x}px`);
+            wrapper.style.setProperty('--feature-overlay-offset-y', `${overlay.offset.y}px`);
+            const positioner = document.createElement('div');
+            positioner.className = 'feature-overlay-positioner';
+            const banner = document.createElement('p');
+            banner.className = 'feature-overlay-banner';
+            banner.textContent = overlay.text;
+            positioner.append(banner);
+            wrapper.append(positioner);
+            composition.append(wrapper);
+          }
+          await document.fonts.ready;
+        }, image);
+        await page.evaluate(({ canvas, dimensions, paddingPercentage, bezelX, bezelY }) => {
+          const composition = document.querySelector('#composition');
+          const width = 360, height = 360 * dimensions.height / dimensions.width;
+          const padding = Math.min(canvas.width, canvas.height) * paddingPercentage / 100;
+          const scale = Math.min((canvas.width - 2 * padding) / (width + 2 * bezelX), (canvas.height - 2 * padding) / (height + 2 * bezelY));
+          composition.style.left = `${(canvas.width - width * scale) / 2}px`;
+          composition.style.top = `${(canvas.height - height * scale) / 2}px`;
+          composition.style.transformOrigin = 'top left';
+          composition.style.transform = `scale(${scale})`;
+        }, { canvas, dimensions, paddingPercentage, bezelX, bezelY });
+        const outputPath = resolve(outputDirectory, image.filename);
+        await page.screenshot({ path: outputPath, type: 'png', omitBackground: color === undefined,
+          clip: { x: 0, y: 0, ...canvas }, scale: 'device' });
+        console.log(outputPath);
+      } finally {
+        await context.close();
+      }
+    }
+  } finally {
+    await browser.close();
+  }
+}
+
+main().catch(error => {
+  console.error(`store-screenshot-generator: ${error.message}`);
+  process.exitCode = 1;
+});

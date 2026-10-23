@@ -204,6 +204,83 @@ Use a top-level YAML sequence of normal `media` records and at most one optional
   Displayed aspect ratio and layout height follow the retained rectangle rather
   than reserving the uncropped footprint. Overlay positions use that visible area.
 
+## Store screenshot generation
+
+From the repository root, run `npm ci` to install dependencies, including
+`playwright-core`, and install Chrome separately. Set `CHROME_PATH` to the Chrome
+executable to override browser discovery. Rendering uses headless Chrome with
+the site's Inter font and shared [feature-overlay CSS](src/media/featureOverlay.css).
+
+```sh
+./store-screenshot-generator/store-screenshot-generator --project-name hanscan
+./store-screenshot-generator/store-screenshot-generator --project-name hanscan --background-color 211e1b
+./store-screenshot-generator/store-screenshot-generator --project-name hanscan --background-color '#211e1b' --output-dir ./screenshots
+./store-screenshot-generator/store-screenshot-generator --project-name hanscan --padding 2.5
+./store-screenshot-generator/store-screenshot-generator --project-name hanscan --highlight-color 33aaff
+./store-screenshot-generator/store-screenshot-generator --project-name hanscan --phone-frame
+./store-screenshot-generator/store-screenshot-generator --help
+```
+
+- `--project-name` is required and takes the project folder's slug.
+- `--highlight-color` is optional: exactly six hexadecimal digits, optionally
+  prefixed with `#` (quote a leading `#` in the shell). It overrides the caption's
+  left accent in dark and light styles, with or without a phone frame, only in
+  the generated document. Omission retains the website's `--ember` token.
+- `--background-color` is optional: six hexadecimal digits, optionally prefixed
+  with `#` (quote a leading `#` in the shell). The default is transparent.
+  Default outputs are generic assets with alpha, not Google Play-compliant
+  screenshots. Supply `--background-color 211e1b` for opaque RGB PNG exports:
+  the solid background sits behind the entire composition, including transparent
+  pixels in the original image. Google Play does not accept transparent screenshots.
+- `--padding <percent>` is optional and defaults to `8`. Accept a finite decimal
+  percentage from `0` inclusive to `50` exclusive. It sets the minimum inset on
+  every edge, measured as a percentage of the final canvas's short edge. Without
+  `--phone-frame`, this is image padding; with it, this is padding around the
+  entire phone's outer edges, so the screenshot shrinks within the phone.
+  Captions and shadows do not count toward this inset.
+- `--phone-frame` is an optional boolean flag, off by default. It requests a
+  plain, mathematically drawn, unbranded phone bezel that adapts around the
+  source aspect ratio. Keep the full source uncropped and undistorted, with no
+   screenshot-corner rounding and rounded outer phone-body corners in this mode.
+   Thicker end bezels accommodate the body radius outside the square screen;
+   the bezel and earpiece do not occlude or clip the image.
+- Output defaults to `store-screenshot-generator/output/<slug>/`, relative to
+  the tool, with each image named `<original-basename>.png`. The default output
+  folder is ignored by Git; reruns overwrite matching generated outputs.
+  `--output-dir` overrides the destination and resolves relative paths against
+  the current working directory.
+- The tool processes original images in `index.md` gallery order, including
+  images without captions, and skips all videos. Author captions in normal
+  `media` records in `media.yaml` using `text`, `text_pos_y`, `text_offset`, and
+  `style` as documented above. It uses the existing settings parser and ignores
+  homepage-specific captions and crops.
+- Final output is 1440×2560 for portrait or square originals and 2560×1440 for
+  landscape originals. Without `--phone-frame`, uniformly fit the full source
+  image inside the selected padding and center the image itself on the canvas.
+  With the flag, uniformly fit and center the entire phone, including its outer
+  edges, inside that padding. Preserve the source aspect ratio
+  without crop-to-fill or cover sizing; the source may be resampled to fit.
+  In both modes, captions remain relative to the actual screen/image box, not
+  the phone body. Ignore the feature overlay and shadow when computing fit,
+  centering, and padding. They follow the image's scale and authored placement,
+  may extend into the padding, and may clip at the output canvas edge.
+- Without `--phone-frame`, the only intentional image clipping remains subtle corner rounding: an 8 CSS-pixel
+  image-only radius at the 360 CSS-pixel image-width reference, scaled with the
+  image and optionally capped for a narrow shorter dimension. With the flag,
+   the screenshot stays square while only the outer phone body is rounded. The final output canvas
+  keeps square corners in both modes. The inset adds background padding;
+  it does not guarantee protection from unspecified Google Play UI behavior.
+- With an explicit background color, outputs target Google Play phone screenshot geometry and format, following
+  the [official screenshot requirements](https://support.google.com/googleplay/android-developer/answer/9866151?hl=en):
+  JPEG or 24-bit PNG without alpha, minimum dimension 320px, maximum dimension
+  3840px, and a longer edge no more than twice the shorter edge. For apps, Google
+  recommends at least four screenshots at 1080px or higher in 9:16 portrait or
+  16:9 landscape. Geometry and format alone do not guarantee suitability for all
+  device listings or promotion eligibility; manually review captions and other
+   content requirements before uploading. The optional generic phone frame is a
+   marketing asset, not a claim of Google Play promotion compliance; official
+   guidance recommends avoiding device imagery. There are no image-selection options.
+
 ## Preparation
 
 | Asset | Format | Guidance |

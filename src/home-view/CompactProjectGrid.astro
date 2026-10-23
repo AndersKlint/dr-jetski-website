@@ -15,7 +15,7 @@ const { projects } = Astro.props;
     {projects.map((project) => (
       <li>
         <article class="compact-card">
-          <div class="compact-media">
+          <div class="compact-media" data-has-controls={project.homepagePreview?.kind === 'demo'}>
             <MediaPreview media={project.homepagePreview} crop={project.homepagePreview?.homepageCrop} />
           </div>
           <div class="compact-body">
@@ -26,15 +26,9 @@ const { projects } = Astro.props;
               </span>
             </p>
             <h3 class="compact-title">
-              <a class="compact-title-link" href={project.href}>{project.displayName}</a>
+              <a href={project.href} aria-label={`View ${project.displayName} project page`}>{project.displayName}</a>
             </h3>
             <p class="compact-description">{project.description}</p>
-            <p class="compact-note">{project.publicationNote ?? project.availability.message}</p>
-            <p class="compact-action">
-              <a href={project.href} aria-label={`View ${project.displayName} project page`}>
-                View project <span aria-hidden="true">→</span>
-              </a>
-            </p>
           </div>
         </article>
       </li>
@@ -67,6 +61,8 @@ const { projects } = Astro.props;
   }
 
   .compact-card {
+    position: relative;
+    isolation: isolate;
     height: 100%;
     background: var(--charcoal-raised);
     border: 1px solid var(--line);
@@ -84,7 +80,13 @@ const { projects } = Astro.props;
   }
 
   .compact-media {
+    position: relative;
+    z-index: 0;
     --media-radius: calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0;
+  }
+
+  .compact-media[data-has-controls='true'] {
+    z-index: 2;
   }
 
   .compact-kicker {
@@ -104,45 +106,31 @@ const { projects } = Astro.props;
     font-size: 1.15rem;
   }
 
-  .compact-title-link {
+  .compact-description {
+    margin: 0;
+    font-size: 0.92rem;
+  }
+
+  .compact-title a {
     color: inherit;
     text-decoration: none;
   }
 
-  .compact-title-link:hover {
-    color: var(--ember);
-    text-decoration: underline;
-    text-underline-offset: 0.18em;
+  .compact-title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: var(--radius);
   }
 
-  .compact-description {
-    margin: 0 0 0.6rem;
-    font-size: 0.92rem;
+  .compact-title a:focus-visible {
+    outline: none;
   }
 
-  .compact-note {
-    margin: 0;
-    font-size: 0.83rem;
-    color: var(--text-secondary);
-    border-top: 1px solid var(--line);
-    padding-top: 0.6rem;
-  }
-
-  .compact-action {
-    margin: 0.6rem 0 0;
-    font-size: 0.92rem;
-    font-weight: 700;
-  }
-
-  .compact-action a {
-    color: var(--ember);
-    text-decoration: underline;
-    text-underline-offset: 0.18em;
-    text-decoration-thickness: 2px;
-  }
-
-  .compact-action a:hover {
-    color: var(--text-primary);
+  .compact-title a:focus-visible::after {
+    outline: 3px solid var(--ember);
+    outline-offset: 3px;
   }
 
   @media (max-width: 56rem) {

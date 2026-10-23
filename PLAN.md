@@ -135,6 +135,74 @@ the production build (13 pages, including `/projects/hanscan/privacy`).
 `git diff --check` passed before this final documentation edit. Manual
 desktop/mobile and keyboard review and publication verification remain pending.
 
+## Store screenshot generator milestone
+
+Accepted scope: a local CLI at
+`./store-screenshot-generator/store-screenshot-generator` renders original gallery
+images with their normal feature-overlay settings. Setup, options, output paths,
+and caption authoring are defined in [PROJECT-ASSETS.md](PROJECT-ASSETS.md).
+
+- Require `--project-name`; support optional six-digit `--highlight-color` for
+  the caption left accent (default site `--ember`, generated-document override
+  only) and `--background-color`
+  (with or without `#`), `--padding <percent>`, boolean `--phone-frame` (default off),
+  `--output-dir`, and `--help`. Default to transparent
+  generic PNG assets and ignored tool-relative `output/<slug>/`, overwriting matching
+  generated PNGs. Transparent defaults are not Google Play-compliant; use
+  `--background-color 211e1b` for opaque RGB exports, including source transparency.
+- Read images in `index.md` gallery order, include uncaptioned images, skip all
+  videos, and reuse the existing `media.yaml` parser for normal media settings.
+  Homepage preview captions and crops do not apply.
+- Use headless Chrome through `playwright-core`, the site's Inter font, and
+  `src/media/featureOverlay.css` shared verbatim with `FeatureOverlay.astro`.
+  Preserve site presentation when extracting the existing CSS.
+- Render 1440×2560 for portrait or square originals and 2560×1440 for landscape
+  originals. Without `--phone-frame`, uniformly fit the full source image inside
+  the selected padding and center the image itself on the canvas. Padding sets the image's minimum
+  inset on every edge as a percentage of the canvas's short edge. Default
+  to 8%; accept finite decimal percentages from 0 inclusive to 50 exclusive
+  (for example, `--padding 2.5`). Preserve source aspect ratio without
+  crop-to-fill or cover sizing; resampling to fit is allowed. Ignore the feature
+  overlay and shadow when computing fit, centering, and padding. They follow the
+  image's scale and authored placement, may extend into the padding, and may
+  clip at the output canvas edge; they are not part of the minimum inset.
+- With `--phone-frame`, draw a plain mathematical, unbranded phone bezel adapting
+  around the source aspect ratio, retaining the full uncropped, undistorted image.
+  Use rounded outer phone-body corners and square screenshot corners with no
+  screenshot rounding or clipping; thicker end bezels accommodate the body
+  radius outside the screen, and the earpiece never occludes the image.
+  Uniformly fit and center the entire phone's outer edges within the selected
+  padding, shrinking the screenshot within the phone. Caption geometry remains
+  relative to the actual screen/image box, excluded from fit and padding, and
+  retains the same allowed overflow and canvas-edge clipping.
+- Without `--phone-frame`, retain subtle image-corner rounding: 8 CSS pixels at a 360 CSS-pixel image
+  width, scaled with the image and optionally capped for a narrow shorter
+  dimension. Keep output canvas corners square. Padding is not a guarantee
+  against unspecified Google Play UI behavior.
+- For opaque exports, follow the Google Play phone screenshot geometry/format and upload guidance
+  linked in [PROJECT-ASSETS.md](PROJECT-ASSETS.md); do not claim all-device listing
+  suitability or promotion eligibility from geometry alone. Caption and other
+  content requirements still need manual review. The optional generic phone
+  frame is a marketing asset, not a promotion-compliance claim; official guidance
+  recommends avoiding device imagery.
+- Keep the same executable, gallery processing, output locations, overwrite and
+  working-directory behavior. No image selection, video support, or broad
+  platform-compatibility work. Chrome is installed separately, with `CHROME_PATH`
+  available to override discovery.
+
+Optional phone framing with rounded outer corners, square unclipped screens,
+and highlight-color support is implemented. Orchestrator quick review found no
+major issues. Running the CLI with `--project-name hanscan --phone-frame
+--highlight-color 33aaff --output-dir /tmp/opencode/store-rounded-phone` produced
+four PNGs; visual inspection of `workbook_popup.png` confirmed the rounded outer
+phone, square screen, and blue accent together. Earlier manual exports covered
+portrait/landscape, transparent/opaque, and unframed output, with centered bezel
+bounds meeting minimum padding; highlight validation and pixel comparison also
+passed. Final orchestrator verification passed:
+`ASTRO_TELEMETRY_DISABLED=1 npm run check` covered 37 files with 0 errors,
+warnings, or hints, and `npm run build` generated 13 pages. Owner final visual
+acceptance remains pending.
+
 ## 1. Static foundation and project content
 
 - Initialize Astro with TypeScript and static output.

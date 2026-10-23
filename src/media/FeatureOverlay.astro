@@ -1,5 +1,6 @@
 ---
 import type { FeatureOverlay } from "../projects/Project";
+import "./featureOverlay.css";
 
 interface Props {
   overlay: FeatureOverlay;
@@ -20,62 +21,3 @@ const style = `--feature-overlay-y: ${overlay.y}; --feature-overlay-direction: $
     <p class="feature-overlay-banner">{overlay.text}</p>
   </div>
 </div>
-<style>
-  .feature-overlay {
-    position: absolute;
-    inset-inline: 0;
-    top: max(0%, calc((2 * var(--feature-overlay-y, 0.5) - 1) * 100%));
-    bottom: max(0%, calc((1 - 2 * var(--feature-overlay-y, 0.5)) * 100%));
-    z-index: 2;
-    display: flex;
-    flex-direction: var(--feature-overlay-direction, column);
-    align-items: center;
-    padding-inline: clamp(0.75rem, 4%, 1.25rem);
-    pointer-events: none;
-    container-type: inline-size;
-  }
-
-  .feature-overlay-positioner {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    width: 100%;
-    min-width: 0;
-    margin-block: auto;
-    padding-block: clamp(0.5rem, 2.5cqi, 1rem);
-    transform: translate(
-      calc(-38px + var(--feature-overlay-offset-x)),
-      var(--feature-overlay-offset-y)
-    );
-  }
-
-  .feature-overlay-banner {
-    box-sizing: border-box;
-    width: fit-content;
-    max-width: 88%;
-    margin: 0;
-    padding: 0.8em 1em;
-    background: linear-gradient(135deg, #303437 0%, #202325 100%);
-
-    border-left: 8px solid var(--ember);
-    border-radius: 0.65rem;
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6);
-
-    color: var(--text-primary);
-    font-family: var(--font-body, system-ui, sans-serif);
-    font-size: clamp(1rem, 6.5cqi, 1.4rem);
-    font-weight: 800;
-    line-height: 1.3;
-    letter-spacing: -0.02em;
-    text-align: left;
-
-    text-wrap: balance;
-    white-space: pre-line;
-    overflow-wrap: break-word;
-  }
-
-  .feature-overlay[data-style="light"] .feature-overlay-banner {
-    background: linear-gradient(135deg, #f0f1f2 0%, #d9dde0 100%);
-    color: #202325;
-  }
-</style>

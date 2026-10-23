@@ -1,6 +1,7 @@
 dist/
 .astro/
 node_modules/
+store-screenshot-generator/output/
 
 .env
 .env.*
