@@ -233,14 +233,31 @@ the site's Inter font and shared [feature-overlay CSS](src/media/featureOverlay.
 ./store-screenshot-generator/store-screenshot-generator --project-name hanscan --padding 2.5
 ./store-screenshot-generator/store-screenshot-generator --project-name hanscan --highlight-color 33aaff
 ./store-screenshot-generator/store-screenshot-generator --project-name hanscan --phone-frame
+./store-screenshot-generator/store-screenshot-generator --project-name hanscan --image-dir ./store-screenshot-generator/hanscan-9-20
+./store-screenshot-generator/store-screenshot-generator --project-name hanscan --text-offset=-20,10
 ./store-screenshot-generator/store-screenshot-generator --help
 ```
 
 - `--project-name` is required and takes the project folder's slug.
+- `--image-dir` optionally loads images from another folder, resolving relative
+  paths against the current working directory. Supply the exact same filenames
+  (including extensions) as the project's gallery images. The project's existing
+  `index.md` and `media.yaml` still provide metadata, gallery order, and captions;
+  only image sources change. Rendering uses the replacement images' actual
+  dimensions and aspect ratios. Every gallery image must exist in the alternate
+  folder; missing files fail instead of falling back to the originals. Omission
+  uses the project's original images.
 - `--highlight-color` is optional: exactly six hexadecimal digits, optionally
   prefixed with `#` (quote a leading `#` in the shell). It overrides the caption's
   left accent in dark and light styles, with or without a phone frame, only in
   the generated document. Omission retains the website's `--ember` token.
+- `--text-offset <x,y>` optionally replaces both YAML `text_offset` coordinates
+  for every existing caption in the export. Supply two comma-separated finite
+  numbers in CSS pixels; negative and decimal values are allowed. Positive `x`
+  moves right and positive `y` moves down. These offsets scale with the image,
+  just like authored YAML offsets. Use `--text-offset=-20,10` when the value
+  starts with a minus sign. Omission retains each caption's YAML offset;
+  `--text-offset=0,0` resets both coordinates. Uncaptioned images stay uncaptioned.
 - `--background-color` is optional: six hexadecimal digits, optionally prefixed
   with `#` (quote a leading `#` in the shell). The default is transparent.
   Default outputs are generic assets with alpha, not Google Play-compliant

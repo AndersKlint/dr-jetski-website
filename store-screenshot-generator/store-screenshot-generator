@@ -15,7 +15,9 @@ async function main() {
     'project-name': { type: 'string' },
     'background-color': { type: 'string' },
     'highlight-color': { type: 'string' },
+    'image-dir': { type: 'string' },
     'output-dir': { type: 'string' },
+    'text-offset': { type: 'string' },
     padding: { type: 'string' },
     'phone-frame': { type: 'boolean', default: false },
     help: { type: 'boolean' },
@@ -26,13 +28,16 @@ async function main() {
   --project-name <slug>       Required stable project slug
   --background-color <hex>    Six hex digits, optionally prefixed with #; default transparent
   --highlight-color <hex>     Six hex digits, optionally prefixed with #; default site ember
+  --image-dir <directory>     Alternate image folder with the same filenames; relative to invocation cwd
   --output-dir <directory>    Output directory relative to invocation cwd
+  --text-offset <x,y>         Override every caption's YAML text_offset in CSS pixels
   --padding <percent>        Minimum image/phone-edge short-edge margin per side; 0 <= percent < 50, default 8
   --phone-frame              Add the silver 9:20 SVG phone frame; default false
   --help                     Show this help
 
 Default output: store-screenshot-generator/output/<slug>/<original-basename>.png
 Exports images in media.yaml gallery order, using original sources and normal media captions.
+With --image-dir, use alternate images and their dimensions; project YAML and captions stay the same.
 PNG: 1440×2560 portrait/square sources, 2560×1440 landscape sources.
 Transparent by default; use --background-color 211e1b for opaque RGB Google Play exports.
 Transparent outputs are generic assets, not Google Play-compliant screenshots.
@@ -57,7 +62,16 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
   if (highlightColor !== undefined && !/^#?[0-9a-fA-F]{6}$/.test(highlightColor)) {
     throw new Error('--highlight-color must contain exactly six hex digits, optionally prefixed with #');
   }
+  if (values['image-dir'] === '') throw new Error('--image-dir must not be empty');
   if (values['output-dir'] === '') throw new Error('--output-dir must not be empty');
+  let textOffset;
+  if (values['text-offset'] !== undefined) {
+    const coordinates = values['text-offset'].split(',').map(coordinate => coordinate.trim());
+    if (coordinates.length !== 2 || coordinates.some(coordinate => !coordinate || !Number.isFinite(Number(coordinate)))) {
+      throw new Error('--text-offset must contain two finite numbers separated by a comma, e.g. --text-offset=-20,10');
+    }
+    textOffset = { x: Number(coordinates[0]), y: Number(coordinates[1]) };
+  }
   const paddingInput = values.padding === undefined ? '8' : values.padding.trim();
   const paddingPercentage = Number(paddingInput);
   if (!paddingInput || !Number.isFinite(paddingPercentage) || paddingPercentage < 0 || paddingPercentage >= 50) {
@@ -66,6 +80,8 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
   const outputDirectory = values['output-dir'] === undefined
     ? resolve(scriptDirectory, 'output', slug) : resolve(values['output-dir']);
   const projectDirectory = resolve(root, 'src/content/projects', slug);
+  const imageDirectory = values['image-dir'] === undefined
+    ? projectDirectory : resolve(values['image-dir']);
   const indexPath = resolve(projectDirectory, 'index.md');
   const markdown = await readFile(indexPath, 'utf8');
   const frontmatter = markdown.match(/^\uFEFF?---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
@@ -89,7 +105,7 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
   const outputs = new Set();
   const images = [];
   for (const item of gallery.filter(item => item.kind === 'image')) {
-    const source = resolve(projectDirectory, item.media);
+    const source = resolve(imageDirectory, item.media);
     const filename = `${basename(source, extname(source))}.png`;
     if (outputs.has(filename.toLowerCase())) throw new Error(`Colliding output basename: ${filename}`);
     outputs.add(filename.toLowerCase());
@@ -97,7 +113,8 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
     const mime = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.avif': 'image/avif' }[extname(source).toLowerCase()];
     if (!mime) throw new Error(`Unsupported image source: ${source}`);
     images.push({ filename, source, dataUrl: `data:${mime};base64,${(await readFile(source)).toString('base64')}`,
-      overlay: item.featureOverlay });
+      overlay: item.featureOverlay && textOffset
+        ? { ...item.featureOverlay, offset: textOffset } : item.featureOverlay });
   }
   if (!images.length) {
     console.log(`No gallery images to export for ${slug}.`);

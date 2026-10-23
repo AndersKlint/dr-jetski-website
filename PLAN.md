@@ -146,7 +146,8 @@ and caption authoring are defined in [PROJECT-ASSETS.md](PROJECT-ASSETS.md).
   the caption left accent (default site `--ember`, generated-document override
   only) and `--background-color`
   (with or without `#`), `--padding <percent>`, boolean `--phone-frame` (default off),
-  `--output-dir`, and `--help`. Default to transparent
+  `--image-dir`, `--output-dir`, `--text-offset <x,y>` (override caption YAML
+  offsets), and `--help`. Default to transparent
   generic PNG assets and ignored tool-relative `output/<slug>/`, overwriting matching
   generated PNGs. Transparent defaults are not Google Play-compliant; use
   `--background-color 211e1b` for opaque RGB exports, including source transparency.
