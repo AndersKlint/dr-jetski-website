@@ -9,7 +9,7 @@ through each content folder; most entries still use clearly labeled concept
 previews, while JetAlign uses real media.
 
 Phase 3 provides project detail pages, card navigation, and preview playback;
-project galleries use a manual carousel with thumbnails, swipe, and keyboard
+project galleries use a manual layered carousel with dots, swipe, and keyboard
 access. Project authoring uses one folder per project with co-located media; see
 [PROJECT-ASSETS.md](PROJECT-ASSETS.md) for the authoring guide. See
 [PLAN.md](PLAN.md) for the implementation milestones and [AGENTS.md](AGENTS.md)
@@ -111,14 +111,15 @@ and video rules.
   permanently redirects there. Its folder slug is `jetalign`.
 - Unknowns go in frontmatter `authoringNotes`, never as public calls to
   action or invented links.
-- Homepage cards use the first `gallery` entry; the same order drives the
-  project carousel. To replace a concept preview, point its `src` at the new
-  local file, update `alt`, and remove `isPlaceholder: true`. Image dimensions
-  are read automatically; preview thumbnails are generated, not authored.
+- Author gallery membership, order, and presentation in each project's
+  `media.yaml`; `index.md` contains no gallery. Homepage cards use its first
+  media item unless an independent `preview` record selects another. To replace
+  a concept preview, update its `media` filename and `alt`, and remove
+  `isPlaceholder: true`. See the authoring guide for image and video records.
 
 ## Workflow
 
-Edit the project Markdown, run `make check`, optionally inspect with
+Edit the project Markdown and media YAML, run `make check`, optionally inspect with
 `npm run preview`, then commit and push the desired commits to `main`. Review
 the resulting staging preview before promoting production.
 

@@ -1,5 +1,4 @@
 import { z } from 'astro/zod';
-import type { SchemaContext } from 'astro:content';
 
 const KEBAB_SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -38,17 +37,6 @@ const actionUrl = z.string().refine((value) => parseAbsoluteHttpsUrl(value) !== 
   message: 'Expected a real absolute https URL',
 });
 
-const LOCAL_VIDEO_PATH_PATTERN = /^\.\/[^/]+\.(?:mp4|webm|mov|m4v|ogv)$/;
-
-const videoSource = nonBlankString.refine(
-  (value) => parseAbsoluteHttpsUrl(value) !== null || LOCAL_VIDEO_PATH_PATTERN.test(value),
-  {
-    message: 'Expected a real absolute https URL or a co-located local video path such as ./clip.mp4',
-  },
-);
-
-const dimension = z.number().int().positive();
-
 const availabilitySchema = z.object({
   status: z.enum(['available', 'pending', 'unavailable']),
   message: nonBlankString,
@@ -71,35 +59,7 @@ const linkSchema = z.object({
   url: actionUrl,
 });
 
-export function projectSchema({ image }: SchemaContext) {
-  const galleryItemSchema = z.discriminatedUnion('kind', [
-    z.object({
-      kind: z.literal('image'),
-      src: image(),
-      alt: nonBlankString,
-      isPlaceholder: z.boolean().optional(),
-    }),
-    z.object({
-      kind: z.literal('preview'),
-      src: videoSource,
-      poster: image(),
-      alt: nonBlankString,
-      width: dimension,
-      height: dimension,
-      isPlaceholder: z.boolean().optional(),
-    }),
-    z.object({
-      kind: z.literal('demo'),
-      src: videoSource,
-      poster: image(),
-      alt: nonBlankString,
-      width: dimension,
-      height: dimension,
-      hasAudio: z.boolean(),
-      isPlaceholder: z.boolean().optional(),
-    }),
-  ]);
-
+export function projectSchema() {
   return z.object({
     slug: kebabSlug,
     displayName: nonBlankString,
@@ -115,6 +75,5 @@ export function projectSchema({ image }: SchemaContext) {
     authoringNotes: z.array(nonBlankString).default([]),
     downloads: z.array(downloadSchema).default([]),
     links: z.array(linkSchema).default([]),
-    gallery: z.array(galleryItemSchema).default([]),
-  });
+  }).strict();
 }

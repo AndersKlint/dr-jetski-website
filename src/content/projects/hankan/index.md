@@ -26,11 +26,6 @@ downloads:
     platform: "Android"
     format: "APK"
 links: []
-gallery:
-  - kind: "image"
-    src: "./preview.svg"
-    alt: "Illustrative placeholder: concept mockup of HanKan reading mode with a popup dictionary over a document, not a real screenshot."
-    isPlaceholder: true
 ---
 
 HanKan is a Chinese-learning app combining a simple text editor with a reading mode that features a popup dictionary. It also opens PDFs and uses targeted OCR at the tapped or clicked position to give dictionary lookup for the selected word.

@@ -1,15 +1,22 @@
 - media: 1_waytoclip_demo.mp4
+  kind: preview
+  poster: 1_waytoclip_demo_poster.webp
+  alt: "Silent clip of WayToClip navigating clipboard history with the keyboard and pasting text and an image."
+  width: 1256
+  height: 1070
   text: "Efficient clipboard management"
   text_pos_y: 0.08
   text_offset: { x: -16, y: -38 }
   style: dark
 
 - media: 2_waytoclip_popup.png
+  alt: "WayToClip clipboard history popup with text and image entries, search, and favorites."
   text: "Clipboard history with search and filtering"
   text_pos_y: 0.2
   text_offset: { x: -16, y: 0 }
 
 - media: 3_waytoclip_settings.png
+  alt: "WayToClip settings for customizing clipboard history and keyboard navigation."
   text: Highly customizable
   text_pos_y: 0.52
   text_offset: { x: 8, y: -38 }

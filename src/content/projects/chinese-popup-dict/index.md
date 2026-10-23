@@ -18,11 +18,6 @@ authoringNotes:
   - "Owner TODO: replace the concept placeholder gallery entry with a real screenshot or preview when supplied."
 downloads: []
 links: []
-gallery:
-  - kind: "image"
-    src: "./preview.svg"
-    alt: "Illustrative placeholder: concept mockup of wrapped text with a tap-to-open dictionary popup, not a real screenshot."
-    isPlaceholder: true
 ---
 
 chinese_popup_dict is a Flutter package that wraps text widgets with Chinese popup-dictionary interaction: pressing a Chinese character opens the dictionary.

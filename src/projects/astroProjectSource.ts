@@ -4,7 +4,7 @@ import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { projectHref, type GalleryItem, type Project, type ResponsiveImage } from './Project';
 import { ProjectCatalogService } from './ProjectCatalogService';
-import { mediaSourceBasename, parseMediaPresentation, type MediaPresentation, type ProjectMediaPresentation } from './mediaPresentation';
+import { mediaSourceBasename, parseMediaPresentation, type AuthoredMediaItem, type ProjectMediaPresentation } from './mediaPresentation';
 
 const RESPONSIVE_WIDTHS = [640, 960, 1280, 1600, 2000];
 const RESPONSIVE_SIZES = '(min-width: 72rem) 70vw, 100vw';
@@ -29,11 +29,7 @@ const LOCAL_IMAGES = import.meta.glob<ImageMetadata>('/src/content/projects/*/*.
   eager: true,
   import: 'default',
 });
-// SVG component metadata omits fsPath; glob keys preserve original names for every image format.
-const IMAGE_SOURCE_PATHS = new Map(Object.entries(LOCAL_IMAGES).map(([path, image]) => [image.src, path]));
-
 type ProjectEntry = CollectionEntry<'projects'>;
-type AuthoredGalleryItem = ProjectEntry['data']['gallery'][number];
 
 function canonicalSlugFromFile(entry: ProjectEntry): string | null {
   const filePath = entry.filePath;
@@ -106,25 +102,26 @@ function mediaPresentationForProject(entry: ProjectEntry): ProjectMediaPresentat
   const presentationPath = `/${directory}/media.yaml`;
   const raw = MEDIA_PRESENTATION_SOURCES[presentationPath];
   if (raw === undefined) {
-    return { mediaBySource: new Map() };
+    return { mediaBySource: new Map(), gallery: [] };
   }
   return parseMediaPresentation(raw, presentationPath);
 }
 
-function galleryItemSourceBasename(item: AuthoredGalleryItem): string | null {
-  const source = item.kind === 'image' ? IMAGE_SOURCE_PATHS.get(item.src.src) : item.src;
-  if (source === undefined) {
-    throw new Error('No original asset path for gallery image');
+function resolveImage(source: string, entry: ProjectEntry): ImageMetadata {
+  const path = `/${projectDirectoryFromFile(entry)}/${source}`;
+  const image = LOCAL_IMAGES[path];
+  if (image === undefined) {
+    throw new Error(`Project "${entry.data.slug}" references missing or unsupported image "${source}" at ${path}`);
   }
-  return mediaSourceBasename(source);
+  return image;
 }
 
 function resolveVideoSource(source: string, entry: ProjectEntry): string {
-  if (!source.startsWith('./')) {
+  if (/^https:\/\//i.test(source)) {
     return source;
   }
   const directory = projectDirectoryFromFile(entry);
-  const assetPath = `/${directory}/${source.slice(2)}`;
+  const assetPath = `/${directory}/${source}`;
   const assetUrl = LOCAL_VIDEO_SOURCES[assetPath];
   if (assetUrl === undefined) {
     throw new Error(
@@ -134,12 +131,12 @@ function resolveVideoSource(source: string, entry: ProjectEntry): string {
   return assetUrl;
 }
 
-function assertPosterAspectRatio(item: AuthoredGalleryItem, slug: string, index: number): void {
+function assertPosterAspectRatio(item: AuthoredMediaItem, poster: ImageMetadata, slug: string, index: number): void {
   if (item.kind === 'image') {
     return;
   }
   const videoRatio = item.width / item.height;
-  const posterRatio = item.poster.width / item.poster.height;
+  const posterRatio = poster.width / poster.height;
   if (Math.abs(videoRatio - posterRatio) / videoRatio > POSTER_ASPECT_RATIO_TOLERANCE) {
     throw new Error(
       `Project "${slug}" gallery item ${index}: poster aspect ratio ${posterRatio.toFixed(3)} must match the video aspect ratio ${videoRatio.toFixed(3)}`,
@@ -148,27 +145,27 @@ function assertPosterAspectRatio(item: AuthoredGalleryItem, slug: string, index:
 }
 
 async function toGalleryItem(
-  item: AuthoredGalleryItem,
+  item: AuthoredMediaItem,
   entry: ProjectEntry,
   index: number,
-  presentationBySource: ReadonlyMap<string, MediaPresentation>,
 ): Promise<GalleryItem> {
-  const basename = galleryItemSourceBasename(item);
-  const presentation = basename === null ? undefined : presentationBySource.get(basename);
+  const presentation = { featureOverlay: item.featureOverlay, homepageCrop: item.homepageCrop };
   if (item.kind === 'image') {
+    const image = resolveImage(item.media, entry);
     return {
       kind: 'image',
-      image: await toScreenshot(item.src),
-      thumbnail: await toThumbnail(item.src),
+      image: await toScreenshot(image),
+      thumbnail: await toThumbnail(image),
       alt: item.alt,
       isPlaceholder: item.isPlaceholder,
       ...presentation,
     };
   }
-  assertPosterAspectRatio(item, entry.data.slug, index);
-  const poster = await toResponsiveImage(item.poster);
-  const thumbnail = await toThumbnail(item.poster);
-  const src = resolveVideoSource(item.src, entry);
+  const posterImage = resolveImage(item.poster, entry);
+  assertPosterAspectRatio(item, posterImage, entry.data.slug, index);
+  const poster = await toResponsiveImage(posterImage);
+  const thumbnail = await toThumbnail(posterImage);
+  const src = resolveVideoSource(item.media, entry);
   if (item.kind === 'preview') {
     return {
       kind: 'preview',
@@ -201,15 +198,15 @@ async function toProject(entry: ProjectEntry): Promise<Project> {
   if (fileSlug !== null && fileSlug !== entry.data.slug) {
     throw new Error(`Project slug "${entry.data.slug}" does not match its folder name "${fileSlug}"`);
   }
-  const { mediaBySource, preview } = mediaPresentationForProject(entry);
-  const previewIndex = preview === undefined ? 0 : entry.data.gallery.findIndex(
-    (item) => galleryItemSourceBasename(item) === preview.mediaSource,
+  const { gallery: authoredGallery, preview } = mediaPresentationForProject(entry);
+  const previewIndex = preview === undefined ? 0 : authoredGallery.findIndex(
+    (item) => mediaSourceBasename(item.media) === preview.mediaSource,
   );
   if (previewIndex === -1) {
     throw new Error(`/${projectDirectoryFromFile(entry)}/media.yaml: preview: No gallery item matches "${preview?.mediaSource}"`);
   }
   const gallery = await Promise.all(
-    entry.data.gallery.map((item, index) => toGalleryItem(item, entry, index, mediaBySource)),
+    authoredGallery.map((item, index) => toGalleryItem(item, entry, index)),
   );
   const homepagePreview = preview === undefined ? gallery[0] : {
     ...gallery[previewIndex]!,

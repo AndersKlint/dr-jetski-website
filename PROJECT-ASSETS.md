@@ -5,17 +5,18 @@
 ```text
 src/content/projects/<slug>/
   index.md               project metadata + body
-  media.yaml             optional per-media text and homepage crops
-  preview.webp           local image/poster, referenced as ./preview.webp
+  media.yaml             ordered gallery + media presentation
+  preview.webp           local image/poster, referenced as preview.webp
   diagram.svg            local SVG diagram
 ```
 
 - The folder name must equal the `slug` field; it is the stable route.
 - Only `*/index.md` is ingested as a project. Other Markdown is not a project;
-  images and posters referenced from `index.md` are bundled and optimized.
-- `media.yaml` is an optional support file read directly; it is not
-  referenced from `index.md`.
-- Reference local images as `./file.ext`. Dimensions are read at build time, so
+  images and posters referenced from `media.yaml` are bundled and optimized.
+- `media.yaml` is read directly, without registration in `index.md`. It is the
+  only gallery source; there is no fallback to frontmatter gallery entries.
+- Reference local media as exact filenames such as `preview.webp`, without `./`.
+  Dimensions are read at build time, so
   images omit `width`/`height`.
 - Keep the folder flat.
 
@@ -38,10 +39,6 @@ availability:
   message: "In development; not yet available."
 authoringNotes:
   - "Owner TODO: replace placeholder metadata and media."
-gallery:
-  - kind: "image"
-    src: "./preview.webp"
-    alt: "Screenshot of My Project showing its main window."
 ---
 
 Short paragraph describing the project.
@@ -51,15 +48,17 @@ Short paragraph describing the project.
 Platform availability: not yet released.
 ```
 
-`gallery` is optional; its first entry supplies the homepage preview unless a
-`preview` entry in `media.yaml` selects another gallery item. Its order remains
-the carousel order. Project pages show one uncropped selected item with faded
+Create `media.yaml` beside this template using the examples below. Normal `media`
+record order is carousel order; the first supplies the homepage preview unless a
+`preview` record selects another gallery item. Project pages show one uncropped selected item with faded
 neighbor layers and bounded navigation through round dots, swipe, and keyboard;
 a one-item gallery omits navigation and
 an empty gallery is not rendered. Set `visibility: "public"` to publish. Add
 `featuredRank` to place the card in the homepage featured set; other public
 projects appear in the compact grid ordered by `editorialOrder`. Every
-referenced file must exist.
+referenced file must exist or the build fails. Adding a record automatically
+discovers its corresponding local asset on rebuild; files not listed do not
+appear. Missing or empty `media.yaml` means an empty gallery.
 
 ## HanScan privacy policy
 
@@ -72,31 +71,42 @@ are defined in [DESIGN.md](DESIGN.md).
 
 ## Gallery media
 
-- `image`: a local `./file.ext` with `alt`.
-- `preview`: a silent looping preview that plays while active and visible; `src`
-  may be a local `./file.mp4` or an HTTPS R2 URL, with a local `poster`, `alt`,
-  and `width`/`height` matching the video and poster aspect.
+- `image`: a local filename with required `alt`; `kind: image` is optional and
+  is the default. The minimum record is `media` plus `alt`.
+- `preview`: a silent looping preview that plays while active and visible; `media`
+  may be a local filename or a real HTTPS video URL, with a flat local `poster`
+  filename (no `./`), `alt`, and positive integer `width`/`height` matching the
+  video and poster aspect.
 - `demo`: visitor-controlled and never autoplays; same fields as `preview` with
   `kind: "demo"` and required `hasAudio` (`true` when it has sound, else `false`).
 
 ```yaml
-gallery:
-  - kind: "preview"
-    src: "./video.mp4"
-    poster: "./video-poster.webp"
-    alt: "Short silent clip of My Project in use."
-    width: 1280
-    height: 720
+- media: preview.webp
+  alt: "Screenshot of My Project showing its main window."
+- media: video.mp4
+  kind: preview
+  poster: video-poster.webp
+  alt: "Short silent clip of My Project in use."
+  width: 1280
+  height: 720
+- media: https://downloads.drjetski.com/my-project/v1/demo.mp4
+  kind: demo
+  poster: demo-poster.webp
+  alt: "Demonstration of My Project's editing workflow."
+  width: 1920
+  height: 1080
+  hasAudio: true
 ```
 
 Keep small local preview videos as H.264 MP4 files. For substantial video,
-replace `src` with a real HTTPS R2 URL; local `./file.mp4` references remain
-valid. Never invent a destination. Posters are local files, not separate gallery
+replace `media` with a real HTTPS R2 URL; the URL above illustrates the format,
+not a published destination. Never invent a destination. `isPlaceholder` is an
+optional boolean for temporary media. Posters are local files, not separate gallery
 items; faded video neighbors show posters without loading or playing the video.
 
 ## Per-media settings
 
-An optional `media.yaml` beside `index.md` supplies per-media settings, read
+`media.yaml` beside `index.md` supplies the gallery and per-media settings, read
 directly without registration in the project metadata. The dev server watches
 additions, edits, and deletions without a restart.
 
@@ -111,36 +121,40 @@ Use a top-level YAML sequence of normal `media` records and at most one optional
   style: dark
   preview_crop: {xStart: 0, xEnd: 1, yStart: 0.16, yEnd: 0.84}
 - media: hanscan-demo.mp4
+  kind: preview
+  poster: hanscan-demo-poster.webp
+  alt: "HanScan recognizing Chinese text."
+  width: 720
+  height: 1280
   text: "Chinese, Pinyin & English OCR"
   text_pos_y: 0.12
   text_offset: {x: 0, y: 0}
   style: dark
 - media: slope.png
+  alt: "HanScan reading Chinese text on a slope sign."
   text: |
     Quick offline OCR
     from anywhere
   text_offset: {x: -12, y: 8}
   style: light
 - media: preview.webp
+  alt: "My Project's main window."
   preview_crop: {xStart: 0.1, xEnd: 0.9, yStart: 0, yEnd: 1}
 ```
 
 ### Matching and validation
 
-- Each record requires exactly one of `media` or `preview`, never both.
-  Either selector must be the exact, case-sensitive original gallery
-  source filename, without a directory prefix. For video, use the video source
-  filename, not its poster. For HTTPS sources, use the filename in the URL path,
-  excluding its query and hash.
-- A missing sidecar adds no settings. Valid normal `media` entries with unmatched
-  filenames are silently ignored, including nonexistent or unused asset names.
-  An unmatched `preview` filename fails the build.
-- Only one normal `media` entry may target a filename, and at most one `preview`
-  entry is allowed. A `preview` and a `media` entry may target the same filename.
+- Each record requires exactly one of `media` or `preview`, never both. A normal
+  `media` record authors a gallery item using an exact, case-sensitive flat local
+  filename or, for video, the complete real HTTPS URL.
+- A `preview` selector matches the exact source basename of an existing gallery
+  item, not its poster. For HTTPS sources, use the filename in the URL path,
+  excluding query and hash. An unmatched selector fails the build.
+- Duplicate gallery sources are invalid, and at most one `preview` entry is
+  allowed. A `preview` and a `media` entry may select the same source.
   Invalid YAML, a non-sequence root,
   malformed entries, duplicate YAML keys or duplicate media filenames, unknown
   fields (including nested fields), and invalid field values fail the build.
-  Validate entries even when their filenames do not match a gallery item.
 - Optional fields may be omitted; explicit nulls are not defaults. Numeric
   fields require finite numbers, not numeric strings.
 
@@ -148,7 +162,8 @@ Use a top-level YAML sequence of normal `media` records and at most one optional
 
 - An explicit `preview` selects an existing gallery item for both featured and
   compact homepage cards, reusing its source, poster, dimensions, and alt text.
-  It neither adds a gallery item nor changes gallery order.
+  It neither adds a gallery item nor changes gallery order; moving or adding the
+  selector anywhere in the YAML sequence has no effect on carousel order.
 - Both record types support the same optional settings below. An explicit
   preview uses only its own settings and their defaults, never settings inherited
   from the matching normal media record. Omitted `text` means no homepage banner;
@@ -186,7 +201,7 @@ Use a top-level YAML sequence of normal `media` records and at most one optional
   light-neutral background and dark text. Both retain the same typography,
   orange left rule, rounded shape, padding, and shadow.
 - Text settings apply to the homepage preview (featured and compact) according to
-  the selection rules above, and normal media text applies to the selected
+   the selection rules above, and normal media text applies to the selected
   project-carousel item, never faded neighbors. The banner
   follows media movement/scaling and persists through poster/playback changes,
   does not intercept navigation, and stays accessible separately from alt text.
@@ -239,21 +254,22 @@ the site's Inter font and shared [feature-overlay CSS](src/media/featureOverlay.
   entire phone's outer edges, so the screenshot shrinks within the phone.
   Captions and shadows do not count toward this inset.
 - `--phone-frame` is an optional boolean flag, off by default. It requests a
-  silver phone frame from `store-screenshot-generator/phone-frame.svg`, with
+  silver phone frame from `store-screenshot-generator/phone-frame-9-20.svg`, with
   flat side buttons, rounded screen corners, and a black camera dot over the
-  image. Its native screen opening is 1440×2560, matching HanScan screenshots.
-  Adapt the straight frame sections to other source aspect ratios without
-  distorting the screenshot, corner radii, or camera; rotate the frame for
-  landscape images. Only screen-corner rounding and the camera obscure content.
+  image. Its fixed native screen opening is 1440×3200 (9:20); screenshots at
+  that aspect ratio fill it exactly. Center other source aspect ratios inside
+  the screen with black padding, preserving the full image without distortion.
+  Rotate the frame for landscape images. Only screen-corner rounding and the
+  camera obscure content.
 - Output defaults to `store-screenshot-generator/output/<slug>/`, relative to
   the tool, with each image named `<original-basename>.png`. The default output
   folder is ignored by Git; reruns overwrite matching generated outputs.
   `--output-dir` overrides the destination and resolves relative paths against
   the current working directory.
-- The tool processes original images in `index.md` gallery order, including
+- The tool processes original images in `media.yaml` normal-record order, including
   images without captions, and skips all videos. Author captions in normal
   `media` records in `media.yaml` using `text`, `text_pos_y`, `text_offset`, and
-  `style` as documented above. It uses the existing settings parser and ignores
+  `style` as documented above. It uses the shared parser's gallery items and ignores
   homepage-specific captions and crops.
 - Final output is 1440×2560 for portrait or square originals and 2560×1440 for
   landscape originals. Without `--phone-frame`, uniformly fit the full source

@@ -15,11 +15,6 @@ authoringNotes:
   - "A screenshot is reported to exist; replace the concept placeholder gallery entry with the real screenshot when supplied."
 downloads: []
 links: []
-gallery:
-  - kind: "image"
-    src: "./preview.svg"
-    alt: "Illustrative placeholder: concept mockup of the screensaver showing album artwork with track details, not a real screenshot."
-    isPlaceholder: true
 ---
 
 spotify-screensaver is a small Linux desktop app that displays the current song's album artwork, title, and artist as a styled screensaver.

@@ -22,11 +22,6 @@ downloads:
     platform: "Windows"
     format: "Desktop build"
 links: []
-gallery:
-  - kind: "image"
-    src: "./preview.svg"
-    alt: "Illustrative placeholder: concept mockup of selecting a clip between two timestamps on a timeline, not a real screenshot."
-    isPlaceholder: true
 ---
 
 yt-clip-extractor is a small desktop app that uses yt-dl to download and cut a video between two timestamped YouTube URLs.

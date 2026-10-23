@@ -17,11 +17,6 @@ authoringNotes:
   - "Owner TODO: replace the concept placeholder gallery entry with a real screenshot or preview when supplied."
 downloads: []
 links: []
-gallery:
-  - kind: "image"
-    src: "./preview.svg"
-    alt: "Illustrative placeholder: concept mockup of a scanned page becoming a searchable document, not a real screenshot."
-    isPlaceholder: true
 ---
 
 Paddle-my-pdf converts large scanned PDFs into searchable, copyable PDFs by adding a recognized text layer with PaddleOCR. It is particularly aimed at Asian languages.

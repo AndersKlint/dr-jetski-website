@@ -28,25 +28,6 @@ downloads:
     platform: "Linux"
     format: "CLAP"
 links: []
-gallery:
-  - kind: "image"
-    src: "./jetalign_default.png"
-    alt: "JetAlign plugin showing aligned dub, guide, and output waveforms."
-  - kind: "image"
-    src: "./jetalign_selections.png"
-    alt: "JetAlign timeline with don't-align and keep regions selected for re-alignment."
-  - kind: "preview"
-    src: "./jetalign_recording_and_aligning.mp4"
-    poster: "./jetalign_recording_and_aligning_poster.webp"
-    alt: "Silent clip of JetAlign recording a dub take and aligning it to the guide."
-    width: 952
-    height: 818
-  - kind: "preview"
-    src: "./jetalign_editing.mp4"
-    poster: "./jetalign_editing_poster.webp"
-    alt: "Silent clip of JetAlign editing alignment regions on the dub, guide, and output tracks."
-    width: 952
-    height: 818
 ---
 
 JetAlign time-aligns a dub vocal track to a guide track, producing tightly timed vocal stacks and doubles.

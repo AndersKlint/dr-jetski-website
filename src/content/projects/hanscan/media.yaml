@@ -1,23 +1,42 @@
 - media: hanscan-demo.mp4
+  kind: preview
+  poster: hanscan-demo-poster.webp
+  alt: "Short silent clip of HanScan recognizing a Chinese workbook exercise, then showing pinyin and English translation overlays."
+  width: 1440
+  height: 2560
   text: "Chinese OCR with Pinyin and Translation"
   text_pos_y: 0.12
   text_offset: { x: 0, y: 0 }
   style: dark
 
 - media: slope.png
+  alt: "HanScan translating a Chinese road sign in English mode, with the recognized text shown over a steep-slope warning sign."
   text: "Fully offline.\nScan from anywhere"
   text_pos_y: 0.12
 
 - media: workbook_popup.png
+  alt: "HanScan dictionary popup on the Chinese word 准时 (zhǔnshí), showing its reading and English definitions over a workbook exercise."
   text: Built-in popup dictionary
   text_pos_y: 0.12
 
 - media: workbook_pinyin.png
+  alt: "HanScan pinyin mode overlaying readings on a Chinese workbook matching exercise, with a pinyin transcript below."
   text: Select and copy scanned text
   text_pos_y: 0.12
 
 - media: workbook_stack_translate.png
-  text: Effortlessly quick translations
+  alt: "HanScan English mode translating a Chinese workbook matching exercise, with translated labels over the text and a transcript below."
+  text: Effortless translations
+  text_pos_y: 0.12
+
+- media: handwritten.png
+  alt: "HanScan recognizing handwritten Chinese instructions on a classroom chalkboard."
+  text: Scan handwritten text
+  text_pos_y: 0.12
+
+- media: gate.png
+  alt: "HanScan recognizing Chinese calligraphy on a wooden sign above colorful hanging lanterns."
+  text: Supports calligraphy
   text_pos_y: 0.12
 
 - preview: hanscan-demo.mp4

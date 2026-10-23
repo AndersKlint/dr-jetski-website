@@ -9,6 +9,7 @@ export interface MediaPresentation {
 
 export interface ProjectMediaPresentation {
   mediaBySource: Map<string, MediaPresentation>;
+  gallery: AuthoredMediaItem[];
   preview?: MediaPresentation & { mediaSource: string };
 }
 
@@ -31,9 +32,7 @@ const mediaFilenameSchema = z.string().refine((value) => value.trim().length > 0
     message: 'Expected an exact media filename without a directory prefix',
   });
 
-const presentationSchema = z.array(z.object({
-  media: mediaFilenameSchema.optional(),
-  preview: mediaFilenameSchema.optional(),
+const presentationFields = {
   text: z.string().refine((value) => value.trim().length > 0, { message: 'Expected nonblank plain text' }).optional(),
   text_pos_y: coordinate.default(0.5),
   text_offset: z.object({
@@ -42,11 +41,45 @@ const presentationSchema = z.array(z.object({
   }).strict().default({ x: 0, y: 0 }),
   style: z.enum(['dark', 'light']).default('dark'),
   preview_crop: mediaCropSchema.optional(),
-}).strict().superRefine((entry, context) => {
-  if ((entry.media === undefined) === (entry.preview === undefined)) {
-    context.addIssue({ code: 'custom', message: 'Expected exactly one selector: media or preview' });
+};
+
+const videoSourceSchema = z.string().refine((value) => {
+  if (mediaFilenameSchema.safeParse(value).success) return /\.(mp4|webm|mov|m4v|ogv)$/.test(value);
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && !/(^|\.)example\.(com|org|net|edu)$/i.test(url.hostname) && mediaSourceBasename(value) !== null;
+  } catch {
+    return false;
   }
-}));
+}, { message: 'Expected a local video filename or a real HTTPS video URL' });
+
+const mediaFields = {
+  ...presentationFields,
+  alt: z.string().refine((value) => value.trim().length > 0, { message: 'Expected nonblank alt text' }),
+  isPlaceholder: z.boolean().optional(),
+};
+const videoFields = {
+  ...mediaFields,
+  media: videoSourceSchema,
+  poster: mediaFilenameSchema,
+  width: z.number().int().positive(),
+  height: z.number().int().positive(),
+};
+const mediaItemSchema = z.union([
+  z.object({ ...mediaFields, media: mediaFilenameSchema, kind: z.literal('image').default('image') }).strict(),
+  z.object({ ...videoFields, kind: z.literal('preview') }).strict(),
+  z.object({ ...videoFields, kind: z.literal('demo'), hasAudio: z.boolean() }).strict(),
+]);
+const presentationSchema = z.array(z.union([
+  mediaItemSchema,
+  z.object({ ...presentationFields, preview: mediaFilenameSchema }).strict(),
+]));
+
+export type AuthoredMediaItem = MediaPresentation & (
+  | { media: string; kind: 'image'; alt: string; isPlaceholder?: boolean }
+  | { media: string; kind: 'preview'; alt: string; poster: string; width: number; height: number; isPlaceholder?: boolean }
+  | { media: string; kind: 'demo'; alt: string; poster: string; width: number; height: number; hasAudio: boolean; isPlaceholder?: boolean }
+);
 
 export function mediaSourceBasename(source: string): string | null {
   let pathname = source;
@@ -78,6 +111,7 @@ export function parseMediaPresentation(raw: string, filePath: string): ProjectMe
     throw new Error(`${filePath}: ${errors.join('; ')}`);
   }
   const presentations = new Map<string, MediaPresentation>();
+  const gallery: AuthoredMediaItem[] = [];
   let preview: ProjectMediaPresentation['preview'];
   for (const [index, entry] of parsed.data.entries()) {
     const presentation: MediaPresentation = {
@@ -89,17 +123,25 @@ export function parseMediaPresentation(raw: string, filePath: string): ProjectMe
       },
       homepageCrop: entry.preview_crop,
     };
-    if (entry.preview !== undefined) {
+    if ('preview' in entry) {
       if (preview !== undefined) {
         throw new Error(`${filePath}: ${index}.preview: Only one preview record is allowed`);
       }
       preview = { mediaSource: entry.preview, ...presentation };
-    } else if (entry.media !== undefined) {
+    } else {
       if (presentations.has(entry.media)) {
         throw new Error(`${filePath}: ${index}.media: Duplicate media filename "${entry.media}"`);
       }
       presentations.set(entry.media, presentation);
+      const { text, text_pos_y, text_offset, style, preview_crop, ...media } = entry;
+      gallery.push({ ...media, ...presentation });
     }
   }
-  return { mediaBySource: presentations, preview };
+  if (preview !== undefined) {
+    const matches = gallery.filter((item) => mediaSourceBasename(item.media) === preview.mediaSource);
+    if (matches.length !== 1) {
+      throw new Error(`${filePath}: preview: Expected exactly one gallery item matching "${preview.mediaSource}"`);
+    }
+  }
+  return { mediaBySource: presentations, gallery, preview };
 }

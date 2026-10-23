@@ -28,16 +28,17 @@ async function main() {
   --highlight-color <hex>     Six hex digits, optionally prefixed with #; default site ember
   --output-dir <directory>    Output directory relative to invocation cwd
   --padding <percent>        Minimum image/phone-edge short-edge margin per side; 0 <= percent < 50, default 8
-  --phone-frame              Add the silver SVG phone frame with rounded screen corners; default false
+  --phone-frame              Add the silver 9:20 SVG phone frame; default false
   --help                     Show this help
 
 Default output: store-screenshot-generator/output/<slug>/<original-basename>.png
-Exports gallery images in order, using original sources and normal media.yaml captions.
+Exports images in media.yaml gallery order, using original sources and normal media captions.
 PNG: 1440×2560 portrait/square sources, 2560×1440 landscape sources.
 Transparent by default; use --background-color 211e1b for opaque RGB Google Play exports.
 Transparent outputs are generic assets, not Google Play-compliant screenshots.
 Full source image is centered with at least 8% short-edge padding by default.
 With --phone-frame, padding measures the outer phone edges; screen corners are rounded and the camera overlays the image.
+Screenshots fit inside the fixed 9:20 screen with black padding when their aspect ratio differs.
 Captions follow the image and may overflow its padding or clip at the canvas edge.
 Example: ./store-screenshot-generator/store-screenshot-generator --project-name hanscan --padding 2.5
 Matching outputs are overwritten; unrelated files are retained.
@@ -73,13 +74,6 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
   if (document.errors.length) throw new Error(`${indexPath}: ${document.errors.map(error => error.message).join('; ')}`);
   const data = document.toJS();
   if (!data || data.slug !== slug) throw new Error(`${indexPath}: slug must match "${slug}"`);
-  const gallery = data.gallery === undefined ? [] : data.gallery;
-  if (!Array.isArray(gallery)) throw new Error(`${indexPath}: gallery must be a sequence`);
-  for (const item of gallery) {
-    if (!item || !['image', 'preview', 'demo'].includes(item.kind) || typeof item.src !== 'string') {
-      throw new Error(`${indexPath}: each gallery entry needs a valid kind and source`);
-    }
-  }
   const sidecarPath = resolve(projectDirectory, 'media.yaml');
   let sidecar = '';
   try {
@@ -88,14 +82,14 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
     if (error.code !== 'ENOENT') throw error;
   }
   const presentation = parseMediaPresentation(sidecar, sidecarPath);
-  if (presentation.preview && !gallery.some(item => mediaSourceBasename(item.src) === presentation.preview.mediaSource)) {
+  const gallery = presentation.gallery;
+  if (presentation.preview && !gallery.some(item => mediaSourceBasename(item.media) === presentation.preview.mediaSource)) {
     throw new Error(`${sidecarPath}: preview must match an existing gallery source`);
   }
   const outputs = new Set();
   const images = [];
   for (const item of gallery.filter(item => item.kind === 'image')) {
-    if (!/^\.\/[^/\\]+$/.test(item.src)) throw new Error(`${indexPath}: image source must be a flat local ./filename: ${item.src}`);
-    const source = resolve(projectDirectory, item.src);
+    const source = resolve(projectDirectory, item.media);
     const filename = `${basename(source, extname(source))}.png`;
     if (outputs.has(filename.toLowerCase())) throw new Error(`Colliding output basename: ${filename}`);
     outputs.add(filename.toLowerCase());
@@ -103,7 +97,7 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
     const mime = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.avif': 'image/avif' }[extname(source).toLowerCase()];
     if (!mime) throw new Error(`Unsupported image source: ${source}`);
     images.push({ filename, source, dataUrl: `data:${mime};base64,${(await readFile(source)).toString('base64')}`,
-      overlay: presentation.mediaBySource.get(basename(source))?.featureOverlay });
+      overlay: item.featureOverlay });
   }
   if (!images.length) {
     console.log(`No gallery images to export for ${slug}.`);
@@ -111,7 +105,7 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
   }
   const overlayCss = await readFile(resolve(root, 'src/media/featureOverlay.css'), 'utf8');
   const phoneFrameSvg = values['phone-frame']
-    ? await readFile(resolve(scriptDirectory, 'phone-frame.svg'), 'utf8') : undefined;
+    ? await readFile(resolve(scriptDirectory, 'phone-frame-9-20.svg'), 'utf8') : undefined;
   const globalCss = await readFile(resolve(root, 'src/site/global.css'), 'utf8');
   const tokens = ['font-body', 'text-primary', 'ember'].map(name => {
     const match = globalCss.match(new RegExp(`--${name}:\\s*([^;]+);`));
@@ -150,6 +144,8 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
           #composition>img{display:block;width:100%;height:100%;border-radius:min(8px,${360 * dimensions.height / dimensions.width / 20}px)}
           #phone-frame{position:absolute;z-index:1;pointer-events:none}
           #phone-frame>svg{display:block;transform-origin:top left}
+          #phone-screen{position:absolute;background:#000;overflow:hidden}
+          #phone-screen>img{position:absolute;display:block}
           ${overlayCss}` });
         const phoneBounds = await page.evaluate(async ({ dataUrl, overlay, phoneFrameSvg, dimensions }) => {
           const composition = document.querySelector('#composition');
@@ -162,29 +158,31 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
             const svg = new DOMParser().parseFromString(phoneFrameSvg, 'image/svg+xml').documentElement;
             const screen = svg.querySelector('#screen-opening');
             const screenX = screen.x.baseVal.value, screenY = screen.y.baseVal.value;
-            const screenWidth = screen.width.baseVal.value, originalScreenHeight = screen.height.baseVal.value;
+            const screenWidth = screen.width.baseVal.value, screenHeight = screen.height.baseVal.value;
             const isLandscape = dimensions.width > dimensions.height;
-            const screenHeight = screenWidth * (isLandscape
-              ? dimensions.width / dimensions.height : dimensions.height / dimensions.width);
-            const heightChange = screenHeight - originalScreenHeight;
-            const frameWidth = svg.viewBox.baseVal.width, frameHeight = svg.viewBox.baseVal.height + heightChange;
-            const frameScale = Math.min(imageWidth, imageHeight) / screenWidth;
-            svg.setAttribute('height', String(frameHeight));
-            svg.setAttribute('viewBox', `0 0 ${frameWidth} ${frameHeight}`);
-            const mask = svg.querySelector('#frame-cutout');
-            mask.setAttribute('height', String(frameHeight));
-            for (const rectangle of svg.querySelectorAll('#frame > rect, #frame-cutout > rect')) {
-              rectangle.setAttribute('height', String(rectangle.height.baseVal.value + heightChange));
-            }
-            for (const button of svg.querySelectorAll('#buttons > rect')) {
-              button.setAttribute('y', String(button.y.baseVal.value * screenHeight / originalScreenHeight));
-            }
-            svg.querySelector('#bottom-antenna-bands').setAttribute('transform', `translate(0 ${heightChange})`);
-            image.style.borderRadius = `${screen.rx.baseVal.value * frameScale}px`;
+            const frameWidth = svg.viewBox.baseVal.width, frameHeight = svg.viewBox.baseVal.height;
+            const displayScreenWidth = isLandscape ? screenHeight : screenWidth;
+            const displayScreenHeight = isLandscape ? screenWidth : screenHeight;
+            const frameScale = Math.max(imageWidth / displayScreenWidth, imageHeight / displayScreenHeight);
+            const screenLeft = (imageWidth - displayScreenWidth * frameScale) / 2;
+            const screenTop = (imageHeight - displayScreenHeight * frameScale) / 2;
+            const screenContainer = document.createElement('div');
+            screenContainer.id = 'phone-screen';
+            screenContainer.style.left = `${screenLeft}px`;
+            screenContainer.style.top = `${screenTop}px`;
+            screenContainer.style.width = `${displayScreenWidth * frameScale}px`;
+            screenContainer.style.height = `${displayScreenHeight * frameScale}px`;
+            screenContainer.style.borderRadius = `${screen.rx.baseVal.value * frameScale}px`;
+            image.style.width = `${imageWidth}px`;
+            image.style.height = `${imageHeight}px`;
+            image.style.left = `${-screenLeft}px`;
+            image.style.top = `${-screenTop}px`;
+            screenContainer.append(image);
+            composition.append(screenContainer);
             bounds = isLandscape
-              ? { x: -screenY * frameScale, y: -(frameWidth - screenX - screenWidth) * frameScale,
+              ? { x: screenLeft - screenY * frameScale, y: screenTop - (frameWidth - screenX - screenWidth) * frameScale,
                   width: frameHeight * frameScale, height: frameWidth * frameScale }
-              : { x: -screenX * frameScale, y: -screenY * frameScale,
+              : { x: screenLeft - screenX * frameScale, y: screenTop - screenY * frameScale,
                   width: frameWidth * frameScale, height: frameHeight * frameScale };
             const frame = document.createElement('div');
             frame.id = 'phone-frame';

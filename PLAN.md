@@ -150,8 +150,8 @@ and caption authoring are defined in [PROJECT-ASSETS.md](PROJECT-ASSETS.md).
   generic PNG assets and ignored tool-relative `output/<slug>/`, overwriting matching
   generated PNGs. Transparent defaults are not Google Play-compliant; use
   `--background-color 211e1b` for opaque RGB exports, including source transparency.
-- Read images in `index.md` gallery order, include uncaptioned images, skip all
-  videos, and reuse the existing `media.yaml` parser for normal media settings.
+- Read images in `media.yaml` gallery order, include uncaptioned images, skip all
+  videos, and reuse the existing parser's gallery items and normal media settings.
   Homepage preview captions and crops do not apply.
 - Use headless Chrome through `playwright-core`, the site's Inter font, and
   `src/media/featureOverlay.css` shared verbatim with `FeatureOverlay.astro`.
@@ -166,11 +166,11 @@ and caption authoring are defined in [PROJECT-ASSETS.md](PROJECT-ASSETS.md).
   overlay and shadow when computing fit, centering, and padding. They follow the
   image's scale and authored placement, may extend into the padding, and may
   clip at the output canvas edge; they are not part of the minimum inset.
-- With `--phone-frame`, use `store-screenshot-generator/phone-frame.svg` with
+- With `--phone-frame`, use `store-screenshot-generator/phone-frame-9-20.svg` with
   its metallic rim, flat side buttons, rounded screen opening, and black camera
-  dot. Its native opening matches 1440×2560 HanScan screenshots. Adapt straight
-  frame sections to the source aspect ratio and rotate for landscape images,
-  preserving screenshot proportions, corner radii, and the circular camera.
+  dot. Keep its native opening fixed at 1440×3200 (9:20) and rotate for landscape
+  images. Fit screenshots uniformly inside the opening, centering them with
+  black padding when their aspect ratio differs; preserve the frame proportions.
   Screen-corner rounding and the camera may obscure the screenshot.
   Uniformly fit and center the entire phone's outer edges within the selected
   padding, shrinking the screenshot within the phone. Caption geometry remains
@@ -204,7 +204,7 @@ passed. Final orchestrator verification passed:
 warnings, or hints, and `npm run build` generated 13 pages. Owner final visual
 acceptance remains pending.
 
-The silver SVG frame replaces the initial CSS bezel. The generator adapts the
+The first silver SVG frame replaced the initial CSS bezel. That version adapted the
 SVG's straight sections to the source aspect ratio, preserves its corner radii
 and camera circle, and rotates it for landscape images. HanScan portrait and
 JetAlign landscape exports were rendered and visually inspected in
@@ -212,6 +212,34 @@ JetAlign landscape exports were rendered and visually inspected in
 `/tmp/opencode/store-svg-phone-landscape`. Content/type checks passed with
 39 files and no errors, warnings, or hints; the production build generated
 13 pages.
+
+The sole supported frame is now `phone-frame-9-20.svg`; the old 9:16 asset is
+removed. Its screen stays fixed at 1440×3200, with other screenshot ratios
+centered inside black padding rather than changing the phone's proportions.
+Portrait and landscape exports were visually inspected in
+`/tmp/opencode/store-fixed-modern-hanscan` and
+`/tmp/opencode/store-fixed-modern-landscape`. Content/type checks passed with
+37 files and no errors, warnings, or hints; the production build generated
+13 pages, and `git diff --check` passed.
+
+## YAML-driven carousel milestone
+
+Implementation is complete and follows the content-delivery decision in [DESIGN.md](DESIGN.md)
+and authoring format in [PROJECT-ASSETS.md](PROJECT-ASSETS.md).
+
+- Migrated every project's gallery from `index.md` to ordered `media.yaml`
+  records, with no legacy fallback. Independent homepage preview selection
+  and presentation add no item and do not affect carousel order.
+- Authored media is validated at the shared parser seam and referenced assets
+  resolve in the app, supporting local images and local/HTTPS videos with full metadata.
+- Updated the screenshot generator to consume parsed YAML gallery order, image
+  sources, and feature overlays while skipping videos and retaining slug and
+  preview-match validation and existing rendering/options.
+- Final orchestrator review covered core, parser, adapter, migrations, exporter,
+  and docs and found no major issues. `ASTRO_TELEMETRY_DISABLED=1 make check`
+  passed content/type checks (37 files, 0 errors/warnings/hints) and the production
+  static build generated 13 pages, including optimized handwritten/gate assets.
+  No unit tests were run. Owner manual visual/carousel acceptance remains pending.
 
 ## Feature-overlay ribbon wrap (overruled)
 

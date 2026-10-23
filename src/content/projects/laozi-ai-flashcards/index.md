@@ -21,11 +21,6 @@ downloads:
     platform: "Android"
     format: "APK"
 links: []
-gallery:
-  - kind: "image"
-    src: "./preview.svg"
-    alt: "Illustrative placeholder: concept mockup of stacked study flashcards with review progress, not a real screenshot."
-    isPlaceholder: true
 ---
 
 LaoZi AI Flashcards is a spaced-repetition app focused on pragmatic, productive Chinese study, with possible expansion to other languages. AI generates detailed flashcards, descriptions, and example sentences from inputs such as a photograph of a textbook vocabulary list.

@@ -21,19 +21,6 @@ downloads:
     format: "ZIP"
     filename: "pluginbundle.zip"
 links: []
-gallery:
-  - kind: "preview"
-    src: "./1_waytoclip_demo.mp4"
-    poster: "./1_waytoclip_demo_poster.webp"
-    alt: "Silent clip of WayToClip navigating clipboard history with the keyboard and pasting text and an image."
-    width: 1256
-    height: 1070
-  - kind: "image"
-    src: "./2_waytoclip_popup.png"
-    alt: "WayToClip clipboard history popup with text and image entries, search, and favorites."
-  - kind: "image"
-    src: "./3_waytoclip_settings.png"
-    alt: "WayToClip settings for customizing clipboard history and keyboard navigation."
 ---
 
 WayToClip is a keyboard-centric clipboard manager for GNOME Shell. A shortcut opens clipboard history at the mouse cursor, and entries can be picked with number keys, arrow keys, or the mouse.
