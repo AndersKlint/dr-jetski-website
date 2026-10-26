@@ -1,8 +1,8 @@
 # HanScan Privacy Policy
 
-Last updated: 2026-10-22
+Last updated: 2026-10-26
 
-HanScan - Offline Chinese OCR is provided by Dr. Jetski Studios. For privacy questions or requests, contact **contact@drjetski.com**.
+HanScan - Offline Chinese OCR is provided by Anders Klint Consulting AB under the studio name Dr. Jetski Studios. Anders Klint Consulting AB is responsible for the personal data processing described in this policy. For privacy questions or requests, contact **contact@drjetski.com**.
 
 ## Images, text, and offline processing
 
@@ -44,4 +44,4 @@ HanScan has no user accounts or advertising platform, does not sell personal inf
 
 ## Changes and contact
 
-We may update this policy when the app or its services change. The date above identifies the latest revision. For questions about your data or a privacy request, email **contact@drjetski.com**.
+We may update this policy when the app or its services change. The date above identifies the latest revision. For general questions, questions about your data, or a privacy request, email **contact@drjetski.com**. For app support, email **support@drjetski.com**.
