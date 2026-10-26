@@ -11,6 +11,8 @@ src/content/projects/<slug>/
 ```
 
 - The folder name must equal the `slug` field; it is the stable route.
+- ClipThat! uses `src/content/projects/clipthat/`, `slug: "clipthat"`,
+  `displayName: "ClipThat!"`, and `featuredRank: 6`; its route is `/projects/clipthat`.
 - Only `*/index.md` is ingested as a project. Other Markdown is not a project;
   images and posters referenced from `media.yaml` are bundled and optimized.
 - `media.yaml` is read directly, without registration in `index.md`. It is the
@@ -117,6 +119,7 @@ Use a top-level YAML sequence of normal `media` records and at most one optional
 - preview: hanscan-demo.mp4
   highlight-color: "#3A8DFF"
   text: "Chinese, Pinyin & English OCR"
+  text_side: right
   text_pos_y: 0.12
   text_offset: {x: 0, y: 0}
   style: dark
@@ -188,23 +191,29 @@ Use a top-level YAML sequence of normal `media` records and at most one optional
   authored line breaks and do not interpret Markdown or HTML. Without `text`,
   no banner is rendered, so crop-only entries are valid.
 - `text_pos_y` is optional, defaults to `0.5`, and must be a finite number from
-  `0` to `1` inclusive. It sets the banner's vertical center relative to the
-  displayed media, or the visible cropped area on the homepage. Keep the current
-  shared horizontal left inset; there is no horizontal position fraction.
+   `0` to `1` inclusive. It sets the banner's vertical center relative to the
+   displayed media, or the visible cropped area on the homepage. There is no
+   horizontal position fraction.
+- `text_side` is optional and accepts only `left` (default) or `right`, on normal
+   `media` records or independent `preview` records. Left anchors the label at
+   the left edge, extending rightward; right anchors it at the right edge,
+   extending leftward, with the highlight on the far right. Mirror the shared
+   horizontal inset and placement, keeping text readable and unmirrored.
 - Edge-clamp the base banner position inside the media before applying
-  `text_offset`. This optional mapping contains numeric CSS-pixel `x` and `y`
-  offsets, each independently defaulting to `0`. Negative values are allowed.
-  After clamping, retain the current default shift of 38 CSS pixels left for overlap.
-  Apply authored offsets additively on top of that placement so intentional
-  overflow outside the media remains visible; offsets do not reserve space or
-  change layout dimensions.
+   `text_offset`. This optional mapping contains numeric CSS-pixel `x` and `y`
+   offsets, each independently defaulting to `0`. Negative values are allowed.
+   After clamping, shift outward by 38 CSS pixels: left for `left`, right for `right`.
+   Apply authored offsets additively on top of that placement so intentional
+   overflow outside the media remains visible; offsets do not reserve space or
+   change layout dimensions. Offsets stay in screen axes on either side:
+   positive `x` moves right and positive `y` moves down.
 - `style` is optional and accepts only `dark` (default) or `light`. Dark retains
   the existing opaque cool-neutral gradient and near-white text; light uses a
   light-neutral background and dark text. Both retain the same typography,
-  authored left-accent color, rounded shape, padding, and shadow.
+   authored accent color, rounded shape, padding, and shadow.
 - `highlight-color` is optional on normal `media` and independent `preview`
   records: a quoted six-digit `#hex` string such as `"#3A8DFF"`. It sets the
-  feature overlay's left accent in either style; omission defaults to the site's
+   feature overlay's accent on the chosen side in either style; omission defaults to the site's
   orange `--ember` token. An independent preview does not inherit the media color.
 - Text settings apply to the homepage preview (featured and compact) according to
    the selection rules above, and normal media text applies to the selected
@@ -255,7 +264,7 @@ the site's Inter font and shared [feature-overlay CSS](src/media/featureOverlay.
   uses the project's original images.
 - `--highlight-color` is optional: exactly six hexadecimal digits, optionally
   prefixed with `#` (quote a leading `#` in the shell). It overrides the caption's
-  left accent in dark and light styles, with or without a phone frame, only in
+   accent on the chosen side in dark and light styles, with or without a phone frame, only in
   the generated document. Precedence: explicit CLI override, then each normal
   media record's authored `highlight-color`, then the website's `--ember` token.
 - `--text-offset <x,y>` optionally replaces both YAML `text_offset` coordinates
@@ -292,7 +301,7 @@ the site's Inter font and shared [feature-overlay CSS](src/media/featureOverlay.
   the current working directory.
 - The tool processes original images in `media.yaml` normal-record order, including
   images without captions, and skips all videos. Author captions in normal
-  `media` records in `media.yaml` using `text`, `text_pos_y`, `text_offset`,
+   `media` records in `media.yaml` using `text`, `text_side`, `text_pos_y`, `text_offset`,
   `style`, and `highlight-color` as documented above. It uses the shared parser's
   gallery items and ignores homepage-specific captions and crops.
 - Final output is 1440×2560 for portrait or square originals and 2560×1440 for

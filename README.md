@@ -103,10 +103,14 @@ and video rules.
   now), and `visibility` (included in the catalogue or not) are independent: a
   finished private package is `stable` + `pending`, an alpha/beta can carry
   real downloads.
-- The first three public featured projects by rank are the leads; the
-  remaining ranked projects are secondary.
+- The six public featured projects follow the priority in [DESIGN.md](DESIGN.md):
+  the first three are leads and the next three are secondary, with ClipThat! sixth.
+  These are catalogue groups only; all six homepage cards use uniform scale,
+  preserving natural media aspect ratios and variable heights.
 - Compact projects sort by `editorialOrder`: paddle-my-pdf, then the two
-  Flutter packages adjacent, then yt-clip-extractor, spotify-screensaver.
+  Flutter packages adjacent, then spotify-screensaver (four compact projects total).
+- ClipThat! uses display name `ClipThat!`, folder slug `clipthat`, and route
+  `/projects/clipthat`, with `featuredRank: 6`.
 - JetAlign is canonical at `/projects/jetalign`; `/projects/vocal-aligner`
   permanently redirects there. Its folder slug is `jetalign`.
 - Unknowns go in frontmatter `authoringNotes`, never as public calls to
@@ -158,7 +162,7 @@ Marked per file in `authoringNotes`; still needed before the full public launch
 - HanScan: whether English translation works offline (only OCR is offline).
 - WayToClip: source URL (unknown — not linked) and GNOME listing URL.
 - LaoZi: desktop/web artifacts (only the Android APK is confirmed).
-- HanKan Windows/Linux, yt-clip-extractor: exact bundle/extension/installer formats.
+- HanKan Windows/Linux, ClipThat!: exact bundle/extension/installer formats.
 - Paddle-my-pdf / spotify-screensaver: source/install destinations.
 - Flutter packages: pub.dev URLs once published.
 - Contact details, professional links, and real screenshots/previews to replace

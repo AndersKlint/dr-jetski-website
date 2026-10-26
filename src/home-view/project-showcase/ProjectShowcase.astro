@@ -12,11 +12,10 @@ const { projects } = Astro.props;
   <h2 class="section-heading" id="featured-heading">Featured projects</h2>
   <ol class="trail">
     {projects.map((project, index) => (
-      <li class="trail-item" data-variant={index < 3 ? 'lead' : 'secondary'}>
+      <li class="trail-item">
         <ProjectCard
           project={project}
           isPriority={index === 0}
-          size={index < 3 ? 'lead' : 'secondary'}
         />
       </li>
     ))}
@@ -80,12 +79,9 @@ const { projects } = Astro.props;
     margin-top: clamp(1.5rem, 3vw, 2.5rem);
   }
 
-  .trail-item[data-variant='secondary'] {
-    max-width: 26rem;
-  }
-
-  .trail-item:nth-child(4) {
-    justify-self: end;
+  .trail-item:nth-child(6) {
+    grid-row: 3;
+    margin-top: clamp(4rem, 8vw, 7rem);
   }
 
   @media (max-width: 46rem) {
@@ -102,21 +98,14 @@ const { projects } = Astro.props;
     .trail-item:nth-child(2),
     .trail-item:nth-child(3),
     .trail-item:nth-child(4),
-    .trail-item:nth-child(5) {
+    .trail-item:nth-child(5),
+    .trail-item:nth-child(6) {
       grid-row: auto;
       margin-top: 0;
     }
 
     .trail {
       row-gap: 1.5rem;
-    }
-
-    .trail-item[data-variant='secondary'] {
-      max-width: none;
-    }
-
-    .trail-item:nth-child(4) {
-      justify-self: stretch;
     }
   }
 </style>

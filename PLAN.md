@@ -242,11 +242,56 @@ and authoring format in [PROJECT-ASSETS.md](PROJECT-ASSETS.md).
   static build generated 13 pages, including optimized handwritten/gate assets.
   No unit tests were run. Owner manual visual/carousel acceptance remains pending.
 
+## Feature-overlay side selection
+
+Accepted scope: optional left/right label placement for normal media and independent
+homepage previews, following [DESIGN.md](DESIGN.md); authoring is defined in
+[PROJECT-ASSETS.md](PROJECT-ASSETS.md). Preserve readable text and additive
+screen-axis offsets while mirroring the outer accent and default overlap.
+Implementation is complete; orchestrator quick review found no major issues.
+Independent orchestrator verification passed: `ASTRO_TELEMETRY_DISABLED=1 npm run check`
+covered 37 files with 0 errors, warnings, or hints;
+`ASTRO_TELEMETRY_DISABLED=1 npm run build` generated 13 pages; and
+`git diff --check` passed. No unit tests were run. Owner manual desktop/mobile
+visual acceptance remains pending.
+
 ## Feature-overlay ribbon wrap (overruled)
 
 Reverted in favor of the original flat label. The final design, reference image,
 and restoration code are archived in
 [wrap-around-ribbon.md](overruled_design_decisions/wrap-around-ribbon.md).
+
+## ClipThat! rename and sixth featured project
+
+Implementation is complete; orchestrator quick review found no major issues.
+yt-clip-extractor is renamed to ClipThat!, with project folder and slug `clipthat`,
+route `/projects/clipthat`, and featured rank 6. Screenshots and `media.yaml` were
+preserved unchanged in the folder move. Rank/catalogue review confirms six
+featured projects split into three leads and three secondary cards, leaving four
+compact projects, following [DESIGN.md](DESIGN.md).
+
+Independent orchestrator verification passed:
+`ASTRO_TELEMETRY_DISABLED=1 npm run check` covered 37 files with 0 errors,
+warnings, or hints; `npm run build` generated 13 pages including
+`/projects/clipthat`; and `git diff --check` passed. No unit tests were run.
+Browser verification is not claimed; owner manual desktop/mobile visual
+acceptance remains pending.
+
+## Uniform featured-card scale
+
+Accepted scope: all six featured homepage cards use the current #2 JetAlign
+scale, following [DESIGN.md](DESIGN.md). Preserve alternating stagger, featured
+rank, document/keyboard/mobile order, and natural media aspect ratios with variable
+heights. Existing lead/secondary catalogue grouping remains unchanged and no longer
+determines visual sizing.
+
+Implementation is complete; orchestrator quick code review found no major issues.
+Independent orchestrator verification passed:
+`ASTRO_TELEMETRY_DISABLED=1 npm run check` covered 37 files with 0 errors,
+warnings, or hints; `npm run build` generated 13 pages; and `git diff --check`
+passed. No unit tests were run. Manual desktop/mobile visual acceptance of uniform
+scale, spacing, no overlap or horizontal overflow, and preserved media geometry
+and navigation order remains pending. Browser verification is not claimed.
 
 ## 1. Static foundation and project content
 
@@ -254,7 +299,7 @@ and restoration code are archived in
 - Use Astro content collections with one folder per project (`<slug>/index.md`) and validated structured metadata.
 - Follow [AGENTS.md](AGENTS.md) for flat domain organization, presentational UI, explicit dependency injection, and build/browser state lifetimes.
 - Define stable project routes, display names, short descriptions, project types, optional featured ranks, release maturity, visibility, publication notes, platform downloads, external links, and gallery items.
-- Derive the first three lead and two secondary projects from featured rank. Keep the compact collection in a deliberate editorial order, with Flutter packages adjacent.
+- Derive the first three lead and next three secondary projects from featured rank as catalogue groups only; all six render at uniform scale. Keep the four-project compact collection in a deliberate editorial order, with Flutter packages adjacent.
 - Distinguish gallery images, silent looping video previews, and user-activated demonstrations with audio. Store poster images and accessible text with their media records.
 - Add the ten launch entries from the agreed inventory. Keep WORLD-vocoder-vst unpublished if retained as draft content.
 - Draft project copy from the owner's descriptions. Leave unknown release details and contact information explicitly marked in the authoring content; render only real actionable links.
@@ -265,9 +310,9 @@ and restoration code are archived in
 - Choose characterful readable heading typography and neutral body typography; self-host the fonts.
 - Create the initial typeset studio wordmark and lightweight wake-line artwork.
 - Keep the introduction short enough that the first project is visible immediately in representative desktop and phone viewports.
-- Implement the non-overlapping staggered trail: HanScan left, JetAlign lower/right, WayToClip lower/left, LaoZi lower/right at smaller scale, HanKan lower/left at smaller scale.
+- Implement the non-overlapping staggered trail: HanScan left, JetAlign lower/right, WayToClip lower/left, LaoZi lower/right, HanKan lower/left, ClipThat! lower/right. Give all six cards the current #2 JetAlign scale, preserving natural media aspect ratios and variable heights.
 - Use layout rules that preserve editorial order in the document and during keyboard navigation; collapse to a single column on mobile.
-- Add the compact five-project collection and homepage About/contact area.
+- Add the compact four-project collection and homepage About/contact area.
 - Make project-specific placeholder media replaceable through content files, without changing the page layout.
 
 ## 3. Media-first project pages and interactions
@@ -296,7 +341,7 @@ and restoration code are archived in
 
 - Astro content validation/type checks and the production build pass.
 - All ten intended project pages are generated; WORLD-vocoder-vst has no public launch route or card.
-- Featured ordering and hierarchy match the agreed five-project sequence.
+- Featured ordering matches the agreed six-project sequence, with ClipThat! sixth; all six cards use uniform scale matching the current #2 JetAlign, without a visual lead/secondary sizing hierarchy. Natural media aspect ratios and variable heights are preserved; four projects remain compact.
 - The homepage is staggered on wide screens, single-column on phones, and has no horizontal overflow or overlapping cards.
 - The first project is visible without scrolling past an oversized introduction in representative desktop/mobile viewports.
 - The project carousel dominates the opening content, uses clickable round dots with accessible labels and current state, supports swipe and keyboard access, never advances automatically, never wraps or repeats items, and handles one-item and empty galleries without redundant controls. The selected item remains uncropped with dynamic size within the 60% viewport-height cap, depth-2 neighbors stay behind depth-1 on hover/focus with the selected item on top, transitions respect reduced motion, and no thumbnail strip or visible slide counter appears. Descriptions and download panels follow it, and the banner shortcut reaches real downloads.

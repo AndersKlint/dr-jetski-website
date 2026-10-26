@@ -10,13 +10,12 @@ import {
 interface Props {
   project: Project;
   isPriority?: boolean;
-  size?: "lead" | "secondary";
 }
 
-const { project, isPriority = false, size = "lead" } = Astro.props;
+const { project, isPriority = false } = Astro.props;
 ---
 
-<article class="card" data-size={size}>
+<article class="card">
   <div
     class="card-media"
     data-has-controls={project.homepagePreview?.kind === "demo"}
@@ -84,10 +83,6 @@ const { project, isPriority = false, size = "lead" } = Astro.props;
     z-index: 2;
   }
 
-  .card[data-size="secondary"] .card-body {
-    padding: 1rem 1.1rem 1.25rem;
-  }
-
   .card-kicker {
     display: flex;
     flex-wrap: wrap;
@@ -129,16 +124,8 @@ const { project, isPriority = false, size = "lead" } = Astro.props;
     font-size: 1.6rem;
   }
 
-  .card[data-size="secondary"] .card-title {
-    font-size: 1.3rem;
-  }
-
   .card-description {
     margin: 0;
-  }
-
-  .card[data-size="secondary"] .card-description {
-    font-size: 0.95rem;
   }
 
   .card-title a {

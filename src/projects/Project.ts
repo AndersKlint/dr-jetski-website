@@ -42,6 +42,7 @@ export interface ResponsiveImage {
 
 export interface FeatureOverlay {
   text: string;
+  side: 'left' | 'right';
   y: number;
   offset: { x: number; y: number };
   style: 'dark' | 'light';

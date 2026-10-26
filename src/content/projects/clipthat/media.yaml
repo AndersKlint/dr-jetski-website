@@ -1,0 +1,20 @@
+- media: dark.png
+  highlight-color: "#A93246"
+  alt: "ClipThat! UI in dark mode."
+  text: "Instantly download and cut videos from an URL"
+  text_pos_y: 0.7
+  text_side: right
+  style: light
+
+- media: light.png
+  highlight-color: "#A93246"
+  alt: "ClipThat! UI in light mode."
+  text: Light and dark modes
+  text_pos_y: 0.7
+  text_side: right
+
+- preview: dark.png
+  highlight-color: "#A93246"
+  text: "Instantly download and cut videos from an URL"
+  text_pos_y: 0.4
+  text_side: left

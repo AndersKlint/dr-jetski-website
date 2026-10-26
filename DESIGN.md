@@ -15,11 +15,11 @@ Design confirmed by the owner after the design interview. See [PLAN.md](PLAN.md)
 - Use placeholder media during design; screenshots and other real assets will come later.
 - The site should remain pragmatic, fast, lightweight, and extremely inexpensive to host.
 - The homepage will have a short studio introduction, selected prominent projects, and a more compact visual collection of the remaining public projects. Each public project gets its own page. The introduction should leave at least the first project visible immediately in a typical initial viewport.
-- Featured-project priority is HanScan, JetAlign, WayToClip, LaoZi AI Flashcards, then HanKan.
+- Featured-project priority is HanScan, JetAlign, WayToClip, LaoZi AI Flashcards, HanKan, then ClipThat!.
 - Project pages are media-first: a compact studio-identity banner, a substantial demo gallery, then project explanation, downloads, installation notes, and optional engineering detail.
 - Use a restrained abstract water/wake motif as the studio's distinctive visual thread.
 - Include a compact About/contact area with the creator's DevOps/full-stack background and professional links.
-- Give the first three featured projects lead treatment; LaoZi AI Flashcards and HanKan receive smaller secondary treatment. Arrange all five cards asymmetrically: first on the left, second lower on the right, third back on the left beneath the first, continuing the alternating rhythm. Cards have generous breathing room and do not overlap. On mobile, preserve priority order in one column.
+- Give all six featured projects a uniform card scale matching the current second card, JetAlign, with no visual lead/secondary sizing hierarchy. Preserve natural media aspect ratios and resulting variable heights rather than forcing equal-height cards. Arrange all six cards asymmetrically: first on the left, second lower on the right, third back on the left beneath the first, continuing the alternating rhythm. Cards have generous breathing room and do not overlap. On mobile, preserve priority order in one column.
 - Use minimal navigation: studio mark/name, a small About/contact link, and a clear Back to projects link on project pages. About/contact belongs near the bottom of the homepage.
 - Some project cards play short, silent, inline looping previews, loading near the viewport and pausing offscreen. At most three previews play together. Use still posters for reduced-motion or data-saving preferences, provide a simple pause-motion control, and keep audio user-activated.
 - Use one dark studio palette: warm charcoal background `#211E1B`, recessed surfaces `#181614`, raised surfaces `#2C2824`, primary near-white text `#F7F4EF`, brighter warm-gray secondary text `#D2CCC4`, and logo-orange accents `#EE7135`. Use dark `#211E1B` labels on orange fills, near-white dividers at 20% opacity, and subdued warm-gray wake linework. Reserve orange for actions, selected badges, hover accents, and keyboard focus; keep most text near-white or gray. Temporary illustrations use coordinated neutral warm off-white surfaces, charcoal framing, and orange highlights while retaining useful project-specific colors. Preserve actual product colors in real screenshots.
@@ -32,7 +32,7 @@ Design confirmed by the owner after the design interview. See [PLAN.md](PLAN.md)
 - The remaining collection uses a compact, manually ordered grid with small media, titles, and concise descriptions. Keep the two Flutter packages together. Visitors browse the small catalogue directly, without search or filter controls.
 - Every project page presents its gallery as a manual floating layered stack: one uncropped selected item whose height is at most about 60% of the viewport height, preserving its aspect ratio so its displayed size follows the media and portrait or landscape items do not fill the page. No panel, frame, border, or overlay arrows are shown. Up to two naturally available adjacent items per side sit behind the selected item as scaled-down, faded layers; the nearest layer is roughly half hidden by the selected item, and the outer layer is further overlapped, smaller, and fainter. The selected item stays above all neighbors. Depth-2 neighbors always remain behind depth-1 neighbors, including on hover or keyboard focus. Items never repeat to fill the stack, and the first item has no left neighbor while the last has no right neighbor; navigation is bounded and never wraps. Phones show at most one neighbor per side. Hovering or keyboard-focusing a neighbor may enlarge it and reduce its transparency while it keeps its depth order; the selected item stays static when hovered, and media show no hover outline or color change. Clicking a neighbor selects that exact item. No thumbnail strip is shown. Keyboard focus remains visibly indicated on interactive layers and controls. Navigation uses clickable round dots with accessible labels and current-state indication; the active dot is opaque and inactive dots are faded, and no visible slide counter is shown. Swipe and keyboard navigation are supported, and the gallery never advances automatically. A one-item gallery omits redundant navigation; an empty gallery is omitted.
 - Selected video previews play silently and inline only while near or within the viewport; inactive previews pause and are not eagerly downloaded. Neighbor layers show video posters only, without loading or playing their video. Explicit slide navigation restarts a video when its slide is returned to; scrolling away, backgrounding, or the global pause-motion control pauses playback, and returning resumes it. The page-wide three-preview cap, reduced-motion/data-saving posters, and global pause control still apply. Horizontal slide changes move with a natural transition rather than snapping or jumping pages; scale, position, opacity, and selected-size changes use a short transition, and all are disabled under reduced motion.
-- Prominent media may carry a feature overlay: left-aligned, balanced plain text preserving authored line breaks over an inset, fit-content rounded rectangle. The default dark style retains an opaque cool-neutral gray gradient and near-white text, independently of the warm site surfaces; an optional light style uses a light-neutral background and dark text. Both use the studio body font at weight 800, responsive sizing, tight line spacing, generous padding, a left rule using the authored highlight color (defaulting to studio orange), and a soft dark shadow, with the same shape and no banner animation. Overlays appear on the homepage card's selected preview and on the selected carousel item only; faded neighbor layers show no banner. Retain the shared horizontal left inset and a fractional vertical center, defaulting to halfway down the displayed media, with base positioning edge-clamped inside its bounds. After clamping, retain the current default shift of 38 CSS pixels left for overlap. Optional CSS-pixel offsets, each defaulting to zero, apply additively on top of this default placement, may intentionally move the banner outside the media, and reserve no layout space; there is no horizontal position fraction. The overlay is part of the media presentation, so it follows the media's geometry, movement, and scaling, persists across poster and playback states, and never intercepts click or swipe navigation. Its text remains accessible independently of the media alt text.
+- Prominent media may carry a feature overlay: balanced, readable plain text aligned to the chosen side, preserving authored line breaks over an inset, fit-content rounded rectangle. The default dark style retains an opaque cool-neutral gray gradient and near-white text, independently of the warm site surfaces; an optional light style uses a light-neutral background and dark text. Both use the studio body font at weight 800, responsive sizing, tight line spacing, generous padding, a rule on the chosen outer side using the authored highlight color (defaulting to studio orange), and a soft dark shadow, with the same shape and no banner animation. Overlays appear on the homepage card's selected preview and on the selected carousel item only; faded neighbor layers show no banner. Default to a label anchored at the left edge and extending rightward; optionally anchor at the right edge and extend leftward, with the highlight on the far right and readable, unmirrored text. Mirror the horizontal inset and outward overlap between sides. Retain a fractional vertical center, defaulting to halfway down the displayed media, with base positioning edge-clamped inside its bounds. After clamping, shift 38 CSS pixels outward on the chosen side. Optional CSS-pixel offsets, each defaulting to zero, apply additively in screen axes (positive x right, positive y down) on top of this default placement, may intentionally move the banner outside the media, and reserve no layout space; there is no horizontal position fraction. The overlay is part of the media presentation, so it follows the media's geometry, movement, and scaling, persists across poster and playback states, and never intercepts click or swipe navigation. Its text remains accessible independently of the media alt text. [PROJECT-ASSETS.md](PROJECT-ASSETS.md) defines the authoring options.
 - The project-page banner includes the studio identity, a return link, a small project identifier, and a Downloads jump link when downloads exist. The substantive information/download panel sits below the gallery.
 - Packages and scripts may use relevant diagrams, real usage examples, terminal output, or screenshots, with a shorter media section where appropriate.
 - Publish software releases by manually uploading versioned files to R2 and updating validated repository metadata and Markdown content. Validate locally with `make check`, push `main` for staging, then promote fetched `origin/main` to `release` with `make deploy-prod` to trigger production deployment.
@@ -43,20 +43,21 @@ Design confirmed by the owner after the design interview. See [PLAN.md](PLAN.md)
 Dr. Jetski Studios                                  About/contact
 Independent apps, audio tools, and developer utilities.
 
-[ HanScan: large preview ]
-                          [ JetAlign: large preview ]
-[ WayToClip: large preview ]
-                          [ LaoZi: smaller preview ]
-[ HanKan: smaller preview ]
+[ HanScan: uniform-scale preview ]
+                          [ JetAlign: uniform-scale preview ]
+[ WayToClip: uniform-scale preview ]
+                          [ LaoZi: uniform-scale preview ]
+[ HanKan: uniform-scale preview ]
+                          [ ClipThat!: uniform-scale preview ]
 
 More projects
 [ compact project ] [ compact project ] [ compact project ]
-[ compact project ] [ compact project ]
+[ compact project ]
 
 About the maker · contact · professional links
 ```
 
-This describes relative position and hierarchy, not fixed dimensions. Stagger cards rather than aligning them into rows. Keep document, keyboard, and mobile reading order identical to editorial priority. Sparse wake linework can connect the composition without competing with the previews.
+This describes relative position and uniform featured-card scale, not fixed dimensions or equal media heights. Stagger cards rather than aligning them into rows. Keep document, keyboard, and mobile reading order identical to editorial priority. Sparse wake linework can connect the composition without competing with the previews.
 
 The homepage introduction is brief and plainspoken; the example line above is editable. Give attention and screen space to the projects. Featured and compact cards contain media, tags just beneath the media, a title, and a concise explanation, without availability/publication notes or a separate visible “View project” action. Featured cards show type, maturity (with highlighted trial badges), and supported platforms; compact cards show type and maturity. Featured cards retain prominent media.
 
@@ -84,8 +85,8 @@ HanScan has a straightforward static text privacy-policy page at https://drjetsk
 
 ## Content and delivery
 
-- Ten launch projects: the five featured projects and five compact projects. WORLD-vocoder-vst is a future draft, not a generated public launch page.
-- Each project is one folder named for its stable route slug under `src/content/projects/<slug>/`, containing `index.md`, `media.yaml`, and co-located local media. Stable routing is independent of the editable display name. JetAlign uses `/projects/jetalign`; the former `/projects/vocal-aligner` route permanently redirects there.
+- Ten launch projects: six featured projects and four compact projects. WORLD-vocoder-vst is a future draft, not a generated public launch page.
+- Each project is one folder named for its stable route slug under `src/content/projects/<slug>/`, containing `index.md`, `media.yaml`, and co-located local media. Stable routing is independent of the editable display name. JetAlign uses `/projects/jetalign`; the former `/projects/vocal-aligner` route permanently redirects there. ClipThat! uses folder slug `clipthat` and route `/projects/clipthat`.
 - The `index.md` holds short descriptive metadata, Markdown detail sections, and real download references. `media.yaml` is the single source of truth for every project's gallery and media presentation: normal media records define carousel membership and order, and referenced local assets are discovered on rebuild. Unlisted files do not appear; missing referenced assets fail the build. Missing or empty YAML gives an empty gallery, with no gallery fallback to `index.md`. The first gallery item supplies the homepage preview unless an independent `preview` record selects another gallery item; adding or moving that selector does not affect carousel order.
 - Track featured priority, release maturity, public availability, and page visibility separately. A private finished package can have a public explanatory page; an alpha can have a public download.
 - Download records identify platform and format, URL, and known version/size details. Only render actionable links when their destinations are real; records without a real URL render an honest pending state.
@@ -134,7 +135,7 @@ Keyboard-centric GNOME Shell clipboard-manager extension. A shortcut opens histo
 
 Early work-in-progress voice-processing and synthesis plugin. An initial analysis decomposes a voice into components, followed by parameter modification and real-time MIDI-controlled resynthesis. Intended uses include voice transformation, harmonies, pitched vocal playback, voice-based synthesis, and unusual sound effects. Final name and plugin formats remain to be confirmed.
 
-### yt-clip-extractor
+### ClipThat!
 
 Small desktop app using yt-dl to download and cut a video between two timestamped YouTube URLs.
 
@@ -151,11 +152,11 @@ Small Linux desktop app displaying the current song's album artwork, title, and 
 | WayToClip | Finished; submitted to GNOME Extensions and awaiting review | Featured priority 3; show pending-review note, GitHub link, manual-install instructions, and pluginbundle.zip download |
 | LaoZi AI Flashcards | Fully functional alpha; Android APK ready; not on Play Store | Featured priority 4; publish alpha download at launch; other platform downloads still to confirm |
 | HanKan | Finished; Windows, Linux, and Android builds available; not on Play Store | Featured priority 5; download destinations needed |
+| ClipThat! | Minimal MVP; Linux and Windows builds available | Featured priority 6; supply current download destinations |
 | Paddle-my-pdf | Finished CLI; unpolished, no installer, Python requirements file | Confirm source/install destination |
 | dart_paddle_ocr | Finished implementation; package not yet polished, still closed source; pub.dev publication planned | Include an informative page with publication-in-preparation status; no public package/source actions yet |
 | chinese_popup_dict | Finished implementation; package not yet polished, still closed source; pub.dev publication planned | Include an informative page with publication-in-preparation status; no public package/source actions yet |
 | WORLD-vocoder-vst | Prototype | Exclude from the launch site; future project |
-| yt-clip-extractor | Minimal MVP; Linux and Windows builds available | Include in compact collection; supply current download destinations |
 | spotify-screensaver | Finished script; screenshot available | Confirm source/install destination |
 
 ## Execution details and owner-supplied content

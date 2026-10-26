@@ -219,6 +219,7 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
             const wrapper = document.createElement('div');
             wrapper.className = 'feature-overlay';
             wrapper.dataset.style = overlay.style;
+            wrapper.dataset.side = overlay.side;
             wrapper.style.setProperty('--feature-overlay-y', String(overlay.y));
             wrapper.style.setProperty('--feature-overlay-direction', overlay.y <= 0.5 ? 'column' : 'column-reverse');
             wrapper.style.setProperty('--feature-overlay-offset-x', `${overlay.offset.x}px`);

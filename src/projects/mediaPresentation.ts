@@ -35,6 +35,7 @@ const mediaFilenameSchema = z.string().refine((value) => value.trim().length > 0
 const presentationFields = {
   text: z.string().refine((value) => value.trim().length > 0, { message: 'Expected nonblank plain text' }).optional(),
   text_pos_y: coordinate.default(0.5),
+  text_side: z.enum(['left', 'right']).default('left'),
   text_offset: z.object({
     x: z.number().default(0),
     y: z.number().default(0),
@@ -120,6 +121,7 @@ export function parseMediaPresentation(raw: string, filePath: string): ProjectMe
     const presentation: MediaPresentation = {
       featureOverlay: entry.text === undefined ? undefined : {
         text: entry.text,
+        side: entry.text_side,
         y: entry.text_pos_y,
         offset: entry.text_offset,
         style: entry.style,
@@ -137,7 +139,7 @@ export function parseMediaPresentation(raw: string, filePath: string): ProjectMe
         throw new Error(`${filePath}: ${index}.media: Duplicate media filename "${entry.media}"`);
       }
       presentations.set(entry.media, presentation);
-      const { text, text_pos_y, text_offset, style, 'highlight-color': highlightColor, preview_crop, ...media } = entry;
+      const { text, text_pos_y, text_side, text_offset, style, 'highlight-color': highlightColor, preview_crop, ...media } = entry;
       gallery.push({ ...media, ...presentation });
     }
   }
