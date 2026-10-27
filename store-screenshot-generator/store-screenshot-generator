@@ -10,42 +10,75 @@ import { parseMediaPresentation, mediaSourceBasename } from '../src/projects/med
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const root = resolve(scriptDirectory, '..');
 
+async function loadImageDataUrl(source) {
+  if (!(await stat(source)).isFile()) throw new Error(`Image source is not a file: ${source}`);
+  const mime = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.avif': 'image/avif' }[extname(source).toLowerCase()];
+  if (!mime) throw new Error(`Unsupported image source: ${source}`);
+  return `data:${mime};base64,${(await readFile(source)).toString('base64')}`;
+}
+
 async function main() {
   const { values } = parseArgs({ options: {
     'project-name': { type: 'string' },
+    device: { type: 'string', default: 'phone' },
     'background-color': { type: 'string' },
+    'background-image': { type: 'string' },
     'highlight-color': { type: 'string' },
     'image-dir': { type: 'string' },
     'output-dir': { type: 'string' },
     'text-offset': { type: 'string' },
+    'crop-status-bar': { type: 'string' },
     padding: { type: 'string' },
+    'no-padding': { type: 'boolean', default: false },
+    'no-text-overlay': { type: 'boolean', default: false },
     'phone-frame': { type: 'boolean', default: false },
+    'stylized-frame': { type: 'boolean', default: false },
+    'stylized-text': { type: 'boolean', default: false },
     help: { type: 'boolean' },
   }, allowPositionals: false });
   if (values.help) {
     console.log(`Usage: ./store-screenshot-generator/store-screenshot-generator --project-name <slug> [options]
 
   --project-name <slug>       Required stable project slug
+  --device <phone|tablet>    Output device preset; default phone; tablet is always 3840×2160 landscape
   --background-color <hex>    Six hex digits, optionally prefixed with #; default transparent
+  --background-image <path>   Fill the canvas with a local image using centered cover sizing
   --highlight-color <hex>     Override YAML accent; six hex digits, optionally prefixed with #; fallback site ember
   --image-dir <directory>     Alternate image folder with the same filenames; relative to invocation cwd
   --output-dir <directory>    Output directory relative to invocation cwd
   --text-offset <x,y>         Override every caption's YAML text_offset in CSS pixels
-  --padding <percent>        Minimum image/phone-edge short-edge margin per side; 0 <= percent < 50, default 8
+  --crop-status-bar <pixels>  Remove this many source-image pixels from the top; non-negative integer, default 0
+  --padding <percent>        Minimum image/frame-edge short-edge margin per side; 0 <= percent < 50, default 8
+  --no-padding               Set the minimum margin to zero; overrides --padding
+  --no-text-overlay          Omit caption text bubbles from every exported image
   --phone-frame              Add the silver 9:20 SVG phone frame; default false
+  --stylized-frame           Round screenshot corners and add a strong drop shadow, without a border
+  --stylized-text            Replace caption bubbles with bold white headings above fitted screenshots
   --help                     Show this help
 
 Default output: store-screenshot-generator/output/<slug>/<original-basename>.png
 Exports images in media.yaml gallery order, using original sources and normal media captions.
 With --image-dir, use alternate images and their dimensions; project YAML and captions stay the same.
-PNG: 1440×2560 portrait/square sources, 2560×1440 landscape sources.
+Phone PNG: 1440×2560 portrait/square images, 2560×1440 landscape images, using dimensions after cropping.
+Tablet PNG: fixed 3840×2160 landscape, with tablet-scaled corners, shadows, and headings; images retain their aspect ratio.
+Use a 3840×2160 background image for tablet exports to fill the canvas exactly.
+--crop-status-bar applies to every image before sizing, rounding, shadows, frames, and captions; source files stay intact.
 Transparent by default; use --background-color 211e1b for opaque RGB Google Play exports.
+--background-image resolves from invocation cwd and sits above the background color, behind screenshots and text.
 Transparent outputs are generic assets, not Google Play-compliant screenshots.
-Full source image is centered with at least 8% short-edge padding by default.
+The image remaining after any top crop is centered with at least 8% short-edge padding by default.
+With --no-padding, aspect-ratio differences can still leave space on two sides; no additional crop-to-fill is applied.
 With --phone-frame, padding measures the outer phone edges; screen corners are rounded and the camera overlays the image.
-Screenshots fit inside the fixed 9:20 screen with black padding when their aspect ratio differs.
+With --stylized-frame, screenshots keep their natural aspect ratio with rounded corners and a strong shadow, without a border.
+Padding measures the screenshot itself, excluding its shadow.
+Choose either --phone-frame or --stylized-frame, not both. Shadows may clip with small or zero padding.
+With --phone-frame, screenshots fit inside the fixed 9:20 opening with black padding when their aspect ratio differs.
 Captions follow the image and may overflow its padding or clip at the canvas edge.
+--stylized-text uses each image's normal media.yaml text, preserving line breaks and wrapping to fit.
+Headings reserve space above the full screenshot; uncaptioned images keep their usual layout.
+--no-text-overlay hides bubbles only; it does not hide stylized headings. Caption offsets and accents do not apply to headings.
 Example: ./store-screenshot-generator/store-screenshot-generator --project-name hanscan --padding 2.5
+Clean transparent export: ./store-screenshot-generator/store-screenshot-generator --project-name hanscan --no-padding --no-text-overlay
 Matching outputs are overwritten; unrelated files are retained.
 Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
     return;
@@ -54,6 +87,11 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
   if (!slug || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
     throw new Error('--project-name must be a stable lowercase, hyphen-separated project slug');
   }
+  const device = values.device;
+  if (device !== 'phone' && device !== 'tablet') {
+    throw new Error('--device must be phone or tablet');
+  }
+  const isTablet = device === 'tablet';
   const color = values['background-color'];
   if (color !== undefined && !/^#?[0-9a-fA-F]{6}$/.test(color)) {
     throw new Error('--background-color must contain exactly six hex digits, optionally prefixed with #');
@@ -64,6 +102,12 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
   }
   if (values['image-dir'] === '') throw new Error('--image-dir must not be empty');
   if (values['output-dir'] === '') throw new Error('--output-dir must not be empty');
+  if (values['background-image'] !== undefined && !values['background-image'].trim()) {
+    throw new Error('--background-image must not be empty');
+  }
+  if (values['phone-frame'] && values['stylized-frame']) {
+    throw new Error('--phone-frame and --stylized-frame cannot be used together');
+  }
   let textOffset;
   if (values['text-offset'] !== undefined) {
     const coordinates = values['text-offset'].split(',').map(coordinate => coordinate.trim());
@@ -73,15 +117,23 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
     textOffset = { x: Number(coordinates[0]), y: Number(coordinates[1]) };
   }
   const paddingInput = values.padding === undefined ? '8' : values.padding.trim();
-  const paddingPercentage = Number(paddingInput);
-  if (!paddingInput || !Number.isFinite(paddingPercentage) || paddingPercentage < 0 || paddingPercentage >= 50) {
+  const requestedPaddingPercentage = Number(paddingInput);
+  if (!paddingInput || !Number.isFinite(requestedPaddingPercentage) || requestedPaddingPercentage < 0 || requestedPaddingPercentage >= 50) {
     throw new Error('--padding must be a finite number greater than or equal to 0 and less than 50');
+  }
+  const paddingPercentage = values['no-padding'] ? 0 : requestedPaddingPercentage;
+  const cropInput = values['crop-status-bar'] === undefined ? '0' : values['crop-status-bar'].trim();
+  const cropStatusBar = Number(cropInput);
+  if (!cropInput || !Number.isSafeInteger(cropStatusBar) || cropStatusBar < 0) {
+    throw new Error('--crop-status-bar must be a non-negative integer in source-image pixels');
   }
   const outputDirectory = values['output-dir'] === undefined
     ? resolve(scriptDirectory, 'output', slug) : resolve(values['output-dir']);
   const projectDirectory = resolve(root, 'src/content/projects', slug);
   const imageDirectory = values['image-dir'] === undefined
     ? projectDirectory : resolve(values['image-dir']);
+  const backgroundDataUrl = values['background-image'] === undefined
+    ? undefined : await loadImageDataUrl(resolve(values['background-image']));
   const indexPath = resolve(projectDirectory, 'index.md');
   const markdown = await readFile(indexPath, 'utf8');
   const frontmatter = markdown.match(/^\uFEFF?---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
@@ -109,11 +161,9 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
     const filename = `${basename(source, extname(source))}.png`;
     if (outputs.has(filename.toLowerCase())) throw new Error(`Colliding output basename: ${filename}`);
     outputs.add(filename.toLowerCase());
-    if (!(await stat(source)).isFile()) throw new Error(`Image source is not a file: ${source}`);
-    const mime = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.avif': 'image/avif' }[extname(source).toLowerCase()];
-    if (!mime) throw new Error(`Unsupported image source: ${source}`);
-    images.push({ filename, source, dataUrl: `data:${mime};base64,${(await readFile(source)).toString('base64')}`,
-      overlay: item.featureOverlay ? {
+    images.push({ filename, source, dataUrl: await loadImageDataUrl(source),
+      heading: values['stylized-text'] ? item.featureOverlay?.text : undefined,
+      overlay: !values['stylized-text'] && !values['no-text-overlay'] && item.featureOverlay ? {
         ...item.featureOverlay,
         offset: textOffset ?? item.featureOverlay.offset,
         highlightColor: highlightColor === undefined
@@ -125,8 +175,10 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
     return;
   }
   const overlayCss = await readFile(resolve(root, 'src/media/featureOverlay.css'), 'utf8');
-  const phoneFrameSvg = values['phone-frame']
+  const frameSvg = values['phone-frame']
     ? await readFile(resolve(scriptDirectory, 'phone-frame-9-20.svg'), 'utf8') : undefined;
+  const stylizedSvg = values['stylized-frame']
+    ? await readFile(resolve(scriptDirectory, 'stylized-frame.svg'), 'utf8') : undefined;
   const globalCss = await readFile(resolve(root, 'src/site/global.css'), 'utf8');
   const tokens = ['font-body', 'text-primary', 'ember'].map(name => {
     const match = globalCss.match(new RegExp(`--${name}:\\s*([^;]+);`));
@@ -145,15 +197,27 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
     await mkdir(outputDirectory, { recursive: true });
     for (const image of images) {
       const measuringPage = await browser.newPage();
-      const dimensions = await measuringPage.evaluate(async dataUrl => {
+      const { dimensions, dataUrl } = await measuringPage.evaluate(async ({ dataUrl, cropStatusBar, source }) => {
         const image = new Image();
         image.src = dataUrl;
         await image.decode();
-        return { width: image.naturalWidth, height: image.naturalHeight };
-      }, image.dataUrl);
+        if (cropStatusBar >= image.naturalHeight) {
+          throw new Error(`${source}: --crop-status-bar (${cropStatusBar}) must be less than the image height (${image.naturalHeight})`);
+        }
+        const dimensions = { width: image.naturalWidth, height: image.naturalHeight - cropStatusBar };
+        if (cropStatusBar === 0) return { dimensions, dataUrl };
+        const croppedImage = document.createElement('canvas');
+        croppedImage.width = dimensions.width;
+        croppedImage.height = dimensions.height;
+        croppedImage.getContext('2d').drawImage(image, 0, cropStatusBar, dimensions.width, dimensions.height,
+          0, 0, dimensions.width, dimensions.height);
+        return { dimensions, dataUrl: croppedImage.toDataURL('image/png') };
+      }, { dataUrl: image.dataUrl, cropStatusBar, source: image.source });
       await measuringPage.close();
-      const canvas = dimensions.width > dimensions.height
-        ? { width: 2560, height: 1440 } : { width: 1440, height: 2560 };
+      const canvas = isTablet ? { width: 3840, height: 2160 }
+        : dimensions.width > dimensions.height ? { width: 2560, height: 1440 } : { width: 1440, height: 2560 };
+      const imageShortEdge = Math.min(360, 360 * dimensions.height / dimensions.width);
+      const imageCornerRadius = isTablet ? imageShortEdge * 0.015 : Math.min(8, 360 * dimensions.height / dimensions.width / 20);
       const context = await browser.newContext({ deviceScaleFactor: 1, viewport: canvas });
       try {
         const page = await context.newPage();
@@ -161,22 +225,51 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
         await page.addStyleTag({ content: `:root{${tokens}} ${fontCss}
           *,*::before,*::after{box-sizing:border-box}
           body{margin:0;background:${color ? `#${color.replace(/^#/, '')}` : 'transparent'};font-family:var(--font-body);line-height:1.6}
-          #composition{position:absolute;left:0;top:0;width:360px;height:${360 * dimensions.height / dimensions.width}px}
-          #composition>img{display:block;width:100%;height:100%;border-radius:min(8px,${360 * dimensions.height / dimensions.width / 20}px)}
-          #phone-frame{position:absolute;z-index:1;pointer-events:none}
-          #phone-frame>svg{display:block;transform-origin:top left}
-          #phone-screen{position:absolute;background:#000;overflow:hidden}
-          #phone-screen>img{position:absolute;display:block}
+          #background-image{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0}
+          #stylized-heading{position:absolute;z-index:2;margin:0;color:#fff;font-weight:900;line-height:1.05;letter-spacing:-0.035em;text-align:center;white-space:pre-line;text-wrap:balance;overflow-wrap:anywhere;text-shadow:0 3px 20px rgb(0 0 0 / 0.12)}
+          #composition{position:absolute;z-index:1;left:0;top:0;width:360px;height:${360 * dimensions.height / dimensions.width}px}
+          #composition>img{display:block;width:100%;height:100%;border-radius:${imageCornerRadius}px}
+          #frame{position:absolute;z-index:1;pointer-events:none}
+          #frame>svg{display:block;transform-origin:top left}
+          #frame-screen{position:absolute;background:#000;overflow:hidden}
+          #frame-screen>img{position:absolute;display:block}
           ${overlayCss}` });
-        const phoneBounds = await page.evaluate(async ({ dataUrl, overlay, phoneFrameSvg, dimensions }) => {
+        const compositionBounds = await page.evaluate(async ({ dataUrl, overlay, frameSvg, stylizedSvg, dimensions, backgroundDataUrl, isTablet }) => {
+          if (backgroundDataUrl) {
+            const background = document.createElement('img');
+            background.id = 'background-image';
+            background.src = backgroundDataUrl;
+            await background.decode();
+            document.body.prepend(background);
+          }
           const composition = document.querySelector('#composition');
           const image = composition.querySelector('img');
           image.src = dataUrl;
           await image.decode();
           const imageWidth = 360, imageHeight = 360 * dimensions.height / dimensions.width;
           let bounds = { x: 0, y: 0, width: imageWidth, height: imageHeight };
-          if (phoneFrameSvg) {
-            const svg = new DOMParser().parseFromString(phoneFrameSvg, 'image/svg+xml').documentElement;
+          if (stylizedSvg) {
+            const svg = new DOMParser().parseFromString(stylizedSvg, 'image/svg+xml').documentElement;
+            const imageShortEdge = Math.min(imageWidth, imageHeight);
+            const cornerRadius = isTablet ? imageShortEdge * 0.035
+              : Math.min(svg.querySelector('rect').rx.baseVal.value, imageWidth / 12, imageHeight / 12);
+            if (isTablet) {
+              const shadow = svg.querySelector('feDropShadow');
+              const effectScale = imageShortEdge / svg.viewBox.baseVal.width;
+              for (const attribute of ['dx', 'dy', 'stdDeviation']) {
+                shadow.setAttribute(attribute, String(Number(shadow.getAttribute(attribute)) * effectScale));
+              }
+            }
+            svg.replaceChildren(svg.querySelector('defs'));
+            svg.setAttribute('width', '0');
+            svg.setAttribute('height', '0');
+            svg.style.position = 'absolute';
+            composition.append(svg);
+            image.style.borderRadius = `${cornerRadius}px`;
+            image.style.filter = 'url(#screenshot-shadow)';
+          }
+          if (frameSvg) {
+            const svg = new DOMParser().parseFromString(frameSvg, 'image/svg+xml').documentElement;
             const screen = svg.querySelector('#screen-opening');
             const screenX = screen.x.baseVal.value, screenY = screen.y.baseVal.value;
             const screenWidth = screen.width.baseVal.value, screenHeight = screen.height.baseVal.value;
@@ -188,7 +281,7 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
             const screenLeft = (imageWidth - displayScreenWidth * frameScale) / 2;
             const screenTop = (imageHeight - displayScreenHeight * frameScale) / 2;
             const screenContainer = document.createElement('div');
-            screenContainer.id = 'phone-screen';
+            screenContainer.id = 'frame-screen';
             screenContainer.style.left = `${screenLeft}px`;
             screenContainer.style.top = `${screenTop}px`;
             screenContainer.style.width = `${displayScreenWidth * frameScale}px`;
@@ -206,7 +299,7 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
               : { x: screenLeft - screenX * frameScale, y: screenTop - screenY * frameScale,
                   width: frameWidth * frameScale, height: frameHeight * frameScale };
             const frame = document.createElement('div');
-            frame.id = 'phone-frame';
+            frame.id = 'frame';
             frame.style.left = `${bounds.x}px`;
             frame.style.top = `${bounds.y}px`;
             svg.style.transform = isLandscape
@@ -238,16 +331,42 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
           }
           await document.fonts.ready;
           return bounds;
-        }, { ...image, phoneFrameSvg, dimensions });
-        await page.evaluate(({ canvas, paddingPercentage, phoneBounds }) => {
+        }, { ...image, dataUrl, frameSvg, stylizedSvg, dimensions, backgroundDataUrl, isTablet });
+        await page.evaluate(async ({ canvas, paddingPercentage, compositionBounds, headingText, isTablet }) => {
           const composition = document.querySelector('#composition');
-          const padding = Math.min(canvas.width, canvas.height) * paddingPercentage / 100;
-          const scale = Math.min((canvas.width - 2 * padding) / phoneBounds.width, (canvas.height - 2 * padding) / phoneBounds.height);
-          composition.style.left = `${(canvas.width - phoneBounds.width * scale) / 2 - phoneBounds.x * scale}px`;
-          composition.style.top = `${(canvas.height - phoneBounds.height * scale) / 2 - phoneBounds.y * scale}px`;
+          const shortEdge = Math.min(canvas.width, canvas.height);
+          const padding = shortEdge * paddingPercentage / 100;
+          let contentTop = padding;
+          if (headingText) {
+            const heading = document.createElement('h1');
+            heading.id = 'stylized-heading';
+            heading.textContent = headingText;
+            const headingInset = shortEdge * 0.06;
+            const headingTop = shortEdge * (isTablet ? 0.04 : 0.045);
+            const headingGap = shortEdge * (isTablet ? 0.035 : 0.04);
+            const maximumHeadingHeight = canvas.height * (isTablet ? 0.2 : 0.25);
+            let fontSize = Math.floor(shortEdge * (isTablet ? 0.075 : 0.095));
+            heading.style.left = `${headingInset}px`;
+            heading.style.top = `${headingTop}px`;
+            heading.style.width = `${canvas.width - 2 * headingInset}px`;
+            heading.style.fontSize = `${fontSize}px`;
+            document.body.append(heading);
+            await document.fonts.ready;
+            while (fontSize > 1 && (heading.getBoundingClientRect().height > maximumHeadingHeight || heading.scrollWidth > heading.clientWidth)) {
+              heading.style.fontSize = `${--fontSize}px`;
+            }
+            if (heading.getBoundingClientRect().height > maximumHeadingHeight || heading.scrollWidth > heading.clientWidth) {
+              throw new Error('Caption is too long to fit the stylized heading area');
+            }
+            contentTop = Math.max(padding, headingTop + heading.getBoundingClientRect().height + headingGap);
+          }
+          const availableHeight = canvas.height - contentTop - padding;
+          const scale = Math.min((canvas.width - 2 * padding) / compositionBounds.width, availableHeight / compositionBounds.height);
+          composition.style.left = `${(canvas.width - compositionBounds.width * scale) / 2 - compositionBounds.x * scale}px`;
+          composition.style.top = `${contentTop + (availableHeight - compositionBounds.height * scale) / 2 - compositionBounds.y * scale}px`;
           composition.style.transformOrigin = 'top left';
           composition.style.transform = `scale(${scale})`;
-        }, { canvas, paddingPercentage, phoneBounds });
+        }, { canvas, paddingPercentage, compositionBounds, headingText: image.heading, isTablet });
         const outputPath = resolve(outputDirectory, image.filename);
         await page.screenshot({ path: outputPath, type: 'png', omitBackground: color === undefined,
           clip: { x: 0, y: 0, ...canvas }, scale: 'device' });

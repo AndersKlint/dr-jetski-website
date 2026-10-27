@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="800" viewBox="0 0 360 800" fill="none" overflow="visible">
+  <title>Borderless rounded screenshot with a strong drop shadow</title>
+  <defs>
+    <filter id="screenshot-shadow" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+  <rect width="360" height="800" rx="24" fill="white" filter="url(#screenshot-shadow)"/>
+</svg>

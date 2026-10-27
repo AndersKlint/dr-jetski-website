@@ -145,24 +145,49 @@ and caption authoring are defined in [PROJECT-ASSETS.md](PROJECT-ASSETS.md).
 - Require `--project-name`; support optional six-digit `--highlight-color` for
   the caption left accent (default site `--ember`, generated-document override
   only) and `--background-color`
-  (with or without `#`), `--padding <percent>`, boolean `--phone-frame` (default off),
+  (with or without `#`), `--background-image <path>`, `--stylized-text`,
+  `--padding <percent>`, `--no-padding`,
+  `--device <phone|tablet>` (default phone),
+  `--no-text-overlay`, mutually exclusive boolean `--phone-frame` and
+  `--stylized-frame` (both default off),
   `--image-dir`, `--output-dir`, `--text-offset <x,y>` (override caption YAML
-  offsets), and `--help`. Default to transparent
+  offsets), `--crop-status-bar <pixels>`, and `--help`. Default to transparent
   generic PNG assets and ignored tool-relative `output/<slug>/`, overwriting matching
   generated PNGs. Transparent defaults are not Google Play-compliant; use
   `--background-color 211e1b` for opaque RGB exports, including source transparency.
 - Read images in `media.yaml` gallery order, include uncaptioned images, skip all
   videos, and reuse the existing parser's gallery items and normal media settings.
   Homepage preview captions and crops do not apply.
+- `--background-image <path>` fills the canvas behind text and screenshots with
+  a local image using centered cover sizing. Resolve relative paths from the
+  invocation directory. Composite it above any selected background color.
+- `--stylized-text` replaces each image's normal caption bubble with a centered
+  white Inter 900 heading above the screenshot. Preserve authored line breaks,
+  wrap and shrink long headings to fit, and reserve measured heading space before
+  fitting the full screenshot or phone beneath it. Images without text keep the
+  normal layout. Bubble-specific positions, accents, styles, and offsets do not
+  apply; `--no-text-overlay` does not suppress stylized headings.
 - Use headless Chrome through `playwright-core`, the site's Inter font, and
   `src/media/featureOverlay.css` shared verbatim with `FeatureOverlay.astro`.
   Preserve site presentation when extracting the existing CSS.
-- Render 1440×2560 for portrait or square originals and 2560×1440 for landscape
-  originals. Without `--phone-frame`, uniformly fit the full source image inside
+- `--crop-status-bar <pixels>` removes a non-negative integer number of source
+  pixels from the top of every loaded image, defaulting to zero. Require the
+  amount to be less than each image's height. Apply before orientation selection,
+  fitting, rounding, shadows, phone framing, and caption placement; captions use
+  the cropped geometry. Keep original files unchanged.
+- In phone mode, render 1440×2560 for portrait or square images and 2560×1440
+  for landscape images, using dimensions after any top crop. Tablet mode always
+  renders a 3840×2160 landscape canvas; expect a matching-resolution background.
+  Tablet image corners use 1.5% of the screenshot's shorter edge, or 3.5% with
+  `--stylized-frame`, with SVG shadow dimensions scaled against that edge.
+  Tablet headings start at 7.5% of the canvas short edge and shrink to fit within
+  20% of its height. Keep source aspect ratios and the existing padding behavior.
+  Without `--phone-frame`, uniformly fit the remaining image inside
   the selected padding and center the image itself on the canvas. Padding sets the image's minimum
   inset on every edge as a percentage of the canvas's short edge. Default
   to 8%; accept finite decimal percentages from 0 inclusive to 50 exclusive
-  (for example, `--padding 2.5`). Preserve source aspect ratio without
+  (for example, `--padding 2.5`). `--no-padding` overrides the minimum inset to
+  zero; `--no-text-overlay` omits all caption bubbles. Preserve source aspect ratio without
   crop-to-fill or cover sizing; resampling to fit is allowed. Ignore the feature
   overlay and shadow when computing fit, centering, and padding. They follow the
   image's scale and authored placement, may extend into the padding, and may
@@ -177,7 +202,14 @@ and caption authoring are defined in [PROJECT-ASSETS.md](PROJECT-ASSETS.md).
   padding, shrinking the screenshot within the phone. Caption geometry remains
   relative to the actual screen/image box, excluded from fit and padding, and
   retains the same allowed overflow and canvas-edge clipping.
-- Without `--phone-frame`, retain subtle image-corner rounding: 8 CSS pixels at a 360 CSS-pixel image
+- With `--stylized-frame`, use `store-screenshot-generator/stylized-frame.svg`:
+  apply rounded corners and a strong drop shadow directly to the screenshot,
+  with no visible frame, border, or added letterboxing. Preserve the source's
+  natural aspect ratio. Use a 24 CSS-pixel reference radius at a 360 CSS-pixel
+  image width, capped at one twelfth of the shorter image dimension. Fit and
+  center the screenshot inside the selected padding, excluding its shadow
+  from bounds; small or zero padding may clip the shadow at the canvas edge.
+- Without either frame, retain subtle image-corner rounding: 8 CSS pixels at a 360 CSS-pixel image
   width, scaled with the image and optionally capped for a narrow shorter
   dimension. Keep output canvas corners square. Padding is not a guarantee
   against unspecified Google Play UI behavior.
@@ -214,7 +246,7 @@ JetAlign landscape exports were rendered and visually inspected in
 39 files and no errors, warnings, or hints; the production build generated
 13 pages.
 
-The sole supported frame is now `phone-frame-9-20.svg`; the old 9:16 asset is
+The supported phone frame is now `phone-frame-9-20.svg`; the old 9:16 asset is
 removed. Its screen stays fixed at 1440×3200, with other screenshot ratios
 centered inside black padding rather than changing the phone's proportions.
 Portrait and landscape exports were visually inspected in

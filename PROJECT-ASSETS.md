@@ -246,14 +246,24 @@ the site's Inter font and shared [feature-overlay CSS](src/media/featureOverlay.
 ./store-screenshot-generator/store-screenshot-generator --project-name hanscan --background-color 211e1b
 ./store-screenshot-generator/store-screenshot-generator --project-name hanscan --background-color '#211e1b' --output-dir ./screenshots
 ./store-screenshot-generator/store-screenshot-generator --project-name hanscan --padding 2.5
+./store-screenshot-generator/store-screenshot-generator --project-name hanscan --no-padding --no-text-overlay
 ./store-screenshot-generator/store-screenshot-generator --project-name hanscan --highlight-color 33aaff
 ./store-screenshot-generator/store-screenshot-generator --project-name hanscan --phone-frame
+./store-screenshot-generator/store-screenshot-generator --project-name hanscan --stylized-frame --no-text-overlay
+./store-screenshot-generator/store-screenshot-generator --project-name hanscan --stylized-frame --crop-status-bar 80
+./store-screenshot-generator/store-screenshot-generator --project-name hanscan --background-image ./store-screenshot-generator/hanscan-9-20/gradient_bkg.png --stylized-frame --stylized-text
 ./store-screenshot-generator/store-screenshot-generator --project-name hanscan --image-dir ./store-screenshot-generator/hanscan-9-20
 ./store-screenshot-generator/store-screenshot-generator --project-name hanscan --text-offset=-20,10
 ./store-screenshot-generator/store-screenshot-generator --help
 ```
 
 - `--project-name` is required and takes the project folder's slug.
+- `--device <phone|tablet>` selects the output preset and defaults to `phone`.
+  Phone output retains source-based orientation; tablet output is always
+  3840×2160 landscape, including for portrait or square sources. Sources retain
+  their aspect ratio and fit inside the available space. Supply tablet screenshots
+  through `--image-dir` and a matching 3840×2160 `--background-image` for an exact
+  background fit. Other background sizes retain centered cover behavior.
 - `--image-dir` optionally loads images from another folder, resolving relative
   paths against the current working directory. Supply the exact same filenames
   (including extensions) as the project's gallery images. The project's existing
@@ -264,7 +274,7 @@ the site's Inter font and shared [feature-overlay CSS](src/media/featureOverlay.
   uses the project's original images.
 - `--highlight-color` is optional: exactly six hexadecimal digits, optionally
   prefixed with `#` (quote a leading `#` in the shell). It overrides the caption's
-   accent on the chosen side in dark and light styles, with or without a phone frame, only in
+   accent on the chosen side in dark and light styles, with or without either frame, only in
   the generated document. Precedence: explicit CLI override, then each normal
   media record's authored `highlight-color`, then the website's `--ember` token.
 - `--text-offset <x,y>` optionally replaces both YAML `text_offset` coordinates
@@ -274,18 +284,51 @@ the site's Inter font and shared [feature-overlay CSS](src/media/featureOverlay.
   just like authored YAML offsets. Use `--text-offset=-20,10` when the value
   starts with a minus sign. Omission retains each caption's YAML offset;
   `--text-offset=0,0` resets both coordinates. Uncaptioned images stay uncaptioned.
+- `--no-text-overlay` omits every caption bubble, including its background,
+  accent, and shadow. The project's authored captions stay intact.
+- `--stylized-text` replaces normal caption bubbles with large, centered white
+  headings above the screenshot, using each image's normal `media.yaml` `text`.
+  Use the local Inter font at weight 900, tight line spacing, and balanced wrapping;
+  preserve authored line breaks. Reserve the measured heading height and a gap,
+  then uniformly fit and center the full screenshot or phone in the remaining
+  area, retaining its selected padding. Long headings shrink to fit within a
+  quarter of the canvas height in phone mode, or 20% in tablet mode. Tablet
+  headings start at 7.5% of the canvas short edge, rather than 9.5% for phone,
+  reserving more room for a landscape screenshot. Images without captions keep the normal layout.
+  This works with either frame or neither. `--no-text-overlay` hides bubbles only,
+  not stylized headings; authored caption positions, offsets, side, style, and
+  highlight colors do not apply to headings.
+- `--crop-status-bar <pixels>` removes a fixed number of pixels from the top
+  of every loaded image, for example `--crop-status-bar 80` to remove empty
+  status-bar safe-area space. Use a non-negative integer, default `0`, smaller
+  than each source image's height. Units are original image pixels, including
+  replacement images supplied through `--image-dir`, not CSS or output pixels.
+  Apply cropping before orientation selection, sizing, corner rounding, shadows,
+  phone framing, and caption placement. Captions use the remaining image's
+  geometry. Original files and project content are not modified.
 - `--background-color` is optional: six hexadecimal digits, optionally prefixed
-  with `#` (quote a leading `#` in the shell). The default is transparent.
+  with `#` (quote a leading `#` in the shell). Omit this option for a transparent
+  background; remove `--background-color ffffff` from `hanscan.sh` when needed.
   Default outputs are generic assets with alpha, not Google Play-compliant
   screenshots. Supply `--background-color 211e1b` for opaque RGB PNG exports:
   the solid background sits behind the entire composition, including transparent
   pixels in the original image. Google Play does not accept transparent screenshots.
+- `--background-image <path>` loads a local PNG, JPEG, WebP, SVG, or AVIF image,
+  with relative paths resolved from the invocation working directory. Fill the
+  entire output canvas using centered cover sizing, preserving aspect ratio and
+  cropping background edges as needed. The image sits behind all screenshot and
+  text content, above `--background-color` when supplied. Transparent background
+  pixels reveal that color or remain transparent when no color is supplied.
 - `--padding <percent>` is optional and defaults to `8`. Accept a finite decimal
   percentage from `0` inclusive to `50` exclusive. It sets the minimum inset on
   every edge, measured as a percentage of the final canvas's short edge. Without
-  `--phone-frame`, this is image padding; with it, this is padding around the
-  entire phone's outer edges, so the screenshot shrinks within the phone.
+  `--phone-frame`, this is image padding, including with `--stylized-frame`;
+  with the phone frame, it measures the frame's outer edges.
   Captions and shadows do not count toward this inset.
+- `--no-padding` sets the minimum inset to zero, overriding `--padding` when
+  both are supplied. The full image or frame still fits the fixed-size canvas
+  without cropping, so aspect-ratio differences can leave space on two sides.
+  This does not remove black padding inside a phone screen.
 - `--phone-frame` is an optional boolean flag, off by default. It requests a
   silver phone frame from `store-screenshot-generator/phone-frame-9-20.svg`, with
   flat side buttons, rounded screen corners, and a black camera dot over the
@@ -294,6 +337,14 @@ the site's Inter font and shared [feature-overlay CSS](src/media/featureOverlay.
   the screen with black padding, preserving the full image without distortion.
   Rotate the frame for landscape images. Only screen-corner rounding and the
   camera obscure content.
+- `--stylized-frame` is an optional boolean flag, off by default, mutually
+  exclusive with `--phone-frame`. It uses
+  `store-screenshot-generator/stylized-frame.svg` for a larger corner radius
+  and strong drop shadow applied directly to the screenshot. There is no visible
+  frame, border, or added letterboxing; the source keeps its natural aspect ratio.
+  The SVG defines the reference corner radius and shadow filter. Padding measures
+  the screenshot, excluding its shadow; small or zero padding can clip the shadow
+  at the canvas edge.
 - Output defaults to `store-screenshot-generator/output/<slug>/`, relative to
   the tool, with each image named `<original-basename>.png`. The default output
   folder is ignored by Git; reruns overwrite matching generated outputs.
@@ -304,19 +355,29 @@ the site's Inter font and shared [feature-overlay CSS](src/media/featureOverlay.
    `media` records in `media.yaml` using `text`, `text_side`, `text_pos_y`, `text_offset`,
   `style`, and `highlight-color` as documented above. It uses the shared parser's
   gallery items and ignores homepage-specific captions and crops.
-- Final output is 1440×2560 for portrait or square originals and 2560×1440 for
-  landscape originals. Without `--phone-frame`, uniformly fit the full source
-  image inside the selected padding and center the image itself on the canvas.
-  With the flag, uniformly fit and center the entire phone, including its outer
+- With `--device phone`, final output is 1440×2560 for portrait or square images
+  and 2560×1440 for landscape images, using dimensions after any
+  `--crop-status-bar` crop. With `--device tablet`, final output is always
+  3840×2160 landscape. Use separate output directories to retain both device sets.
+  Without `--phone-frame`, uniformly fit the remaining image inside the selected
+  padding and center the image itself on the canvas.
+  With `--phone-frame`, uniformly fit and center the entire frame, including its outer
   edges, inside that padding. Preserve the source aspect ratio
   without crop-to-fill or cover sizing; the source may be resampled to fit.
   In both modes, captions remain relative to the actual screen/image box, not
-  the phone body. Ignore the feature overlay and shadow when computing fit,
+  the frame body. Ignore the feature overlay and shadows when computing fit,
   centering, and padding. They follow the image's scale and authored placement,
   may extend into the padding, and may clip at the output canvas edge.
-- Without `--phone-frame`, the only intentional image clipping remains subtle corner rounding: an 8 CSS-pixel
+- With `--stylized-text`, reserve the separate heading area before fitting;
+  the screenshot is centered in the remaining space rather than the full canvas.
+- Without either frame, the only intentional image clipping remains subtle corner rounding: an 8 CSS-pixel
   image-only radius at the 360 CSS-pixel image-width reference, scaled with the
-  image and optionally capped for a narrow shorter dimension. With the flag,
+  image and optionally capped for a narrow shorter dimension. With `--stylized-frame`,
+  use a 24 CSS-pixel reference radius, capped at one twelfth of the shorter image
+  dimension, plus the SVG shadow filter. In tablet mode, use a radius of 1.5% of
+  the screenshot's shorter edge without a frame, or 3.5% with `--stylized-frame`;
+  scale the SVG shadow offset and blur using that shorter edge as the reference
+  instead of its width. With `--phone-frame`,
   the screenshot corners match the SVG screen opening. The final output canvas
   keeps square corners in both modes. The inset adds background padding;
   it does not guarantee protection from unspecified Google Play UI behavior.

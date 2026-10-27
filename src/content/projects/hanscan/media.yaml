@@ -13,7 +13,7 @@
 - media: slope.png
   highlight-color: "#3A8DFF"
   alt: "HanScan translating a Chinese road sign in English mode, with the recognized text shown over a steep-slope warning sign."
-  text: "Fully offline.\nScan from anywhere"
+  text: "Fully offline.\nScan from anywhere."
   text_pos_y: 0.12
 
 - media: workbook_popup.png
@@ -31,7 +31,7 @@
 - media: workbook_stack_translate.png
   highlight-color: "#3A8DFF"
   alt: "HanScan English mode translating a Chinese workbook matching exercise, with translated labels over the text and a transcript below."
-  text: Effortless translations
+  text: Automatic translations
   text_pos_y: 0.12
 
 - media: handwritten.png
@@ -43,7 +43,7 @@
 - media: gate.png
   highlight-color: "#3A8DFF"
   alt: "HanScan recognizing Chinese calligraphy on a wooden sign above colorful hanging lanterns."
-  text: Supports calligraphy
+  text: Read tricky calligraphy
   text_pos_y: 0.12
 
 - preview: hanscan-demo.mp4

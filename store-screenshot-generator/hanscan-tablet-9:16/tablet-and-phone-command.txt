@@ -1,0 +1,8 @@
+./store-screenshot-generator/store-screenshot-generator \
+  --project-name hanscan \
+  --image-dir ./store-screenshot-generator/hanscan-tablet-9:16 \
+  --background-image ./store-screenshot-generator/hanscan-tablet-9:16/gradient_bkg.png \
+  --stylized-frame \
+  --stylized-text \
+  --output-dir ./store-screenshot-generator/output/hanscan-tablet  --device tablet \
+
