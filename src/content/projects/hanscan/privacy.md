@@ -1,6 +1,6 @@
 # HanScan Privacy Policy
 
-Last updated: 2026-10-26
+Last updated: 2026-10-28
 
 HanScan - Offline Chinese OCR is provided by Anders Klint Consulting AB under the studio name Dr. Jetski Studios. Anders Klint Consulting AB is responsible for the personal data processing described in this policy. For privacy questions or requests, contact **contact@drjetski.com**.
 
@@ -20,9 +20,9 @@ See [ML Kit data collection disclosures](https://developers.google.com/ml-kit/te
 
 ## Optional error reporting
 
-Sentry error reporting is **disabled by default**. You can enable or disable it in Settings. When enabled in release builds, HanScan sends sanitized application error reports to help diagnose faults. These include app version and build information, error type, sanitized code stack traces, and technical report metadata such as timestamps.
+Sentry error reporting is **disabled by default**. You can enable or disable it in Settings. When enabled in release builds, HanScan sends sanitized application error reports to help diagnose faults. These include app version and build information, error type, known technical error codes, sanitized code stack traces, device manufacturer/model and CPU architecture, operating-system name/version/build, runtime names/versions/compiler information, and technical report metadata such as timestamps and whether an error was handled.
 
-Application reports exclude original error messages, local file paths, images and image attachments, recognized text, breadcrumbs, and user information. Native crash collection, automatic session tracking, and performance tracing are disabled. Sentry's network infrastructure may still receive your IP address and other connection metadata; removing user fields from reports does not prevent that network-level processing.
+Application reports exclude original error messages, local file paths, images and image attachments, recognized text, breadcrumbs, user information, device names, and persistent device or installation identifiers. Native crash collection, automatic session tracking, and performance tracing are disabled. Sentry's network infrastructure may still receive your IP address and other connection metadata; removing user fields from reports does not prevent that network-level processing.
 
 Disabling reporting stops future application reports. It does not automatically delete reports already received by Sentry. Reports are subject to the Sentry project's configured retention and deletion settings; this policy does not promise a fixed retention period. Contact us to request information or deletion. Because reports do not include an account or user identity, we may be unable to locate a particular report. See [Sentry's Privacy Policy](https://sentry.io/privacy/).
 
