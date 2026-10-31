@@ -1,8 +1,16 @@
 ./store-screenshot-generator/store-screenshot-generator \
   --project-name hanscan \
   --image-dir ./store-screenshot-generator/hanscan-tablet-9:16 \
-  --background-image ./store-screenshot-generator/hanscan-tablet-9:16/gradient_bkg.png \
+  --background-image ./store-screenshot-generator/hanscan-tablet-9:16/gradient_bkg_alt_2.png \
   --stylized-frame \
   --stylized-text \
-  --output-dir ./store-screenshot-generator/output/hanscan-tablet  --device tablet \
+  --output-dir ./store-screenshot-generator/output/hanscan-tablet-alt-2 --text-shadow
 
+
+./store-screenshot-generator/store-screenshot-generator \
+  --project-name hanscan \
+  --image-dir ./store-screenshot-generator/hanscan-9-20 \
+  --background-image ./store-screenshot-generator/hanscan-9-20/gradient_bkg_alt_2.png \
+  --stylized-frame \
+  --stylized-text \
+  --crop-status-bar 80 --output-dir ./store-screenshot-generator/output/hanscan-phone-alt-2 --text-shadow

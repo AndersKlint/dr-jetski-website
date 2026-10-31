@@ -95,6 +95,8 @@ Landscape tablet export at 3840×2160, using matching tablet screenshots and bac
 | `--phone-frame` | Add the silver phone frame with a fixed 9:20 screen; rotates for landscape images. |
 | `--stylized-frame` | Give the screenshot rounded corners and a strong drop shadow, with no border. Preserves its natural aspect ratio. Cannot be combined with `--phone-frame`. |
 | `--stylized-text` | Replace caption bubbles with large, centered white Inter headings above the screenshot. Uses each image's normal YAML text and scales the screenshot to fit beneath it. |
+| `--text-outline` | Add a black outline to caption text and stylized headings, preserving their fill color. Defaults to off. |
+| `--text-shadow` | Add a slightly blurred black drop shadow to caption text and stylized headings. Scales with text size and can be combined with `--text-outline`. Defaults to off. |
 | `--help` | Show CLI usage. |
 
 ## Output details

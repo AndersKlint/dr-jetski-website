@@ -286,6 +286,11 @@ the site's Inter font and shared [feature-overlay CSS](src/media/featureOverlay.
   `--text-offset=0,0` resets both coordinates. Uncaptioned images stay uncaptioned.
 - `--no-text-overlay` omits every caption bubble, including its background,
   accent, and shadow. The project's authored captions stay intact.
+- `--text-outline` adds a black outline to caption text and stylized headings,
+  preserving their fill color. Defaults to off; outline width scales with text size.
+- `--text-shadow` adds a slightly blurred black drop shadow to caption text and
+  stylized headings. Defaults to off; the shadow scales with text size and can be
+  combined with `--text-outline`.
 - `--stylized-text` replaces normal caption bubbles with large, centered white
   headings above the screenshot, using each image's normal `media.yaml` `text`.
   Use the local Inter font at weight 900, tight line spacing, and balanced wrapping;

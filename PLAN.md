@@ -146,6 +146,8 @@ and caption authoring are defined in [PROJECT-ASSETS.md](PROJECT-ASSETS.md).
   the caption left accent (default site `--ember`, generated-document override
   only) and `--background-color`
   (with or without `#`), `--background-image <path>`, `--stylized-text`,
+  `--text-outline` (optional black caption/heading outline, preserving text fill),
+  `--text-shadow` (optional slightly blurred black caption/heading drop shadow),
   `--padding <percent>`, `--no-padding`,
   `--device <phone|tablet>` (default phone),
   `--no-text-overlay`, mutually exclusive boolean `--phone-frame` and

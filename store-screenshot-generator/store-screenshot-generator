@@ -34,6 +34,8 @@ async function main() {
     'phone-frame': { type: 'boolean', default: false },
     'stylized-frame': { type: 'boolean', default: false },
     'stylized-text': { type: 'boolean', default: false },
+    'text-outline': { type: 'boolean', default: false },
+    'text-shadow': { type: 'boolean', default: false },
     help: { type: 'boolean' },
   }, allowPositionals: false });
   if (values.help) {
@@ -54,6 +56,8 @@ async function main() {
   --phone-frame              Add the silver 9:20 SVG phone frame; default false
   --stylized-frame           Round screenshot corners and add a strong drop shadow, without a border
   --stylized-text            Replace caption bubbles with bold white headings above fitted screenshots
+  --text-outline             Add a black outline to caption text and stylized headings
+  --text-shadow              Add a slightly blurred black drop shadow to caption text and stylized headings
   --help                     Show this help
 
 Default output: store-screenshot-generator/output/<slug>/<original-basename>.png
@@ -233,7 +237,9 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
           #frame>svg{display:block;transform-origin:top left}
           #frame-screen{position:absolute;background:#000;overflow:hidden}
           #frame-screen>img{position:absolute;display:block}
-          ${overlayCss}` });
+          ${overlayCss}
+          ${values['text-outline'] ? '#stylized-heading,.feature-overlay-banner{-webkit-text-stroke:0.06em #000;paint-order:stroke fill}' : ''}
+          ${values['text-shadow'] ? '#stylized-heading,.feature-overlay-banner{text-shadow:0 0.04em 0.08em rgb(0 0 0 / 0.65)}' : ''}` });
         const compositionBounds = await page.evaluate(async ({ dataUrl, overlay, frameSvg, stylizedSvg, dimensions, backgroundDataUrl, isTablet }) => {
           if (backgroundDataUrl) {
             const background = document.createElement('img');
