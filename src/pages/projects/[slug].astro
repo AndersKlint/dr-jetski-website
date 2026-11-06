@@ -6,6 +6,8 @@ import { prepareProjectDetail } from '../../projects/projectDetail';
 import type { Project } from '../../projects/Project';
 import ProjectDetailView from '../../project-detail-view/ProjectDetailView.astro';
 import SiteLayout from '../../site/SiteLayout.astro';
+import SenderHead from '../../newsletter/SenderHead.astro';
+import SenderForm from '../../newsletter/SenderForm.astro';
 
 interface Props {
   project: Project;
@@ -25,6 +27,7 @@ export async function getStaticPaths() {
 const { project, entry, privacyHref, termsHref } = Astro.props as Props;
 const { Content } = await render(entry);
 const detail = prepareProjectDetail(project);
+const hasNewsletter = project.slug === 'jetalign';
 ---
 <SiteLayout
   title={`${project.displayName} — Dr. Jetski Studios`}
@@ -33,6 +36,7 @@ const detail = prepareProjectDetail(project);
   image={detail.socialImage}
   imageAlt={detail.socialImageAlt}
 >
+  <Fragment slot="head">{hasNewsletter && <SenderHead />}</Fragment>
   <ProjectDetailView
     project={project}
     downloads={detail.downloads}
@@ -40,6 +44,7 @@ const detail = prepareProjectDetail(project);
     privacyHref={privacyHref}
     termsHref={termsHref}
   >
+    <Fragment slot="after-downloads">{hasNewsletter && <SenderForm />}</Fragment>
     <Content />
   </ProjectDetailView>
 </SiteLayout>

@@ -39,6 +39,7 @@ const { rawColor, readableAccent } = prepareProjectColor(project.projectColor);
     publicationNote={project.publicationNote}
     links={project.links}
   />
+  <slot name="after-downloads" />
   {hasBody && (
     <section class="body" aria-label="Project details">
       <slot />

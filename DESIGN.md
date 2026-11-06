@@ -87,6 +87,16 @@ The carousel stays before the substantive description/download panel on all scre
 
 HanScan has a straightforward static text privacy-policy page at https://drjetski.com/projects/hanscan/privacy. A small, normal “Privacy policy” link appears at the bottom of HanScan's project information, with no homepage or main-navigation entry.
 
+JetAlign alone embeds the owner's Sender updates form immediately below downloads,
+before the Markdown detail sections. The accessibly named `#updates` section uses
+the existing 62ch detail measure and no additional visible heading or copy: Sender
+owns the form's presentation and wording. Its inline head loader runs only on
+`/projects/jetalign`; other pages remain free of Sender. The owner reports double
+opt-in is enabled; sender/domain verification status remains unknown. Keep the
+integration local, including before public staging, until verification, rendering,
+and confirmation/unsubscribe checks are complete.
+[README.md](README.md#jetalign-updates-form) holds the launch checklist.
+
 ## Content and delivery
 
 - Ten launch projects: six featured projects and four compact projects. WORLD-vocoder-vst is a future draft, not a generated public launch page.

@@ -38,6 +38,35 @@ Run checks with telemetry disabled if init fails in restricted environments:
 
 - `ASTRO_TELEMETRY_DISABLED=1 npm run check`
 
+## JetAlign updates form
+
+Only `/projects/jetalign` loads Sender's inline head loader and embeds the owner's
+form immediately below downloads in `#updates`. Sender owns the heading, copy,
+fields, and signup behavior; `src/newsletter/` contains the loader and mount.
+The account and form identifiers are public, not secrets. No backend or custom
+signup logic is involved. JavaScript and access to Sender are required.
+
+The owner reports that double opt-in is now enabled. Sender sender/domain
+verification status remains unknown; widget rendering and confirmation/unsubscribe
+behavior have not yet been verified with the updated embed.
+
+**Keep this integration local until Sender verification and the checks below are
+complete. Public staging can collect real submissions too.** Before publishing
+through the owner's Workers Git integration:
+
+- Complete Sender's sender/domain verification. In Cloudflare DNS, add exactly
+  the record types, names, values, and proxy settings supplied by Sender, then
+  confirm verification in Sender; do not guess DNS values.
+- Review the form's consent text,
+  privacy information, confirmation message, and success state in Sender.
+- Confirm the updated supplied form renders locally; rendering remains unchecked.
+- Manually use an owner-controlled address to check that an unconfirmed signup
+  is not subscribed, the confirmation link activates it, and the unsubscribe
+  link removes it. This check sends real email and must be performed by the owner.
+- Review the loaded widget on desktop/mobile, keyboard focus, and confirmation/
+  unsubscribe behavior before public launch. No hosted-form fallback URL has
+  been supplied; the no-JavaScript message does not offer an invented link.
+
 ## Early WIP deployment on Cloudflare Pages
 
 The accepted initial target is https://drjetski.com. Cloudflare provisioning and
