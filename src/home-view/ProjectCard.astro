@@ -28,10 +28,16 @@ const { project, isPriority = false } = Astro.props;
     />
   </div>
   <div class="card-body">
+    <h3 class="card-title">
+      <a
+        href={project.href}
+        aria-label={`View ${project.displayName} project page`}
+        >{project.displayName}</a
+      >
+    </h3>
     <FeatureCaption
       text={project.homepagePreview?.featureOverlay?.text}
       title={project.displayName}
-      description={project.description}
     />
     <p class="card-kicker">
       <span class="type">{typeLabel(project.projectType)}</span>
@@ -49,14 +55,6 @@ const { project, isPriority = false } = Astro.props;
         )
       }
     </p>
-    <h3 class="card-title">
-      <a
-        href={project.href}
-        aria-label={`View ${project.displayName} project page`}
-        >{project.displayName}</a
-      >
-    </h3>
-    <p class="card-description">{project.description}</p>
   </div>
 </article>
 <style>
@@ -76,6 +74,7 @@ const { project, isPriority = false } = Astro.props;
   }
 
   .card-body {
+    --feature-caption-size: 1.2rem;
     padding: 1.25rem 1.25rem 1.5rem;
   }
 
@@ -94,7 +93,7 @@ const { project, isPriority = false } = Astro.props;
     flex-wrap: wrap;
     align-items: center;
     gap: 0.3rem 0.6rem;
-    margin: 0 0 0.6rem;
+    margin: 1rem 0 0;
     font-size: 0.75rem;
     letter-spacing: 0.035em;
     text-transform: uppercase;
@@ -127,13 +126,8 @@ const { project, isPriority = false } = Astro.props;
 
   .card-title {
     margin: 0 0 0.5rem;
-    font-size: 1.6rem;
+    font-size: 2.1rem;
     font-weight: 750;
-  }
-
-  .card-description {
-    margin: 0;
-    color: var(--text-secondary);
   }
 
   .card-title a {
