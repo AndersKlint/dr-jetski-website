@@ -86,7 +86,7 @@ Landscape tablet export at 3840×2160, using matching tablet screenshots and bac
 | `--output-dir <directory>` | Override the output folder. Defaults to this tool's `output/<slug>/`. Created automatically. |
 | `--background-color <hex>` | Solid background using six hex digits, optionally prefixed with `#` (quote it in the shell). Omit for transparency. |
 | `--background-image <path>` | Local background image, centered and scaled to cover the canvas without distortion. Resolves from the current working directory. Sits above any background color. |
-| `--highlight-color <hex>` | Override caption accents using six hex digits, optionally prefixed with `#`. Defaults to authored colors, then studio orange. |
+| `--highlight-color <hex>` | Override caption accents using six hex digits, optionally prefixed with `#`. Defaults to the root `project-color` in `media.yaml`, then studio orange (`#ee7135`). |
 | `--padding <percent>` | Minimum margin around the image or frame, measured against the canvas's short edge. Default `8`; accepts `0` to less than `50`, including decimals. |
 | `--no-padding` | Set the minimum margin to zero; overrides `--padding`. |
 | `--no-text-overlay` | Remove caption bubbles, including their background, accent, and shadow. |

@@ -1,13 +1,13 @@
 :root {
-  --charcoal: #211e1b;
-  --charcoal-deep: #181614;
-  --charcoal-raised: #2c2824;
-  --text-primary: #f7f4ef;
-  --text-secondary: #d2ccc4;
+  --charcoal: #101114;
+  --charcoal-deep: #131519;
+  --charcoal-raised: #191b1f;
+  --text-primary: #f4f4f2;
+  --text-secondary: #a9adb5;
   --ember: #ee7135;
-  --ember-ink: #211e1b;
-  --wake: #8f8377;
-  --line: rgb(247 244 239 / 0.20);
+  --ember-ink: #101114;
+  --wake: #707782;
+  --line: #30343b;
   --radius: 14px;
   --font-display: "Bricolage Grotesque Variable", "Georgia", serif;
   --font-body: "Inter Variable", system-ui, "-apple-system", "Segoe UI", sans-serif;
@@ -51,6 +51,7 @@ p {
 a {
   color: var(--text-primary);
   text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
 }
 
 a:hover {
@@ -145,6 +146,16 @@ svg {
 
 .site-nav {
   font-size: 0.9rem;
+}
+
+.site-nav a,
+.project-nav a {
+  text-decoration-color: var(--line);
+}
+
+.site-nav a:hover,
+.project-nav a:hover {
+  text-decoration-color: currentColor;
 }
 
 .site-header-group {

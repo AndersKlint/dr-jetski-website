@@ -1,7 +1,8 @@
 ---
 import type { Project } from '../projects/Project';
 import MediaPreview from '../media/MediaPreview.astro';
-import { maturityLabel, typeLabel } from '../projects/projectLabels';
+import FeatureCaption from '../media/FeatureCaption.astro';
+import { isTrialMaturity, maturityLabel, typeLabel } from '../projects/projectLabels';
 
 interface Props {
   projects: Project[];
@@ -19,9 +20,14 @@ const { projects } = Astro.props;
             <MediaPreview media={project.homepagePreview} crop={project.homepagePreview?.homepageCrop} />
           </div>
           <div class="compact-body">
+            <FeatureCaption
+              text={project.homepagePreview?.featureOverlay?.text}
+              title={project.displayName}
+              description={project.description}
+            />
             <p class="compact-kicker">
               <span>{typeLabel(project.projectType)}</span>
-              <span aria-label={`Release maturity: ${maturityLabel(project.releaseMaturity)}`}>
+              <span class="maturity" data-trial={isTrialMaturity(project.releaseMaturity)} aria-label={`Release maturity: ${maturityLabel(project.releaseMaturity)}`}>
                 {maturityLabel(project.releaseMaturity)}
               </span>
             </p>
@@ -72,7 +78,7 @@ const { projects } = Astro.props;
 
   .compact-card:hover,
   .compact-card:focus-within {
-    border-color: var(--ember);
+    border-color: color-mix(in srgb, var(--text-secondary) 55%, var(--line));
   }
 
   .compact-body {
@@ -92,23 +98,39 @@ const { projects } = Astro.props;
   .compact-kicker {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 0.3rem 0.6rem;
     margin: 0 0 0.45rem;
     font-size: 0.75rem;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.035em;
     text-transform: uppercase;
     color: var(--text-secondary);
     max-width: none;
   }
 
+  .maturity {
+    padding: 0.05rem 0.45rem;
+    border: 1px solid transparent;
+    border-radius: 999px;
+  }
+
+  .maturity[data-trial='true'] {
+    background: color-mix(in srgb, var(--ember) 8%, transparent);
+    border-color: color-mix(in srgb, var(--ember) 30%, transparent);
+    color: var(--ember);
+    font-weight: 600;
+  }
+
   .compact-title {
     margin: 0 0 0.4rem;
     font-size: 1.15rem;
+    font-weight: 750;
   }
 
   .compact-description {
     margin: 0;
     font-size: 0.92rem;
+    color: var(--text-secondary);
   }
 
   .compact-title a {

@@ -327,6 +327,150 @@ passed. No unit tests were run. Manual desktop/mobile visual acceptance of unifo
 scale, spacing, no overlap or horizontal overflow, and preserved media geometry
 and navigation order remains pending. Browser verification is not claimed.
 
+## Focused visual refinement and project color
+
+Implemented and integrated; production build and Chrome verification passed within
+the coverage below. Owner visual approval remains pending. Visual policy is defined in [DESIGN.md](DESIGN.md), authoring in
+[PROJECT-ASSETS.md](PROJECT-ASSETS.md).
+
+- Apply the neutral dark palette, subtler card borders/hover, stronger titles,
+  secondary descriptions, neutral stable/supporting metadata, and restrained
+  orange trial labels. Keep studio/homepage accents orange; project color accents
+  project-detail pages only, with readable variants and neutral backgrounds.
+- Historical scope, superseded for project-detail placement by the follow-up below:
+  replace website overlays with small plain secondary captions beneath homepage
+  previews and below the carousel near unchanged dots. Extend the existing
+  slide-selection binding and reserve space against text-driven movement. Omit captions
+  without text; preserve independent homepage text and existing crops.
+- Migrate `media.yaml` to a root mapping with optional `project-color` and `items`
+  (default empty). Accept six hex digits with optional `#`; default to studio
+  orange. Missing/empty YAML remains an empty gallery. No old sequence format or
+  YAML `highlight-color` compatibility; no per-item or `index.md` project color.
+- Retain screenshot-export overlays, positioning/styles, `FeatureOverlay.astro`,
+  `featureOverlay.css`, CLI options, and export behavior. Accent precedence is
+  CLI `--highlight-color` > root `project-color` > studio orange.
+- Do not redesign layouts or alter logos, screenshots, fonts, carousel geometry,
+  opacity, shadows, dots, navigation/transitions, playback, or animations.
+- Orchestrator static review and independent scoped integration review found no
+  major issues. Carousel changes only extend caption selection and remove obsolete
+  overlay-hiding CSS; geometry and playback remain untouched.
+- Orchestrator `make check` passed: Astro checked 40 files with 0 errors,
+  warnings, or hints; the production build generated 14 routes.
+  `git diff --check` passed. No unit tests were run.
+- Independent migration audit against `HEAD` passed for all 11 YAML files:
+  media, preview, text, crop, and export settings were retained, with repeated
+  colors consolidated once per project.
+- HanScan exported 6 PNGs with authored blue to
+  `/tmp/opencode/store-project-color-hanscan`; the orchestrator inspected
+  `workbook_popup.png`. JetAlign exported 2 PNGs with explicit
+  `--highlight-color 33aaff` to `/tmp/opencode/dr-jetski-refinement/export-override`;
+  inspection of `jetalign_default.png` confirmed the CLI override and retained overlay.
+- Chrome verified the homepage at 1440px, 390px, and 320px: correct six-featured/
+  four-compact ordering, stagger/single-column layout, equal featured widths,
+  no overlap or overflow, first-project visibility, image loading, captions,
+  and whole-card keyboard focus/navigation.
+- All ten project routes were checked at 320px. The initially clipped
+  `chinese_popup_dict` title was corrected with `.title { overflow-wrap: anywhere; }`
+  in `ProjectDetailView.astro`. Orchestrator `make check` then passed again
+  (40 files, 0 diagnostics, 14 routes). Direct rechecks at 320/390/1440px found
+  document widths equal to viewports, title client/scroll widths equal at
+  280/350/626px, and every title line within the viewport. No clipping was found
+  on the other nine routes.
+- HanScan/JetAlign stage, selected-media, and dot geometry matched the previous
+  presentation at 1440×900 and 390×844: 48 scalar measurements each differed by
+  exactly 0px. These measurements describe the then-current below-carousel caption;
+  absolute stage/media/dot y-values do not apply after the headline moves above the
+  stage. Captions followed dots, keyboard, neighbor clicks, and synthetic
+  swipe with bounded ends and correct visibility/`aria-hidden` state. Same-aspect
+  introduction produced 0px movement; the initial no-JavaScript caption rendered,
+  and singleton galleries omitted dots.
+- Actual HanScan muted inline playback, inactive/offscreen pause, scroll resume,
+  pause-control pause/resume, explicit-selection restart, and reduced-motion
+  posters/disabled transitions passed. No browser errors were observed.
+- The orchestrator visually reviewed `after-jetalign-1440.png`,
+  `after-hanscan-390.png`, and `after-home-1440-full.png` in
+  `/tmp/opencode/dr-jetski-refinement`. Browser `REPORT.md`, `verification.json`,
+  and `followup.json` there predate the title fix; `title-fix.json` and
+  `fixed-chinese-popup-dict-320.png` document the correction.
+- Owner visual approval remains pending. Physical touchscreen behavior, save-data,
+  screen-reader live announcements, page backgrounding, throttled-network loading,
+  and the three-preview stress cap were not reverified. No deployment was performed
+  or unit tests run; this milestone does not mark the whole phase complete.
+
+## Current follow-up: project-detail feature headline and screenshot edge
+
+Implemented with covered automated verification complete; owner visual approval
+remains pending. Scope follows [DESIGN.md](DESIGN.md) and supersedes the previous
+milestone's below-carousel caption placement, not its historical verification.
+
+- Only `ProjectGallery.astro` changed: existing captions and script hooks now sit
+  above the stage, using centered near-white display text at weight 750, responsive
+  24–40px sizing, a longest-caption grid reserve, and 24–32px spacing. Media use an
+  8px radius and geometry-neutral 1px ring at 20% white. No client/service,
+  shared-media, homepage, content, or export code changed.
+- Orchestrator `make check` passed: 40 files, 0 errors/warnings/hints, and 14
+  production routes. `git diff --check` passed.
+- Browser verification at 1440×900, 390×844, and 320×844 covered 33 HanScan/JetAlign
+  slide states: full caption order/selection and hidden/ARIA states, stable
+  longest-text height, expected typography/edges, and no horizontal overflow.
+  The initial heading works without JavaScript; an uncaptioned singleton has
+  neither heading nor dots.
+- Baseline comparisons of the first two slides per project/viewport preserved
+  stage/media/layer dimensions, horizontal positions, transforms, relative vertical
+  offsets, and relative dot positions within 0.1px. Absolute stage y shifts down
+  intentionally; screenshots retain their dimensions and `60svh` cap. All ten
+  homepage card boxes exactly matched baseline at all three widths.
+- Actual HanScan muted playback with rounded edges, pause/resume, neighbor-click
+  and keyboard headline selection, and the distinct orange 3px focus ring passed.
+  Reduced motion retained an unloaded/paused video, poster, and zero-duration
+  transitions. No page errors were observed.
+- The orchestrator visually inspected `after-hanscan-1440.png`,
+  `after-hanscan-390.png`, and `after-jetalign-320.png`. Artifacts in
+  `/tmp/opencode/dr-jetski-carousel-headlines` include `baseline.json`,
+  `verification.json`, `interaction-check.json`, and HanScan/JetAlign screenshots
+  at all three widths.
+- Owner visual acceptance remains pending. No new physical-touch, save-data, or
+  screen-reader verification is claimed. No unit tests or deployment were run.
+
+## Follow-up: selective project-detail headline color
+
+Accepted scope follows [DESIGN.md](DESIGN.md); field authoring and matching rules
+are defined in [PROJECT-ASSETS.md](PROJECT-ASSETS.md). Implemented with covered
+verification passed; owner visual and fine-tuning acceptance remains pending.
+Earlier verification above is unchanged.
+
+- Normal-media-only `highlighted-words` parses an optional comma-separated string
+  into `FeatureOverlay.highlightedWords`, ignoring blank entries. Non-string
+  values and root/independent-preview placement remain invalid.
+- A pure build-time formatter performs Unicode-aware, case-insensitive whole-term
+  matching with escaped literal terms and all-occurrences matching. Overlaps resolve
+  longest-first without nesting; missing/unmatched terms leave text unchanged.
+  Safe Astro spans apply only the existing readable project accent, preserving
+  authored wording, case, whitespace, line breaks, typography, layout, and motion.
+  Homepage captions and store exports are unchanged.
+- Seeded 18 captioned normal records with restrained 1–3 useful words each:
+  HanScan 7, JetAlign 4, WayToClip 3, ClipThat! 2, and the unreferenced
+  `yt-clip-extractor` folder 2. Caption copy and root project colors are unchanged.
+- Orchestrator `make check` passed: 41 files, 0 errors/warnings/hints, and 14
+  production routes. `git diff --check` passed.
+- Browser comparisons against baseline at 1440×900, 390×844, and 320×844 covered
+  48 selected slide states across the four public captioned projects. Seeded spans,
+  text/case, color-only styling, hidden/ARIA states, and keyboard selection passed,
+  with no overflow or browser errors. Headline, caption, and stage boxes and all
+  ten homepage card boxes/text matched baseline within 0.1px; homepage captions
+  contained no highlight spans. HanScan's initial three highlights rendered with
+  JavaScript disabled.
+- JetAlign screenshot generation with `--highlight-color 33aaff` produced two PNGs;
+  `cmp` confirmed both byte-for-byte equal to pre-highlight exports.
+- The orchestrator visually reviewed HanScan at 1440px, JetAlign at 390px,
+  WayToClip at 1440px, and ClipThat! at 390px. Artifacts in
+  `/tmp/opencode/dr-jetski-headline-highlights` include `baseline.json`,
+  `verification.json`, `after-<slug>-<width>.png`, and `export/*.png`.
+- Matching edge cases and all-occurrences logic were statically reviewed; no
+  synthetic edge-case runtime checks or repetitive-caption unit test are claimed.
+  No unit tests or deployment were run. Owner visual/fine-tuning acceptance remains
+  pending; physical devices, screen readers, and save-data were not newly verified.
+
 ## 1. Static foundation and project content
 
 - Initialize Astro with TypeScript and static output.

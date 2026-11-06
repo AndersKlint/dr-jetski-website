@@ -1,6 +1,5 @@
 ---
 import type { GalleryItem, MediaCrop } from '../projects/Project';
-import FeatureOverlay from './FeatureOverlay.astro';
 
 interface Props {
   media?: GalleryItem;
@@ -43,7 +42,6 @@ const cropStyle = crop && dimensions
         fetchpriority={fetchPriority}
       />
     </div>
-    {media.featureOverlay && <FeatureOverlay overlay={media.featureOverlay} />}
     {media.isPlaceholder && <figcaption class="placeholder-label">Placeholder preview</figcaption>}
   </figure>
 )}
@@ -81,7 +79,6 @@ const cropStyle = crop && dimensions
         aria-label={media.alt}
       />
     </div>
-    {media.featureOverlay && <FeatureOverlay overlay={media.featureOverlay} />}
     {media.isPlaceholder && <figcaption class="placeholder-label">Placeholder preview</figcaption>}
   </figure>
 )}
@@ -103,7 +100,6 @@ const cropStyle = crop && dimensions
         {media.alt}
       </video>
     </div>
-    {media.featureOverlay && <FeatureOverlay overlay={media.featureOverlay} />}
     {media.isPlaceholder && <figcaption class="placeholder-label">Placeholder preview</figcaption>}
   </figure>
 )}

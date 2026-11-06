@@ -5,7 +5,7 @@
 ```text
 src/content/projects/<slug>/
   index.md               project metadata + body
-  media.yaml             ordered gallery + media presentation
+  media.yaml             project color + ordered gallery + media presentation
   preview.webp           local image/poster, referenced as preview.webp
   diagram.svg            local SVG diagram
 ```
@@ -83,21 +83,22 @@ are defined in [DESIGN.md](DESIGN.md).
   `kind: "demo"` and required `hasAudio` (`true` when it has sound, else `false`).
 
 ```yaml
-- media: preview.webp
-  alt: "Screenshot of My Project showing its main window."
-- media: video.mp4
-  kind: preview
-  poster: video-poster.webp
-  alt: "Short silent clip of My Project in use."
-  width: 1280
-  height: 720
-- media: https://downloads.drjetski.com/my-project/v1/demo.mp4
-  kind: demo
-  poster: demo-poster.webp
-  alt: "Demonstration of My Project's editing workflow."
-  width: 1920
-  height: 1080
-  hasAudio: true
+items:
+  - media: preview.webp
+    alt: "Screenshot of My Project showing its main window."
+  - media: video.mp4
+    kind: preview
+    poster: video-poster.webp
+    alt: "Short silent clip of My Project in use."
+    width: 1280
+    height: 720
+  - media: https://downloads.drjetski.com/my-project/v1/demo.mp4
+    kind: demo
+    poster: demo-poster.webp
+    alt: "Demonstration of My Project's editing workflow."
+    width: 1920
+    height: 1080
+    hasAudio: true
 ```
 
 Keep small local preview videos as H.264 MP4 files. For substantial video,
@@ -112,40 +113,53 @@ items; faded video neighbors show posters without loading or playing the video.
 directly without registration in the project metadata. The dev server watches
 additions, edits, and deletions without a restart.
 
-Use a top-level YAML sequence of normal `media` records and at most one optional
-`preview` record. Each record has exactly one selector, `media` or `preview`:
+Use a root YAML mapping with one optional `project-color` and an `items` sequence
+of normal `media` records and at most one optional `preview` record. `items`
+defaults to an empty sequence. Each record has exactly one selector, `media` or `preview`:
 
 ```yaml
-- preview: hanscan-demo.mp4
-  highlight-color: "#3A8DFF"
-  text: "Chinese, Pinyin & English OCR"
-  text_side: right
-  text_pos_y: 0.12
-  text_offset: {x: 0, y: 0}
-  style: dark
-  preview_crop: {xStart: 0, xEnd: 1, yStart: 0.16, yEnd: 0.84}
-- media: hanscan-demo.mp4
-  highlight-color: "#3A8DFF"
-  kind: preview
-  poster: hanscan-demo-poster.webp
-  alt: "HanScan recognizing Chinese text."
-  width: 720
-  height: 1280
-  text: "Chinese, Pinyin & English OCR"
-  text_pos_y: 0.12
-  text_offset: {x: 0, y: 0}
-  style: dark
-- media: slope.png
-  alt: "HanScan reading Chinese text on a slope sign."
-  text: |
-    Quick offline OCR
-    from anywhere
-  text_offset: {x: -12, y: 8}
-  style: light
-- media: preview.webp
-  alt: "My Project's main window."
-  preview_crop: {xStart: 0.1, xEnd: 0.9, yStart: 0, yEnd: 1}
+project-color: "#3A8DFF"
+items:
+  - preview: hanscan-demo.mp4
+    text: "Chinese, Pinyin & English OCR"
+    text_side: right
+    text_pos_y: 0.12
+    text_offset: {x: 0, y: 0}
+    style: dark
+    preview_crop: {xStart: 0, xEnd: 1, yStart: 0.16, yEnd: 0.84}
+  - media: hanscan-demo.mp4
+    kind: preview
+    poster: hanscan-demo-poster.webp
+    alt: "HanScan recognizing Chinese text."
+    width: 720
+    height: 1280
+    text: "OCR, Pinyin & Translation"
+    highlighted-words: "OCR, Pinyin, Translation"
+    text_pos_y: 0.12
+    text_offset: {x: 0, y: 0}
+    style: dark
+  - media: slope.png
+    alt: "HanScan reading Chinese text on a slope sign."
+    text: |
+      Quick offline OCR
+      from anywhere
+    text_offset: {x: -12, y: 8}
+    style: light
+  - media: preview.webp
+    alt: "My Project's main window."
+    preview_crop: {xStart: 0.1, xEnd: 0.9, yStart: 0, yEnd: 1}
 ```
+
+### Project color
+
+- Author `project-color` only once at the root of `media.yaml`, never in
+  `index.md` or individual media/preview records. Accept a quoted string of six
+  hexadecimal digits with an optional `#`, normalized to `#RRGGBB`.
+- Omission uses studio orange `#ee7135`. This color accents project-detail pages
+  only, with readable variants as needed; backgrounds remain neutral and the
+  homepage/studio retain orange. Independent previews cannot override it.
+- Store overlay accent precedence is CLI `--highlight-color`, then root
+  `project-color`, then studio orange. There is no YAML `highlight-color` field.
 
 ### Matching and validation
 
@@ -157,21 +171,25 @@ Use a top-level YAML sequence of normal `media` records and at most one optional
   excluding query and hash. An unmatched selector fails the build.
 - Duplicate gallery sources are invalid, and at most one `preview` entry is
   allowed. A `preview` and a `media` entry may select the same source.
-  Invalid YAML, a non-sequence root,
+  Invalid YAML, a non-mapping root (including the old top-level sequence),
   malformed entries, duplicate YAML keys or duplicate media filenames, unknown
   fields (including nested fields), and invalid field values fail the build.
 - Optional fields may be omitted; explicit nulls are not defaults. Numeric
   fields require finite numbers, not numeric strings.
+- Root keys are only `project-color` and `items`; supplied `items` must be a
+  sequence. Missing or empty YAML and an omitted `items` key give an empty
+  gallery; use `items: []` for an explicitly empty list, not `items: null`.
 
 ### Homepage selection and independent settings
 
 - An explicit `preview` selects an existing gallery item for both featured and
   compact homepage cards, reusing its source, poster, dimensions, and alt text.
   It neither adds a gallery item nor changes gallery order; moving or adding the
-  selector anywhere in the YAML sequence has no effect on carousel order.
-- Both record types support the same optional settings below. An explicit
+   selector anywhere in `items` has no effect on carousel order.
+- Both record types support the optional caption, export, and crop settings below;
+  `highlighted-words` is normal-record-only. An explicit
   preview uses only its own settings and their defaults, never settings inherited
-  from the matching normal media record. Omitted `text` means no homepage banner;
+   from the matching normal media record. Omitted `text` means no homepage caption;
   omitted `preview_crop` means no crop.
 - Without a `preview` entry, use the first gallery item with its normal `media`
   settings, preserving the current fallback behavior.
@@ -183,16 +201,25 @@ Use a top-level YAML sequence of normal `media` records and at most one optional
   media record has its own gallery caption and no crop.
   Captions are independent: changing only the preview's `text` to
   `Read Chinese anywhere` would leave the gallery caption
-  `Chinese, Pinyin & English OCR` unchanged.
+  `OCR, Pinyin & Translation` unchanged.
 
-### Feature-overlay text
+### Feature captions and export-only overlay settings
 
 - `text` is optional plain, nonblank text. Use `|` for multiline text; preserve
   authored line breaks and do not interpret Markdown or HTML. Without `text`,
-  no banner is rendered, so crop-only entries are valid.
+  no caption or export overlay is rendered, so crop-only entries are valid.
+- On the website, homepage captions remain small plain secondary text beneath
+  previews. Project-detail captions are prominent centered headlines above the
+  carousel stage, never over media or on neighbors; visual sizing and spacing are
+  defined in [DESIGN.md](DESIGN.md). Preserve all authored text and line breaks,
+  update through the existing selection binding, and reserve the longest text's
+  height against slide-driven movement. Without authored text, omit the text region.
+  Captions remain distinct from alt text. Export settings are unchanged.
+- The following position, side, offset, and style settings are retained for
+  screenshot exports only; they do not position or style website captions.
 - `text_pos_y` is optional, defaults to `0.5`, and must be a finite number from
    `0` to `1` inclusive. It sets the banner's vertical center relative to the
-   displayed media, or the visible cropped area on the homepage. There is no
+    exported image. There is no
    horizontal position fraction.
 - `text_side` is optional and accepts only `left` (default) or `right`, on normal
    `media` records or independent `preview` records. Left anchors the label at
@@ -211,15 +238,31 @@ Use a top-level YAML sequence of normal `media` records and at most one optional
   the existing opaque cool-neutral gradient and near-white text; light uses a
   light-neutral background and dark text. Both retain the same typography,
    authored accent color, rounded shape, padding, and shadow.
-- `highlight-color` is optional on normal `media` and independent `preview`
-  records: a quoted six-digit `#hex` string such as `"#3A8DFF"`. It sets the
-   feature overlay's accent on the chosen side in either style; omission defaults to the site's
-  orange `--ember` token. An independent preview does not inherit the media color.
-- Text settings apply to the homepage preview (featured and compact) according to
-   the selection rules above, and normal media text applies to the selected
-  project-carousel item, never faded neighbors. The banner
-  follows media movement/scaling and persists through poster/playback changes,
-  does not intercept navigation, and stays accessible separately from alt text.
+- Export overlays retain their typography, geometry, shadow, scaling, and
+  placement behavior; their accent uses the project color unless overridden by CLI.
+  Website captions use the selected record's text and optional detail-only word
+  emphasis, not overlay presentation settings.
+
+### Highlighted headline words
+
+- Optional `highlighted-words: "OCR, Pinyin, Translation"` belongs beside `text`
+  on normal `media` records in `items` only. It is invalid at the root or on
+  independent `preview` records. Keep `project-color` once at the root.
+- Supply a comma-separated string, not a YAML sequence or another value type.
+  Terms are trimmed; blank strings and blank comma entries are ignored. An empty
+  list means no emphasis.
+- Match literal whole words or terms case-insensitively, highlighting every
+  occurrence: `scan` does not match `scanned`. Regex characters are literal,
+  not commands; neither HTML nor Markdown is interpreted. Resolve overlaps
+  deterministically, longer terms first, without nested emphasis.
+- Preserve the original wording, case, whitespace, and line breaks. Missing or
+  unmatched terms leave text unchanged; unmatched terms alone do not fail a build.
+- Emphasis changes only inline text color in the website's project-detail
+  carousel headline, using the existing readable `--project-accent` derived from
+  `project-color`. Other text stays near-white; typography, layout, and motion
+  stay unchanged. Homepage captions, including first-item fallback captions,
+  never gain this emphasis. Screenshot-generator bubbles and stylized headings
+  ignore this field and retain their existing rendering and export options.
 
 ### Homepage preview crops
 
@@ -232,14 +275,16 @@ Use a top-level YAML sequence of normal `media` records and at most one optional
   including the selected item and faded neighbors.
 - Apply the same crop to poster and video without modifying source files.
   Displayed aspect ratio and layout height follow the retained rectangle rather
-  than reserving the uncropped footprint. Overlay positions use that visible area.
+  than reserving the uncropped footprint. Website captions sit beneath that area.
 
 ## Store screenshot generation
 
 From the repository root, run `npm ci` to install dependencies, including
 `playwright-core`, and install Chrome separately. Set `CHROME_PATH` to the Chrome
 executable to override browser discovery. Rendering uses headless Chrome with
-the site's Inter font and shared [feature-overlay CSS](src/media/featureOverlay.css).
+the site's Inter font and [feature-overlay CSS](src/media/featureOverlay.css).
+`FeatureOverlay.astro` and `featureOverlay.css` remain for the generator; website
+overlay removal does not change export rendering or options.
 
 ```sh
 ./store-screenshot-generator/store-screenshot-generator --project-name hanscan
@@ -275,8 +320,8 @@ the site's Inter font and shared [feature-overlay CSS](src/media/featureOverlay.
 - `--highlight-color` is optional: exactly six hexadecimal digits, optionally
   prefixed with `#` (quote a leading `#` in the shell). It overrides the caption's
    accent on the chosen side in dark and light styles, with or without either frame, only in
-  the generated document. Precedence: explicit CLI override, then each normal
-  media record's authored `highlight-color`, then the website's `--ember` token.
+  the generated document. Precedence: explicit CLI override, then root
+  `project-color`, then studio orange `#ee7135`.
 - `--text-offset <x,y>` optionally replaces both YAML `text_offset` coordinates
   for every existing caption in the export. Supply two comma-separated finite
   numbers in CSS pixels; negative and decimal values are allowed. Positive `x`
@@ -358,7 +403,7 @@ the site's Inter font and shared [feature-overlay CSS](src/media/featureOverlay.
 - The tool processes original images in `media.yaml` normal-record order, including
   images without captions, and skips all videos. Author captions in normal
    `media` records in `media.yaml` using `text`, `text_side`, `text_pos_y`, `text_offset`,
-  `style`, and `highlight-color` as documented above. It uses the shared parser's
+   and `style` as documented above, with root `project-color` for the accent. It uses the shared parser's
   gallery items and ignores homepage-specific captions and crops.
 - With `--device phone`, final output is 1440×2560 for portrait or square images
   and 2560×1440 for landscape images, using dimensions after any

@@ -1,0 +1,25 @@
+---
+interface Props {
+  text?: string;
+  title: string;
+  description: string;
+}
+
+const { text, title, description } = Astro.props;
+const normalizeText = (value: string) => value.trim().replace(/\s+/g, ' ').toLowerCase();
+const normalizedText = text ? normalizeText(text) : '';
+const shouldShowCaption = normalizedText.length > 0
+  && normalizedText !== normalizeText(title)
+  && normalizedText !== normalizeText(description);
+---
+{shouldShowCaption && <p class="feature-caption">{text}</p>}
+<style>
+  .feature-caption {
+    margin: 0 0 0.85rem;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.45;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+  }
+</style>

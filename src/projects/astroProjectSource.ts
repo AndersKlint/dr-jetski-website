@@ -198,7 +198,7 @@ async function toProject(entry: ProjectEntry): Promise<Project> {
   if (fileSlug !== null && fileSlug !== entry.data.slug) {
     throw new Error(`Project slug "${entry.data.slug}" does not match its folder name "${fileSlug}"`);
   }
-  const { gallery: authoredGallery, preview } = mediaPresentationForProject(entry);
+  const { gallery: authoredGallery, preview, projectColor } = mediaPresentationForProject(entry);
   const previewIndex = preview === undefined ? 0 : authoredGallery.findIndex(
     (item) => mediaSourceBasename(item.media) === preview.mediaSource,
   );
@@ -215,6 +215,7 @@ async function toProject(entry: ProjectEntry): Promise<Project> {
   };
   return {
     slug: entry.data.slug,
+    projectColor,
     displayName: entry.data.displayName,
     description: entry.data.description,
     projectType: entry.data.projectType,

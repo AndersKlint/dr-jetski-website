@@ -1,7 +1,8 @@
 ---
-import type { GalleryItem } from '../projects/Project';
-import MediaPreview from '../media/MediaPreview.astro';
-import { ProjectCarouselService } from './ProjectCarouselService';
+import type { GalleryItem } from "../projects/Project";
+import MediaPreview from "../media/MediaPreview.astro";
+import { ProjectCarouselService } from "./ProjectCarouselService";
+import { formatFeatureHeadline } from "./featureHeadline";
 
 interface Props {
   gallery: GalleryItem[];
@@ -9,91 +10,139 @@ interface Props {
 }
 const { gallery, isCompact = false } = Astro.props;
 const hasCarousel = gallery.length > 1;
-const slots = gallery.length > 0 ? new ProjectCarouselService(gallery.length).getVisibleSlots(2) : [];
+const hasCaptions = gallery.some((item) => item.featureOverlay?.text);
+const captions = gallery.map((item) =>
+  formatFeatureHeadline(
+    item.featureOverlay?.text ?? "",
+    item.featureOverlay?.highlightedWords,
+  ),
+);
+const slots =
+  gallery.length > 0
+    ? new ProjectCarouselService(gallery.length).getVisibleSlots(2)
+    : [];
 const slotByIndex = new Map(slots.map((slot) => [slot.index, slot]));
 
 function mediaAspectRatio(item: GalleryItem): number {
-  return item.kind === 'image' ? item.image.width / item.image.height : item.width / item.height;
+  return item.kind === "image"
+    ? item.image.width / item.image.height
+    : item.width / item.height;
 }
 ---
 
-{gallery.length > 0 && (
-  <section
-    class="gallery"
-    data-compact={isCompact}
-    data-media-carousel={hasCarousel ? '' : undefined}
-    aria-label="Project previews"
-    aria-roledescription={hasCarousel ? 'carousel' : undefined}
-  >
-    <div
-      class="stack-stage"
-      data-carousel-stage
-      style={`--selected-ratio: ${mediaAspectRatio(gallery[0])}`}
+{
+  gallery.length > 0 && (
+    <section
+      class="gallery"
+      data-compact={isCompact}
+      data-media-carousel={hasCarousel ? "" : undefined}
+      aria-label="Project previews"
+      aria-roledescription={hasCarousel ? "carousel" : undefined}
     >
-      <div class="stack-sizer" data-carousel-sizer aria-hidden="true"></div>
-      {gallery.map((item, index) => {
-        const slot = slotByIndex.get(index);
-        const isSelected = index === 0;
-        return (
-          <div
-            class="stack-layer"
-            id={`gallery-slide-${index + 1}`}
-            data-carousel-layer
-            data-layer-index={index}
-            data-visible={slot ? 'true' : 'false'}
-            data-slot={slot?.name}
-            data-selected={isSelected ? '' : undefined}
-            data-media-ratio={mediaAspectRatio(item)}
-            style={`--media-ratio: ${mediaAspectRatio(item)}`}
-          >
-            <div class="stack-media" data-stack-media inert={!isSelected ? '' : undefined}>
-              <MediaPreview
-                media={item}
-                isPriority={index === 0}
-                isPlaybackManaged={hasCarousel && item.kind === 'preview'}
-                previewId={item.kind === 'preview' ? `project-carousel-preview-${index}` : undefined}
-              />
-            </div>
-            {hasCarousel && (
-              <button
-                type="button"
-                class="stack-select"
-                data-carousel-item
-                data-slide-target={index}
-                aria-label={`Show image ${index + 1} of ${gallery.length}: ${item.alt}`}
-                aria-current={isSelected ? 'true' : undefined}
-                tabindex={isSelected ? -1 : 0}
-              />
-            )}
-          </div>
-        );
-      })}
-    </div>
-    {hasCarousel && (
-      <>
-        <div class="carousel-dots" role="group" aria-label="Choose an image">
-          {gallery.map((_, index) => (
-            <button
-              type="button"
-              class="carousel-dot"
-              data-carousel-dot
+      {hasCaptions && (
+        <div class="carousel-captions" aria-live="polite" aria-atomic="true">
+          {captions.map((parts, index) => (
+            <p
+              class="carousel-caption"
+              data-carousel-caption
               data-slide-target={index}
-              aria-label={`Show image ${index + 1} of ${gallery.length}`}
-              aria-current={index === 0 ? 'true' : undefined}
+              data-selected={index === 0 ? "" : undefined}
+              aria-hidden={index !== 0 ? "true" : undefined}
             >
-              <span class="dot-mark" aria-hidden="true"></span>
-            </button>
+              {parts.map((part) =>
+                part.isHighlighted ? (
+                  <span class="headline-highlight">{part.text}</span>
+                ) : (
+                  part.text
+                ),
+              )}
+            </p>
           ))}
         </div>
-        <p class="visually-hidden" data-carousel-status aria-live="polite" aria-atomic="true">
-          Image 1 of {gallery.length}: {gallery[0].alt}
-        </p>
-      </>
-    )}
-  </section>
-)}
+      )}
+      <div
+        class="stack-stage"
+        data-carousel-stage
+        style={`--selected-ratio: ${mediaAspectRatio(gallery[0])}`}
+      >
+        <div class="stack-sizer" data-carousel-sizer aria-hidden="true" />
+        {gallery.map((item, index) => {
+          const slot = slotByIndex.get(index);
+          const isSelected = index === 0;
+          return (
+            <div
+              class="stack-layer"
+              id={`gallery-slide-${index + 1}`}
+              data-carousel-layer
+              data-layer-index={index}
+              data-visible={slot ? "true" : "false"}
+              data-slot={slot?.name}
+              data-selected={isSelected ? "" : undefined}
+              data-media-ratio={mediaAspectRatio(item)}
+              style={`--media-ratio: ${mediaAspectRatio(item)}`}
+            >
+              <div
+                class="stack-media"
+                data-stack-media
+                inert={!isSelected ? "" : undefined}
+              >
+                <MediaPreview
+                  media={item}
+                  isPriority={index === 0}
+                  isPlaybackManaged={hasCarousel && item.kind === "preview"}
+                  previewId={
+                    item.kind === "preview"
+                      ? `project-carousel-preview-${index}`
+                      : undefined
+                  }
+                />
+              </div>
+              {hasCarousel && (
+                <button
+                  type="button"
+                  class="stack-select"
+                  data-carousel-item
+                  data-slide-target={index}
+                  aria-label={`Show image ${index + 1} of ${gallery.length}: ${item.alt}`}
+                  aria-current={isSelected ? "true" : undefined}
+                  tabindex={isSelected ? -1 : 0}
+                />
+              )}
+            </div>
+          );
+        })}
+      </div>
+      {hasCarousel && (
+        <>
+          <div class="carousel-dots" role="group" aria-label="Choose an image">
+            {gallery.map((_, index) => (
+              <button
+                type="button"
+                class="carousel-dot"
+                data-carousel-dot
+                data-slide-target={index}
+                aria-label={`Show image ${index + 1} of ${gallery.length}`}
+                aria-current={index === 0 ? "true" : undefined}
+              >
+                <span class="dot-mark" aria-hidden="true" />
+              </button>
+            ))}
+          </div>
+          <p
+            class="visually-hidden"
+            data-carousel-status
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            Image 1 of {gallery.length}: {gallery[0].alt}
+          </p>
+        </>
+      )}
+    </section>
+  )
+}
 <script>
-  import { initProjectCarousel } from './projectCarousel.client';
+  import { initProjectCarousel } from "./projectCarousel.client";
   initProjectCarousel();
 </script>
 <style>
@@ -111,7 +160,7 @@ function mediaAspectRatio(item: GalleryItem): number {
     }
   }
 
-  .gallery[data-compact='true'] {
+  .gallery[data-compact="true"] {
     max-width: 44rem;
   }
 
@@ -168,39 +217,39 @@ function mediaAspectRatio(item: GalleryItem): number {
     );
   }
 
-  .stack-layer[data-slot='left-1'],
-  .stack-layer[data-slot='right-1'] {
+  .stack-layer[data-slot="left-1"],
+  .stack-layer[data-slot="right-1"] {
     --layer-scale: 0.72;
     z-index: 4;
     opacity: 0.8;
     filter: saturate(0.92) brightness(0.86);
   }
 
-  .stack-layer[data-slot='left-1'] {
+  .stack-layer[data-slot="left-1"] {
     --layer-x: -58.333%;
   }
 
-  .stack-layer[data-slot='right-1'] {
+  .stack-layer[data-slot="right-1"] {
     --layer-x: 58.333%;
   }
 
-  .stack-layer[data-slot='left-2'],
-  .stack-layer[data-slot='right-2'] {
+  .stack-layer[data-slot="left-2"],
+  .stack-layer[data-slot="right-2"] {
     --layer-scale: 0.56;
     z-index: 3;
     opacity: 0.6;
     filter: saturate(0.8) brightness(0.72);
   }
 
-  .stack-layer[data-slot='left-2'] {
+  .stack-layer[data-slot="left-2"] {
     --layer-x: -146.429%;
   }
 
-  .stack-layer[data-slot='right-2'] {
+  .stack-layer[data-slot="right-2"] {
     --layer-x: 146.429%;
   }
 
-  .stack-layer[data-visible='false'] {
+  .stack-layer[data-visible="false"] {
     visibility: hidden;
     opacity: 0;
     pointer-events: none;
@@ -214,17 +263,17 @@ function mediaAspectRatio(item: GalleryItem): number {
     filter: none;
   }
 
-  .stack-layer:not([data-selected]) :global([data-feature-overlay]) {
-    display: none;
-  }
-
-  .stack-layer:not([data-selected]):not([data-visible='false']):is(:hover, :focus-within) {
+  .stack-layer:not([data-selected]):not([data-visible="false"]):is(
+      :hover,
+      :focus-within
+    ) {
     --layer-hover-scale: 1.045;
     opacity: 0.94;
     filter: saturate(1) brightness(1);
   }
 
   .stack-media {
+    --media-radius: 8px;
     position: relative;
     z-index: 1;
     width: 100%;
@@ -249,6 +298,7 @@ function mediaAspectRatio(item: GalleryItem): number {
   .stack-media :global(.media-clip) {
     width: 100%;
     height: 100%;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
   }
 
   .stack-media :global(img),
@@ -343,8 +393,39 @@ function mediaAspectRatio(item: GalleryItem): number {
     opacity: 0.62;
   }
 
-  .carousel-dot[aria-current='true'] .dot-mark {
+  .carousel-dot[aria-current="true"] .dot-mark {
     opacity: 1;
+  }
+
+  .carousel-captions {
+    display: grid;
+    max-width: 32ch;
+    margin: 0 auto clamp(1.5rem, 3vw, 2rem);
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    text-align: center;
+  }
+
+  .carousel-caption {
+    grid-area: 1 / 1;
+    align-self: end;
+    margin: 0;
+    max-width: none;
+    color: var(--text-primary);
+    font-weight: 750;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+    visibility: hidden;
+  }
+
+  .carousel-caption[data-selected] {
+    visibility: visible;
+  }
+
+  .headline-highlight {
+    color: var(--project-accent);
   }
 
   .visually-hidden {
@@ -360,8 +441,8 @@ function mediaAspectRatio(item: GalleryItem): number {
   }
 
   @media (max-width: 40rem) {
-    .stack-layer[data-slot='left-2'],
-    .stack-layer[data-slot='right-2'] {
+    .stack-layer[data-slot="left-2"],
+    .stack-layer[data-slot="right-2"] {
       display: none;
     }
   }

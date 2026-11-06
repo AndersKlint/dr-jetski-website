@@ -1,3 +1,4 @@
-- media: preview.svg
-  alt: "Illustrative placeholder: concept mockup of stacked study flashcards with review progress, not a real screenshot."
-  isPlaceholder: true
+items:
+  - media: preview.svg
+    alt: "Illustrative placeholder: concept mockup of stacked study flashcards with review progress, not a real screenshot."
+    isPlaceholder: true

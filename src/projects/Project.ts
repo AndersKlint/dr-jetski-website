@@ -42,6 +42,7 @@ export interface ResponsiveImage {
 
 export interface FeatureOverlay {
   text: string;
+  highlightedWords?: string[];
   side: 'left' | 'right';
   y: number;
   offset: { x: number; y: number };
@@ -97,6 +98,7 @@ export type GalleryItem = ImageGalleryItem | PreviewGalleryItem | DemoGalleryIte
 
 export interface Project {
   slug: string;
+  projectColor?: string;
   displayName: string;
   description: string;
   projectType: ProjectType;

@@ -6,6 +6,7 @@ const STAGE_SELECTOR = '[data-carousel-stage]';
 const LAYER_SELECTOR = '[data-carousel-layer]';
 const ITEM_SELECTOR = '[data-carousel-item]';
 const DOT_SELECTOR = '[data-carousel-dot]';
+const CAPTION_SELECTOR = '[data-carousel-caption]';
 const SIZER_SELECTOR = '[data-carousel-sizer]';
 const STATUS_SELECTOR = '[data-carousel-status]';
 const MEDIA_SELECTOR = '[data-stack-media]';
@@ -60,6 +61,7 @@ function createCarousel(root: HTMLElement, playback: PreviewPlaybackHandle): () 
 
   const sizer = root.querySelector<HTMLElement>(SIZER_SELECTOR);
   const dots = [...root.querySelectorAll<HTMLElement>(DOT_SELECTOR)];
+  const captions = [...root.querySelectorAll<HTMLElement>(CAPTION_SELECTOR)];
   const status = root.querySelector<HTMLElement>(STATUS_SELECTOR);
   const service = new ProjectCarouselService(layers.length);
   const phoneQuery = window.matchMedia(PHONE_MEDIA_QUERY);
@@ -187,6 +189,12 @@ function createCarousel(root: HTMLElement, playback: PreviewPlaybackHandle): () 
     for (const dot of dots) {
       if (readSlideTarget(dot) === service.currentIndex) dot.setAttribute('aria-current', 'true');
       else dot.removeAttribute('aria-current');
+    }
+    for (const caption of captions) {
+      const isSelected = readSlideTarget(caption) === service.currentIndex;
+      caption.toggleAttribute('data-selected', isSelected);
+      if (isSelected) caption.removeAttribute('aria-hidden');
+      else caption.setAttribute('aria-hidden', 'true');
     }
   };
 

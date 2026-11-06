@@ -8,6 +8,7 @@ export interface MediaPresentation {
 }
 
 export interface ProjectMediaPresentation {
+  projectColor?: string;
   mediaBySource: Map<string, MediaPresentation>;
   gallery: AuthoredMediaItem[];
   preview?: MediaPresentation & { mediaSource: string };
@@ -41,9 +42,6 @@ const presentationFields = {
     y: z.number().default(0),
   }).strict().default({ x: 0, y: 0 }),
   style: z.enum(['dark', 'light']).default('dark'),
-  'highlight-color': z.string().regex(/^#?[0-9a-fA-F]{6}$/, {
-    message: 'Expected exactly six hex digits, optionally prefixed with #',
-  }).transform((value) => `#${value.replace(/^#/, '')}`).optional(),
   preview_crop: mediaCropSchema.optional(),
 };
 
@@ -59,6 +57,7 @@ const videoSourceSchema = z.string().refine((value) => {
 
 const mediaFields = {
   ...presentationFields,
+  'highlighted-words': z.string().transform((value) => value.split(',').map((term) => term.trim()).filter((term) => term.length > 0)).optional(),
   alt: z.string().refine((value) => value.trim().length > 0, { message: 'Expected nonblank alt text' }),
   isPlaceholder: z.boolean().optional(),
 };
@@ -74,10 +73,15 @@ const mediaItemSchema = z.union([
   z.object({ ...videoFields, kind: z.literal('preview') }).strict(),
   z.object({ ...videoFields, kind: z.literal('demo'), hasAudio: z.boolean() }).strict(),
 ]);
-const presentationSchema = z.array(z.union([
-  mediaItemSchema,
-  z.object({ ...presentationFields, preview: mediaFilenameSchema }).strict(),
-]));
+const presentationSchema = z.object({
+  'project-color': z.string().regex(/^#?[0-9a-fA-F]{6}$/, {
+    message: 'Expected exactly six hex digits, optionally prefixed with #',
+  }).transform((value) => `#${value.replace(/^#/, '')}`).optional(),
+  items: z.array(z.union([
+    mediaItemSchema,
+    z.object({ ...presentationFields, preview: mediaFilenameSchema }).strict(),
+  ])).default([]),
+}).strict();
 
 export type AuthoredMediaItem = MediaPresentation & (
   | { media: string; kind: 'image'; alt: string; isPlaceholder?: boolean }
@@ -105,7 +109,7 @@ export function parseMediaPresentation(raw: string, filePath: string): ProjectMe
   }
   let records: unknown;
   try {
-    records = document.contents === null ? [] : document.toJS();
+    records = document.contents === null ? {} : document.toJS();
   } catch (error) {
     throw new Error(`${filePath}: ${error instanceof Error ? error.message : String(error)}`);
   }
@@ -116,30 +120,32 @@ export function parseMediaPresentation(raw: string, filePath: string): ProjectMe
   }
   const presentations = new Map<string, MediaPresentation>();
   const gallery: AuthoredMediaItem[] = [];
+  const projectColor = parsed.data['project-color'];
   let preview: ProjectMediaPresentation['preview'];
-  for (const [index, entry] of parsed.data.entries()) {
+  for (const [index, entry] of parsed.data.items.entries()) {
     const presentation: MediaPresentation = {
       featureOverlay: entry.text === undefined ? undefined : {
         text: entry.text,
+        highlightedWords: 'highlighted-words' in entry ? entry['highlighted-words'] : undefined,
         side: entry.text_side,
         y: entry.text_pos_y,
         offset: entry.text_offset,
         style: entry.style,
-        highlightColor: entry['highlight-color'],
+        highlightColor: projectColor,
       },
       homepageCrop: entry.preview_crop,
     };
     if ('preview' in entry) {
       if (preview !== undefined) {
-        throw new Error(`${filePath}: ${index}.preview: Only one preview record is allowed`);
+        throw new Error(`${filePath}: items.${index}.preview: Only one preview record is allowed`);
       }
       preview = { mediaSource: entry.preview, ...presentation };
     } else {
       if (presentations.has(entry.media)) {
-        throw new Error(`${filePath}: ${index}.media: Duplicate media filename "${entry.media}"`);
+        throw new Error(`${filePath}: items.${index}.media: Duplicate media filename "${entry.media}"`);
       }
       presentations.set(entry.media, presentation);
-      const { text, text_pos_y, text_side, text_offset, style, 'highlight-color': highlightColor, preview_crop, ...media } = entry;
+      const { text, 'highlighted-words': highlightedWords, text_pos_y, text_side, text_offset, style, preview_crop, ...media } = entry;
       gallery.push({ ...media, ...presentation });
     }
   }
@@ -149,5 +155,5 @@ export function parseMediaPresentation(raw: string, filePath: string): ProjectMe
       throw new Error(`${filePath}: preview: Expected exactly one gallery item matching "${preview.mediaSource}"`);
     }
   }
-  return { mediaBySource: presentations, gallery, preview };
+  return { projectColor, mediaBySource: presentations, gallery, preview };
 }
