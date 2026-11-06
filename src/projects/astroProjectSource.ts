@@ -244,6 +244,7 @@ export interface ProjectDetailSource {
   project: Project;
   entry: ProjectEntry;
   privacyEntry?: CollectionEntry<'projectPolicies'>;
+  termsEntry?: CollectionEntry<'projectTerms'>;
 }
 
 export async function loadPublicProjectDetails(): Promise<ProjectDetailSource[]> {
@@ -251,6 +252,8 @@ export async function loadPublicProjectDetails(): Promise<ProjectDetailSource[]>
   const bySlug = new Map(entries.map((entry) => [entry.data.slug, entry]));
   const policies = await getCollection('projectPolicies');
   const policyBySlug = new Map(policies.map((entry) => [entry.id, entry]));
+  const terms = await getCollection('projectTerms');
+  const termsBySlug = new Map(terms.map((entry) => [entry.id, entry]));
   for (const policy of policies) {
     if (!bySlug.has(policy.id)) {
       throw new Error(`Privacy policy "${policy.id}" has no matching project`);
@@ -259,11 +262,20 @@ export async function loadPublicProjectDetails(): Promise<ProjectDetailSource[]>
       throw new Error(`Privacy policy "${policy.id}" must not be empty`);
     }
   }
+  for (const entry of terms) {
+    if (!bySlug.has(entry.id)) {
+      throw new Error(`Terms of service "${entry.id}" has no matching project`);
+    }
+    if (!entry.body?.trim()) {
+      throw new Error(`Terms of service "${entry.id}" must not be empty`);
+    }
+  }
   const projects = await Promise.all(entries.map(toProject));
   const catalog = new ProjectCatalogService(projects);
   return catalog.publicProjects().map((project) => ({
     project,
     entry: bySlug.get(project.slug) as ProjectEntry,
     privacyEntry: policyBySlug.get(project.slug),
+    termsEntry: termsBySlug.get(project.slug),
   }));
 }

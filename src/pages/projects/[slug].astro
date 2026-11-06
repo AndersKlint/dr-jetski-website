@@ -11,17 +11,18 @@ interface Props {
   project: Project;
   entry: CollectionEntry<'projects'>;
   privacyHref?: string;
+  termsHref?: string;
 }
 
 export async function getStaticPaths() {
   const details = await loadPublicProjectDetails();
-  return details.map(({ project, entry, privacyEntry }) => ({
+  return details.map(({ project, entry, privacyEntry, termsEntry }) => ({
     params: { slug: project.slug },
-    props: { project, entry, privacyHref: privacyEntry ? `${project.href}/privacy` : undefined },
+    props: { project, entry, privacyHref: privacyEntry ? `${project.href}/privacy` : undefined, termsHref: termsEntry ? `${project.href}/terms-of-service` : undefined },
   }));
 }
 
-const { project, entry, privacyHref } = Astro.props as Props;
+const { project, entry, privacyHref, termsHref } = Astro.props as Props;
 const { Content } = await render(entry);
 const detail = prepareProjectDetail(project);
 ---
@@ -37,6 +38,7 @@ const detail = prepareProjectDetail(project);
     downloads={detail.downloads}
     isCompactMedia={detail.isCompactMedia}
     privacyHref={privacyHref}
+    termsHref={termsHref}
   >
     <Content />
   </ProjectDetailView>

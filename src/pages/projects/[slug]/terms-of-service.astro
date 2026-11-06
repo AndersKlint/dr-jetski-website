@@ -1,0 +1,32 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import { loadPublicProjectDetails } from '../../../projects/astroProjectSource';
+import type { Project } from '../../../projects/Project';
+import ProjectPolicyView from '../../../project-detail-view/ProjectPolicyView.astro';
+import SiteLayout from '../../../site/SiteLayout.astro';
+
+interface Props {
+  project: Project;
+  entry: CollectionEntry<'projectTerms'>;
+}
+
+export async function getStaticPaths() {
+  const details = await loadPublicProjectDetails();
+  return details.flatMap(({ project, termsEntry }) => termsEntry ? [{
+    params: { slug: project.slug },
+    props: { project, entry: termsEntry },
+  }] : []);
+}
+
+const { project, entry } = Astro.props;
+const { Content } = await render(entry);
+---
+<SiteLayout
+  title={`${project.displayName} Terms of Service — Dr. Jetski Studios`}
+  description={`Terms of service for ${project.displayName}.`}
+  projectBanner={{ displayName: project.displayName, hasDownloads: false }}
+>
+  <ProjectPolicyView projectName={project.displayName} projectHref={project.href}>
+    <Content />
+  </ProjectPolicyView>
+</SiteLayout>

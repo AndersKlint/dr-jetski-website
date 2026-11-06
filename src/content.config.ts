@@ -17,4 +17,13 @@ const projectPolicies = defineCollection({
   schema: z.object({}).strict(),
 });
 
-export const collections = { projects, projectPolicies };
+const projectTerms = defineCollection({
+  loader: glob({
+    base: './src/content/projects',
+    pattern: '*/terms-of-service.md',
+    generateId: ({ entry }) => entry.split('/')[0]!,
+  }),
+  schema: z.object({}).strict(),
+});
+
+export const collections = { projects, projectPolicies, projectTerms };
