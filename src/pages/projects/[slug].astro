@@ -47,7 +47,7 @@ const isHanScan = project.slug === 'hanscan';
     isCompactMedia={detail.isCompactMedia}
     privacyHref={privacyHref}
     termsHref={termsHref}
-    isSimplified={isJetAlign || isHanScan}
+    isSimplified={isJetAlign || isHanScan || project.slug === 'waytoclip'}
   >
     <Fragment slot="before-downloads">{isJetAlign && <JetAlignAudio beforeSrc={guitarBefore} afterSrc={guitarAfter} />}</Fragment>
     <Fragment slot="after-details">{isJetAlign && <SenderForm />}</Fragment>

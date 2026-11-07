@@ -1,7 +1,7 @@
 ---
 slug: "waytoclip"
 displayName: "WayToClip"
-description: "Keyboard-centric GNOME Shell clipboard manager with history at the cursor, search, and favorites."
+description: "A keyboard-driven clipboard manager for GNOME Shell. Press a shortcut to open history at your cursor, then press 1–9 to paste.\n\nFast, simple, efficient - once you try it, you'll never go back."
 projectType: "extension"
 supportedPlatforms: ["Linux (GNOME Shell)"]
 releaseMaturity: "stable"
@@ -9,24 +9,41 @@ visibility: "public"
 featuredRank: 3
 editorialOrder: 3
 availability:
-  status: "pending"
-  message: "Finished and submitted to GNOME Extensions; awaiting review. A manual-install bundle is ready but its public download link is still pending."
+  status: "available"
+  message: "Available as a manual-install ZIP for GNOME Shell."
 publicationNote: "Submitted to GNOME Extensions; awaiting review."
 authoringNotes:
-  - "Owner TODO: supply the public bundle URL, version, file size, filename confirmation, install instructions, and the GNOME Extensions listing URL once live."
-  - "The source repository URL is unknown; do not fabricate a source link."
+  - "ZIP SHA256: fbc2473c1ab47e3ef6ba7064dfe7e5d71e5db95cd4fccc7b1438176ce7046569"
 downloads:
-  - label: "Manual install bundle"
+  - label: "Linux (GNOME Shell)"
     platform: "Linux (GNOME Shell)"
     format: "ZIP"
-    filename: "pluginbundle.zip"
-links: []
+    url: "https://downloads.drjetski.com/releases/waytoclip/v1.0.1/WayToClip-v1.0.1-gnome-shell.zip"
+    version: "1.0.1"
+    sizeBytes: 214334
+    filename: "WayToClip-v1.0.1-gnome-shell.zip"
+links:
+  - label: "View on GitHub"
+    kind: "source"
+    url: "https://github.com/AndersKlint/way-to-clip"
 ---
 
-WayToClip is a keyboard-centric clipboard manager for GNOME Shell. A shortcut opens clipboard history at the mouse cursor, and entries can be picked with number keys, arrow keys, or the mouse.
+## Installation
 
-- History popup at the cursor position.
-- Search, favorites, and image entry support.
-- Excludes password-manager content when the appropriate metadata is present, such as from KeePass.
+Requires GNOME Shell 46–51. The GNOME Extensions listing is awaiting review.
 
-Platform availability: GNOME Shell on Linux. The extension is awaiting GNOME Extensions review; the manual-install bundle link is still pending.
+Install the downloaded ZIP:
+
+```bash
+gnome-extensions install WayToClip-v1.0.1-gnome-shell.zip
+```
+
+Log out and log back in, then enable the extension:
+
+```bash
+gnome-extensions enable waytoclip@andersklint.github.io
+```
+
+**No shortcut is set by default.** Open the extension settings and set “Toggle the cursor popup” to a shortcut such as Alt+X.
+
+Inspired by the classic Windows utility [CLCL](https://nakka.com/soft/clcl/index_eng.html), with monitoring logic built upon [Clipboard Indicator](https://github.com/Tudmotu/gnome-shell-extension-clipboard-indicator).

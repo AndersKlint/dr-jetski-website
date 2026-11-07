@@ -19,7 +19,7 @@ const { project, downloads, isCompactMedia = false, privacyHref, termsHref, isSi
 const hasBody = project.body.trim().length > 0;
 const { rawColor, readableAccent } = prepareProjectColor(project.projectColor);
 ---
-<main class="detail" id="main-content" style={`--project-color: ${rawColor}; --project-accent: ${readableAccent}`}>
+<main class="detail" id="main-content" data-project={project.slug} style={`--project-color: ${rawColor}; --project-accent: ${readableAccent}`}>
   <ProjectGallery gallery={project.gallery} isCompact={isCompactMedia} />
   <header class="intro">
     <p class="kicker">
@@ -65,6 +65,10 @@ const { rawColor, readableAccent } = prepareProjectColor(project.projectColor);
     max-width: var(--measure);
     margin-inline: auto;
     padding: 2rem 1.25rem 0;
+  }
+
+  .detail[data-project='waytoclip'] {
+    --project-headline-color: hsl(from var(--project-color) h s calc(l + 25));
   }
 
   .intro {
@@ -121,6 +125,7 @@ const { rawColor, readableAccent } = prepareProjectColor(project.projectColor);
     margin: 0;
     font-size: clamp(1.05rem, 2vw, 1.18rem);
     line-height: 1.7;
+    white-space: pre-line;
   }
 
   .availability {
