@@ -6,9 +6,10 @@ interface Props {
   availabilityMessage: string;
   publicationNote?: string;
   links: ProjectLink[];
+  isSimplified?: boolean;
 }
 
-const { downloads, availabilityMessage, publicationNote, links } = Astro.props;
+const { downloads, availabilityMessage, publicationNote, links, isSimplified = false } = Astro.props;
 
 const LINK_LABELS: Record<ProjectLink['kind'], string> = {
   source: 'Source code',
@@ -30,7 +31,10 @@ function formatSize(sizeBytes?: number): string | undefined {
 }
 
 function downloadMeta(download: ProjectDownload): string {
-  const parts = [download.platform, download.format];
+  const parts = isSimplified ? [] : [download.platform];
+  if (download.format !== undefined) {
+    parts.push(download.format);
+  }
   if (download.version !== undefined) {
     parts.push(download.version);
   }
@@ -38,7 +42,7 @@ function downloadMeta(download: ProjectDownload): string {
   if (size !== undefined) {
     parts.push(size);
   }
-  if (download.filename !== undefined) {
+  if (!isSimplified && download.filename !== undefined) {
     parts.push(download.filename);
   }
   return parts.join(' · ');
@@ -47,26 +51,32 @@ function downloadMeta(download: ProjectDownload): string {
 {downloads.length > 0 ? (
   <section class="downloads" id="downloads" aria-labelledby="downloads-heading">
     <h2 id="downloads-heading">Downloads</h2>
-    <ul class="download-list">
+    <ul class:list={['download-list', { 'is-simplified': isSimplified }]}>
       {downloads.map((download) => (
         <li class="download">
-          {download.url !== undefined ? (
+          {isSimplified ? (
+            <span class="download-label">{download.label}</span>
+          ) : download.url !== undefined ? (
             <a class="download-link" href={download.url}>
               {download.label}
             </a>
           ) : (
             <span class="download-label">{download.label}</span>
           )}
-          <p class="download-meta">{downloadMeta(download)}</p>
-          {download.installationNotes && (
+          {(!isSimplified || download.url !== undefined) && <p class="download-meta">{downloadMeta(download)}</p>}
+          {isSimplified && download.url !== undefined && (
+            <a class="download-link download-action" href={download.url} aria-label={`Download ${download.label}`}>Download</a>
+          )}
+          {!isSimplified && download.installationNotes && (
             <p class="install-notes">{download.installationNotes}</p>
           )}
           {download.url === undefined && (
-            <p class="pending-note">Download link pending.</p>
+            <p class="pending-note">{isSimplified ? 'Coming soon' : 'Download link pending.'}</p>
           )}
         </li>
       ))}
     </ul>
+    <slot />
     {links.length > 0 && (
       <div class="elsewhere">
         <h3 class="elsewhere-heading">Elsewhere</h3>
@@ -131,6 +141,15 @@ function downloadMeta(download: ProjectDownload): string {
     border: 1px solid var(--line);
     border-radius: var(--radius);
     padding: 1rem 1.25rem;
+  }
+
+  .is-simplified {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  }
+
+  .download-action {
+    display: inline-block;
+    margin-top: 0.85rem;
   }
 
   .download-link {

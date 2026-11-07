@@ -35,7 +35,7 @@ Design confirmed by the owner after the design interview. See [PLAN.md](PLAN.md)
 - Selected video previews play silently and inline only while near or within the viewport; inactive previews pause and are not eagerly downloaded. Neighbor layers show video posters only, without loading or playing their video. Explicit slide navigation restarts a video when its slide is returned to; scrolling away, backgrounding, or the global pause-motion control pauses playback, and returning resumes it. The page-wide three-preview cap, reduced-motion/data-saving posters, and global pause control still apply. Horizontal slide changes move with a natural transition rather than snapping or jumping pages; scale, position, opacity, and selected-size changes use a short transition, and all are disabled under reduced motion.
 - Website media has no feature overlays. Homepage feature captions remain small, plain secondary text beneath their previews, with cards and crops unchanged. On project-detail pages, the selected media's feature caption becomes an important centered headline above the carousel stage: use the existing display font, near-white text, 36–40px on desktop and 24–28px on mobile, tight line spacing, a readable text width, and a 24–32px gap before the stage. Preserve all authored text and line breaks, synchronized through the existing slide-selection binding; reserve the longest text's height so slide changes do not move surrounding content. Render no text region when there is no authored text. Do not add a panel, stripe, pill, or new motion. Feature captions remain distinct from alt text. Overlay positioning and style settings remain for store screenshot exports only; their rendering and export behavior are unchanged. [PROJECT-ASSETS.md](PROJECT-ASSETS.md) defines authoring and export options.
 - Project-detail carousel headlines are bottom-aligned within the reserved longest-caption height, keeping shorter captions close to the stage without moving the carousel. They may selectively color important words with the existing readable `--project-accent` derived from `project-color`; remaining text stays near-white. Apply color only, with no new decorative treatment or changes to font size, weight, layout, or motion. Homepage captions and screenshot exports are unchanged; [PROJECT-ASSETS.md](PROJECT-ASSETS.md) defines optional word selection.
-- The project-page banner includes the studio identity, a return link, a small project identifier, and a Downloads jump link when downloads exist. The substantive information/download panel sits below the gallery.
+- The project-page banner retains the studio identity and shows only Back to projects, About/contact, and the existing motion control. Omit the project identifier and Downloads jump link. The substantive information/download panel sits below the gallery.
 - Packages and scripts may use relevant diagrams, real usage examples, terminal output, or screenshots, with a shorter media section where appropriate.
 - Publish software releases through an explicitly invoked local scripted upload: ignored `src/content/projects/<slug>/releases/<version>/<filename>` maps to R2 `releases/<slug>/<version>/<filename>` via `make upload PROJECT=<slug>` (add `DRY_RUN=1` to preview). Uploads are immutable and upload-only, not a sync or automated retention policy. Verify public bytes before separately editing validated repository metadata and Markdown content; the uploader never edits availability or deploys. Validate locally with `make check`, push `main` for staging, then promote fetched `origin/main` to `release` with `make deploy-prod` to trigger production deployment.
 
@@ -72,7 +72,7 @@ Homepage previews retain their existing optional crops, off by default. HanScan'
 ## Project-page composition
 
 ```text
-Studio identity · Back to projects · project identifier · Downloads
+Studio identity · Back to projects · About/contact · Pause motion
 
 [ selected feature caption: centered display headline, when authored ]
 
@@ -83,12 +83,12 @@ Platform downloads · file details · source / store destinations
 Features · installation · optional engineering detail
 ```
 
-The carousel stays before the substantive description/download panel on all screens. The Downloads jump link gives repeat visitors a direct route past the gallery. Content sections are optional; avoid empty headings or artificial media galleries for packages and scripts.
+The carousel stays before the substantive description/download panel on all screens. Content sections are optional; avoid empty headings or artificial media galleries for packages and scripts.
 
 HanScan has a straightforward static text privacy-policy page at https://drjetski.com/projects/hanscan/privacy. A small, normal “Privacy policy” link appears at the bottom of HanScan's project information, with no homepage or main-navigation entry.
 
-JetAlign alone embeds the owner's Sender updates form immediately below downloads,
-before the Markdown detail sections. The accessibly named `#updates` section uses
+JetAlign alone embeds the owner's Sender updates form below the installation
+section that follows downloads. The accessibly named `#updates` section uses
 the existing 62ch detail measure and no additional visible heading or copy: Sender
 owns the form's presentation and wording. Its inline head loader runs only on
 `/projects/jetalign`; other pages remain free of Sender. The owner reports double
@@ -96,6 +96,32 @@ opt-in is enabled; sender/domain verification status remains unknown. Keep the
 integration local, including before public staging, until verification, rendering,
 and confirmation/unsubscribe checks are complete.
 [README.md](README.md#jetalign-updates-form) holds the launch checklist.
+
+JetAlign's beta page keeps the existing gallery as its main feature explanation,
+followed by the project title, beta label, and a short description of its easy-to-use,
+lightweight native vocal and instrument alignment. Omit duplicate platform badges,
+availability paragraphs and feature lists. Inside Downloads below the download
+cards, show an Installation subsection (h3), a Linux sub-subsection (h4), and a
+short paragraph explaining archive extraction
+and copying `JetAlign.clap` to `~/.clap/` or the entire `JetAlign.vst3` folder to
+`~/.vst3/`. Follow it with Bash snippets for extracting the current archive and
+installing CLAP and VST3, with short labels in smaller bold body text using the
+normal text color, visually subordinate to Linux, and horizontally scrollable code
+blocks. Inline code uses a subtle card-colored background, border, and padding,
+without affecting fenced code-block highlighting.
+Between the description and downloads, show
+separate native Before and After audio players for the full guitar examples, with
+no autoplay, synchronization, or eager audio loading. Keep native controls with
+rounded corners and card-colored backgrounds; request the project accent for
+controls where the browser supports it, without custom player logic or color filters.
+Native seekbar accent rendering remains browser-dependent. Bundle stereo 96 kbps Opus/WebM
+copies with the static site, retaining source timing and volume without additional
+processing. Show three compact download cards: Linux with version, CLAP / VST3,
+file size, and download action; Windows and Mac with only their names and Coming
+soon. Do not display filenames in download cards. Keep the existing updates form
+below the installation section.
+This simplified presentation applies only to JetAlign; live release delivery
+verification remains a separate launch gate.
 
 ## Content and delivery
 

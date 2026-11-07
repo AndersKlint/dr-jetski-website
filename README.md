@@ -45,7 +45,7 @@ Run checks with telemetry disabled if init fails in restricted environments:
 ## JetAlign updates form
 
 Only `/projects/jetalign` loads Sender's inline head loader and embeds the owner's
-form immediately below downloads in `#updates`. Sender owns the heading, copy,
+form below the installation section in `#updates`. Sender owns the heading, copy,
 fields, and signup behavior; `src/newsletter/` contains the loader and mount.
 The account and form identifiers are public, not secrets. No backend or custom
 signup logic is involved. JavaScript and access to Sender are required.

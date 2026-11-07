@@ -8,6 +8,9 @@ import ProjectDetailView from '../../project-detail-view/ProjectDetailView.astro
 import SiteLayout from '../../site/SiteLayout.astro';
 import SenderHead from '../../newsletter/SenderHead.astro';
 import SenderForm from '../../newsletter/SenderForm.astro';
+import JetAlignAudio from '../../project-detail-view/JetAlignAudio.astro';
+import guitarBefore from '../../content/projects/jetalign/guitar-before.webm?url';
+import guitarAfter from '../../content/projects/jetalign/guitar-after.webm?url';
 
 interface Props {
   project: Project;
@@ -27,24 +30,26 @@ export async function getStaticPaths() {
 const { project, entry, privacyHref, termsHref } = Astro.props as Props;
 const { Content } = await render(entry);
 const detail = prepareProjectDetail(project);
-const hasNewsletter = project.slug === 'jetalign';
+const isJetAlign = project.slug === 'jetalign';
 ---
 <SiteLayout
   title={`${project.displayName} — Dr. Jetski Studios`}
   description={project.description}
-  projectBanner={{ displayName: project.displayName, hasDownloads: detail.hasDownloads }}
+  isProjectPage
   image={detail.socialImage}
   imageAlt={detail.socialImageAlt}
 >
-  <Fragment slot="head">{hasNewsletter && <SenderHead />}</Fragment>
+  <Fragment slot="head">{isJetAlign && <SenderHead />}</Fragment>
   <ProjectDetailView
     project={project}
     downloads={detail.downloads}
     isCompactMedia={detail.isCompactMedia}
     privacyHref={privacyHref}
     termsHref={termsHref}
+    isSimplified={isJetAlign}
   >
-    <Fragment slot="after-downloads">{hasNewsletter && <SenderForm />}</Fragment>
+    <Fragment slot="before-downloads">{isJetAlign && <JetAlignAudio beforeSrc={guitarBefore} afterSrc={guitarAfter} />}</Fragment>
+    <Fragment slot="after-details">{isJetAlign && <SenderForm />}</Fragment>
     <Content />
   </ProjectDetailView>
 </SiteLayout>

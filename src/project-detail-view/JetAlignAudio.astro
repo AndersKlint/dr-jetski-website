@@ -1,0 +1,84 @@
+---
+interface Props {
+  beforeSrc: string;
+  afterSrc: string;
+}
+
+const { beforeSrc, afterSrc } = Astro.props;
+---
+<section class="audio-comparison" aria-labelledby="audio-heading">
+  <h2 id="audio-heading">Hear the difference</h2>
+  <p class="audio-description">Two guitar takes, before and after alignment.</p>
+  <div class="audio-players">
+    <div class="audio-example">
+      <h3 id="audio-before">Before</h3>
+      <audio controls preload="none" aria-labelledby="audio-before">
+        <source src={beforeSrc} type='audio/webm; codecs="opus"' />
+        <a href={beforeSrc}>Listen to the unaligned guitar takes</a>
+      </audio>
+    </div>
+    <div class="audio-example">
+      <h3 id="audio-after">After</h3>
+      <audio controls preload="none" aria-labelledby="audio-after">
+        <source src={afterSrc} type='audio/webm; codecs="opus"' />
+        <a href={afterSrc}>Listen to the aligned guitar takes</a>
+      </audio>
+    </div>
+  </div>
+</section>
+<style>
+  .audio-comparison {
+    margin-top: 2rem;
+  }
+
+  h2 {
+    margin: 0 0 0.5rem;
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
+    letter-spacing: -0.025em;
+  }
+
+  .audio-description {
+    margin: 0 0 1rem;
+    color: var(--text-secondary);
+  }
+
+  .audio-players {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: 1rem;
+    max-width: 48rem;
+  }
+
+  .audio-example {
+    min-width: 0;
+  }
+
+  h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+  }
+
+  audio {
+    display: block;
+    width: 100%;
+    color-scheme: dark;
+    background: var(--charcoal-raised);
+    border-radius: var(--radius);
+    overflow: hidden;
+    accent-color: var(--project-accent);
+  }
+
+  audio::-webkit-media-controls-enclosure {
+    border-radius: var(--radius);
+    background: var(--charcoal-raised);
+  }
+
+  audio::-webkit-media-controls-panel {
+    background: var(--charcoal-raised);
+  }
+
+  audio:focus-visible {
+    outline: 2px solid var(--project-accent);
+    outline-offset: 3px;
+  }
+</style>

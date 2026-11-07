@@ -11,9 +11,10 @@ interface Props {
   isCompactMedia?: boolean;
   privacyHref?: string;
   termsHref?: string;
+  isSimplified?: boolean;
 }
 
-const { project, downloads, isCompactMedia = false, privacyHref, termsHref } = Astro.props;
+const { project, downloads, isCompactMedia = false, privacyHref, termsHref, isSimplified = false } = Astro.props;
 const hasBody = project.body.trim().length > 0;
 const { rawColor, readableAccent } = prepareProjectColor(project.projectColor);
 ---
@@ -25,26 +26,34 @@ const { rawColor, readableAccent } = prepareProjectColor(project.projectColor);
       <span class="maturity" data-trial={isTrialMaturity(project.releaseMaturity)}>
         {maturityLabel(project.releaseMaturity)}
       </span>
-      {project.supportedPlatforms.length > 0 && (
+      {!isSimplified && project.supportedPlatforms.length > 0 && (
         <span class="platforms">{project.supportedPlatforms.join(' · ')}</span>
       )}
     </p>
     <h1 class="title">{project.displayName}</h1>
     <p class="description">{project.description}</p>
-    <p class="availability">{project.publicationNote ?? project.availability.message}</p>
+    {!isSimplified && <p class="availability">{project.publicationNote ?? project.availability.message}</p>}
   </header>
+  <slot name="before-downloads" />
   <ProjectDownloads
     downloads={downloads}
     availabilityMessage={project.availability.message}
     publicationNote={project.publicationNote}
     links={project.links}
-  />
-  <slot name="after-downloads" />
-  {hasBody && (
+    isSimplified={isSimplified}
+  >
+    {isSimplified && hasBody && (
+      <section class="download-details" aria-label="Installation">
+        <slot />
+      </section>
+    )}
+  </ProjectDownloads>
+  {!isSimplified && hasBody && (
     <section class="body" aria-label="Project details">
       <slot />
     </section>
   )}
+  <slot name="after-details" />
   {privacyHref && <p class="policy-link"><a href={privacyHref}>Privacy policy</a></p>}
   {termsHref && <p class="policy-link"><a href={termsHref}>Terms of service</a></p>}
 </main>
@@ -125,6 +134,46 @@ const { rawColor, readableAccent } = prepareProjectColor(project.projectColor);
     border-top: 1px solid var(--line);
     padding-top: 1.5rem;
     line-height: 1.75;
+  }
+
+  .download-details {
+    margin-top: 1.5rem;
+    max-width: 62ch;
+    line-height: 1.75;
+  }
+
+  .download-details :global(h3) {
+    margin: 0 0 1rem;
+    font-size: 1.15rem;
+  }
+
+  .download-details :global(h4) {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+  }
+
+  .download-details :global(p) {
+    margin: 0;
+  }
+
+  .download-details :global(p + p) {
+    margin-top: 1rem;
+  }
+
+  .download-details :global(p > strong) {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .download-details :global(pre) {
+    margin: 0.75rem 0 1rem;
+    padding: 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    font-size: 0.85rem;
+    line-height: 1.6;
   }
 
   .body :global(h2) {

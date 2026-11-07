@@ -18,7 +18,7 @@ export interface ProjectAvailability {
 export interface ProjectDownload {
   label: string;
   platform: string;
-  format: string;
+  format?: string;
   url?: string;
   version?: string;
   sizeBytes?: number;

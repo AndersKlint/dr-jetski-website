@@ -1,9 +1,9 @@
 ---
-import '@fontsource-variable/bricolage-grotesque';
-import '@fontsource-variable/inter';
-import MediaMotionControl from '../media/MediaMotionControl.astro';
-import { compactLogoSrc, iconSrc } from '../banner/studioBrandAssets';
-import './global.css';
+import "@fontsource-variable/bricolage-grotesque";
+import "@fontsource-variable/inter";
+import MediaMotionControl from "../media/MediaMotionControl.astro";
+import { compactLogoSrc, iconSrc } from "../banner/studioBrandAssets";
+import "./global.css";
 
 interface Props {
   title: string;
@@ -11,17 +11,24 @@ interface Props {
   image?: string;
   imageAlt?: string;
   noindex?: boolean;
-  projectBanner?: {
-    displayName: string;
-    hasDownloads: boolean;
-  };
+  isProjectPage?: boolean;
 }
 
-const { title, description, image, imageAlt, noindex = false, projectBanner } = Astro.props;
+const {
+  title,
+  description,
+  image,
+  imageAlt,
+  noindex = false,
+  isProjectPage = false,
+} = Astro.props;
 
 function publicOrigin(): string | undefined {
-  const configured = Astro.site?.origin ?? (import.meta.env.PUBLIC_SITE_URL as string | undefined);
-  if (typeof configured !== 'string' || configured.length === 0) return undefined;
+  const configured =
+    Astro.site?.origin ??
+    (import.meta.env.PUBLIC_SITE_URL as string | undefined);
+  if (typeof configured !== "string" || configured.length === 0)
+    return undefined;
   let url: URL;
   try {
     url = new URL(configured);
@@ -29,17 +36,26 @@ function publicOrigin(): string | undefined {
     return undefined;
   }
   // Never publish localhost origins as absolute social preview URLs.
-  if (url.protocol !== 'http:' && url.protocol !== 'https:') return undefined;
-  if (url.hostname === 'localhost' || url.hostname === '127.0.0.1' || url.hostname.endsWith('.local')) {
+  if (url.protocol !== "http:" && url.protocol !== "https:") return undefined;
+  if (
+    url.hostname === "localhost" ||
+    url.hostname === "127.0.0.1" ||
+    url.hostname.endsWith(".local")
+  ) {
     return undefined;
   }
   return url.origin;
 }
 
 const origin = publicOrigin();
-const previewImage = image ? (origin ? new URL(image, origin).href : image) : undefined;
-const isHome = Astro.url.pathname === '/';
+const previewImage = image
+  ? origin
+    ? new URL(image, origin).href
+    : image
+  : undefined;
+const isHome = Astro.url.pathname === "/";
 ---
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -52,12 +68,23 @@ const isHome = Astro.url.pathname === '/';
     {description && <meta property="og:description" content={description} />}
     <meta property="og:type" content="website" />
     {previewImage && <meta property="og:image" content={previewImage} />}
-    {previewImage && imageAlt && <meta property="og:image:alt" content={imageAlt} />}
-    <meta name="twitter:card" content={previewImage ? 'summary_large_image' : 'summary'} />
+    {
+      previewImage && imageAlt && (
+        <meta property="og:image:alt" content={imageAlt} />
+      )
+    }
+    <meta
+      name="twitter:card"
+      content={previewImage ? "summary_large_image" : "summary"}
+    />
     <meta name="twitter:title" content={title} />
     {description && <meta name="twitter:description" content={description} />}
     {previewImage && <meta name="twitter:image" content={previewImage} />}
-    {previewImage && imageAlt && <meta name="twitter:image:alt" content={imageAlt} />}
+    {
+      previewImage && imageAlt && (
+        <meta name="twitter:image:alt" content={imageAlt} />
+      )
+    }
     <link rel="icon" type="image/svg+xml" sizes="any" href={iconSrc} />
     <slot name="head" />
   </head>
@@ -65,30 +92,36 @@ const isHome = Astro.url.pathname === '/';
     <div class="site-shell">
       <a class="skip-link" href="#main-content">Skip to content</a>
       <header class:list={["site-header", isHome && "site-header-home"]}>
-        {!isHome && (
-          <a class="site-mark" href="/" aria-label="Dr. Jetski Studios — home">
-            <img
-              class="site-mark-compact"
-              src={compactLogoSrc}
-              alt=""
-              width="240"
-              height="48"
-            />
-          </a>
-        )}
+        {
+          !isHome && (
+            <a
+              class="site-mark"
+              href="/"
+              aria-label="Dr. Jetski Studios — home"
+            >
+              <img
+                class="site-mark-compact"
+                src={compactLogoSrc}
+                alt=""
+                width="240"
+                height="48"
+              />
+            </a>
+          )
+        }
         <div class="site-header-group">
-          {projectBanner ? (
-            <nav class="site-nav project-nav" aria-label="Project">
-              <a href="/">Back to projects</a>
-              <span class="project-identifier">{projectBanner.displayName}</span>
-              {projectBanner.hasDownloads && <a href="#downloads">Downloads</a>}
-              <a href="/#about">About/contact</a>
-            </nav>
-          ) : (
-            <nav class="site-nav" aria-label="Site">
-              <a href="/#about">About/contact</a>
-            </nav>
-          )}
+          {
+            isProjectPage ? (
+              <nav class="site-nav project-nav" aria-label="Project">
+                <a href="/">Back</a>
+                <a href="/#about">About</a>
+              </nav>
+            ) : (
+              <nav class="site-nav" aria-label="Site">
+                <a href="/#about">About</a>
+              </nav>
+            )
+          }
           <MediaMotionControl />
         </div>
       </header>
@@ -96,7 +129,10 @@ const isHome = Astro.url.pathname === '/';
         <slot />
       </div>
       <footer class="site-footer">
-        <p>Dr. Jetski Studios — independent apps, audio tools, and developer utilities.</p>
+        <p>
+          Dr. Jetski Studios — independent apps, audio tools, and developer
+          utilities.
+        </p>
       </footer>
     </div>
   </body>

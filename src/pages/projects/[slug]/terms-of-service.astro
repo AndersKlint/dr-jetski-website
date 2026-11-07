@@ -24,7 +24,7 @@ const { Content } = await render(entry);
 <SiteLayout
   title={`${project.displayName} Terms of Service — Dr. Jetski Studios`}
   description={`Terms of service for ${project.displayName}.`}
-  projectBanner={{ displayName: project.displayName, hasDownloads: false }}
+  isProjectPage
 >
   <ProjectPolicyView projectName={project.displayName} projectHref={project.href}>
     <Content />

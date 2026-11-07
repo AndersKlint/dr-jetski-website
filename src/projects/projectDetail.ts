@@ -1,8 +1,7 @@
-import { selectActionableDownloads, type GalleryItem, type Project, type ProjectDownload } from './Project';
+import type { GalleryItem, Project, ProjectDownload } from './Project';
 
 export interface ProjectDetail {
   downloads: ProjectDownload[];
-  hasDownloads: boolean;
   socialImage?: string;
   socialImageAlt?: string;
   isCompactMedia: boolean;
@@ -20,7 +19,6 @@ export function prepareProjectDetail(project: Project): ProjectDetail {
   const social = socialItem === undefined ? undefined : socialSource(socialItem);
   return {
     downloads: project.downloads,
-    hasDownloads: selectActionableDownloads(project).length > 0,
     socialImage: social?.src,
     socialImageAlt: social?.alt,
     isCompactMedia:

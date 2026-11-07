@@ -1,7 +1,7 @@
 ---
 slug: "jetalign"
 displayName: "JetAlign"
-description: "VST3/CLAP plugin that aligns a dub vocal track to a guide track for tight vocal stacks."
+description: "JetAlign is an easy-to-use vocal and instrument aligner. Tighten up layered performances in just a few clicks with a lightweight, native plugin."
 projectType: "audio-plugin"
 supportedPlatforms: ["Windows", "Linux"]
 releaseMaturity: "beta"
@@ -17,35 +17,33 @@ authoringNotes:
   - "Owner TODO: supply the Windows public download URLs, beta versions, file sizes, filenames, and install notes."
   - "The plugin may become paid later, but there is no sales flow at launch; do not add purchase UI."
 downloads:
-  - label: "Windows VST3 (beta)"
-    platform: "Windows"
-    format: "VST3"
-  - label: "Windows CLAP (beta)"
-    platform: "Windows"
-    format: "CLAP"
-  - label: "Linux CLAP + VST3 (beta)"
+  - label: "Linux"
     platform: "Linux x86_64"
-    format: "CLAP + VST3 (.tar.gz)"
+    format: "CLAP / VST3"
     url: "https://downloads.drjetski.com/releases/jetalign/v0.5.0-beta.2/JetAlign-v0.5.0-beta.2-linux-x86_64.tar.gz"
     version: "0.5.0-beta.2"
     sizeBytes: 4571716
-    filename: "JetAlign-v0.5.0-beta.2-linux-x86_64.tar.gz"
-    installationNotes: "Extract the archive, copy JetAlign.clap to ~/.clap/ and the whole JetAlign.vst3 folder to ~/.vst3/, then rescan plugins or restart your DAW."
+  - label: "Windows"
+    platform: "Windows"
+  - label: "Mac"
+    platform: "Mac"
 links: []
 ---
 
-JetAlign time-aligns a dub vocal track to a guide track, producing tightly timed vocal stacks and doubles.
+## Installation
 
-Linux support is a key intended differentiator alongside Windows.
+Extract and copy `JetAlign.clap` to `~/.clap/`, or copy the entire `JetAlign.vst3` folder to `~/.vst3/`:
 
-- VST3 and CLAP formats.
-- Guide-track referenced timing alignment for dub takes.
-- Beta builds for Windows and Linux.
+```bash
+# Extract
+tar -xzf JetAlign-v0.5.0-beta.2-linux-x86_64.tar.gz
+cd JetAlign-v0.5.0-beta.2-linux-x86_64
 
-Platform availability: The Linux x86_64 beta is available to download as a combined CLAP/VST3 archive. Windows beta builds exist, but their public download links are still pending.
+# Install CLAP
+mkdir -p ~/.clap
+cp JetAlign.clap ~/.clap/
 
-## Linux requirements and installation
-
-The Linux x86_64 beta targets modern Linux distributions (Ubuntu 22.04+ or recent Fedora). It requires system libsndfile, X11 or XWayland, OpenGL, and a DAW that supports Linux CLAP or VST3 plugins.
-
-Download and extract the archive, then copy `JetAlign.clap` to `~/.clap/` and the whole `JetAlign.vst3` folder to `~/.vst3/`. Rescan plugins or restart your DAW. The archive includes a README with installation directions and licenses.
+# Install VST3
+mkdir -p ~/.vst3
+cp -R JetAlign.vst3 ~/.vst3/
+```

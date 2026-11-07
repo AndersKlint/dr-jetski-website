@@ -463,7 +463,8 @@ See [DOWNLOADS.md](DOWNLOADS.md) for environment setup, dry-run, conflict handli
 manual retention, and public verification.
 
 Each download record needs
-`label`, `platform`, and `format`; a real `https` `url` makes it an action, and
+`label` and `platform`; omit `format` when a pending platform's formats are not
+announced. A real `https` `url` makes it an action, and
 `version`, `sizeBytes`, `filename`, and `installationNotes` carry release
 detail. A record without a real `url` renders an honest pending state.
 

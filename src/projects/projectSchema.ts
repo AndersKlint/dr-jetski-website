@@ -45,7 +45,7 @@ const availabilitySchema = z.object({
 const downloadSchema = z.object({
   label: nonBlankString,
   platform: nonBlankString,
-  format: nonBlankString,
+  format: nonBlankString.optional(),
   url: actionUrl.optional(),
   version: nonBlankString.optional(),
   sizeBytes: z.number().int().positive().optional(),
