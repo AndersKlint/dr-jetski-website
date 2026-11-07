@@ -13,7 +13,10 @@ const THUMBNAIL_WIDTHS = [160, 320];
 const THUMBNAIL_SIZES = '(min-width: 64rem) 10rem, (min-width: 40rem) 8rem, 6rem';
 const POSTER_ASPECT_RATIO_TOLERANCE = 0.02;
 
-const LOCAL_VIDEO_SOURCES = import.meta.glob('/src/content/projects/**/*.{mp4,webm,mov,m4v,ogv}', {
+const LOCAL_VIDEO_SOURCES = import.meta.glob([
+  '/src/content/projects/**/*.{mp4,webm,mov,m4v,ogv}',
+  '!/src/content/projects/*/releases/**',
+], {
   eager: true,
   query: '?url',
   import: 'default',

@@ -8,6 +8,7 @@ src/content/projects/<slug>/
   media.yaml             project color + ordered gallery + media presentation
   preview.webp           local image/poster, referenced as preview.webp
   diagram.svg            local SVG diagram
+  releases/<version>/    ignored upload-only installers/archives
 ```
 
 - The folder name must equal the `slug` field; it is the stable route.
@@ -20,7 +21,7 @@ src/content/projects/<slug>/
 - Reference local media as exact filenames such as `preview.webp`, without `./`.
   Dimensions are read at build time, so
   images omit `width`/`height`.
-- Keep the folder flat.
+- Keep gallery media flat; `releases/<version>/` is the upload-only exception.
 
 ## Template
 
@@ -453,15 +454,33 @@ overlay removal does not change export rendering or options.
 
 ## Downloads
 
-Upload binaries to R2 under versioned paths, outside Git. Each record needs
+Stage binaries at `src/content/projects/<slug>/releases/<version>/<filename>`;
+these upload-only folders are ignored by Git and excluded from the static build.
+The explicit `make upload PROJECT=<slug>` command maps them to
+R2 `releases/<slug>/<version>/<filename>` without editing project metadata or
+deploying. It is not a sync: local removal never deletes remote versions.
+See [DOWNLOADS.md](DOWNLOADS.md) for environment setup, dry-run, conflict handling,
+manual retention, and public verification.
+
+Each download record needs
 `label`, `platform`, and `format`; a real `https` `url` makes it an action, and
 `version`, `sizeBytes`, `filename`, and `installationNotes` carry release
 detail. A record without a real `url` renders an honest pending state.
 
+Before account setup, uploading a release, or publishing its URL, follow
+[DOWNLOADS.md](DOWNLOADS.md) for the agreed bucket/public hostname, versioned paths,
+delivery verification, billing safeguards, and download protection. Populate an
+actionable URL only after verifying the public file; local artifact verification
+alone does not make a download available.
+
 ## Workflow
 
 1. `npm run dev` to review local edits.
-2. `npm run check`, then `npm run build`, before committing.
-3. Commit and push; Cloudflare Pages deploys from Git.
+2. `make check` runs content/type checks and the production build before committing.
+3. Commit and push `main` for staging; promote fetched `origin/main` to `release`
+   with `make deploy-prod` for production. Workers Builds deploys Workers Static
+   Assets from Git; verify the existing dashboard branch settings and actual
+   deployment URLs using [README.md](README.md).
+4. For releases, follow [DOWNLOADS.md](DOWNLOADS.md) before publishing download metadata.
 
 Allowed enum values: [src/projects/projectSchema.ts](src/projects/projectSchema.ts).

@@ -28,9 +28,13 @@ for a clean dependency install. The `make` commands also require `make`;
   `ASTRO_TELEMETRY_DISABLED=1 npm run check`, then `npm run build` sequentially,
   stopping if checks fail. Writes the static site to `dist/`; this does not deploy it.
 - `npm run preview` — preview the production build.
+- `make upload PROJECT=jetalign` — explicitly upload ignored local release
+  folders to R2; add `DRY_RUN=1` for authenticated reads
+  only. See [DOWNLOADS.md](DOWNLOADS.md) for credentials, safety checks, and public
+  verification; this command does not publish metadata or deploy the site.
 - `make deploy-prod` — first require `make check` to succeed, then fast-forward
-  `release` to fetched `origin/main` and push it to trigger the Cloudflare Pages
-  production deployment; see the workflow below.
+  `release` to fetched `origin/main` and push it to trigger the Cloudflare
+  Workers Builds production deployment; see the workflow below.
 
 `make check` replaces `make prod`; there is no compatibility alias.
 
@@ -67,54 +71,43 @@ through the owner's Workers Git integration:
   unsubscribe behavior before public launch. No hosted-form fallback URL has
   been supplied; the no-JavaScript message does not offer an invented link.
 
-## Early WIP deployment on Cloudflare Pages
+## Deployment on Cloudflare Workers Builds
 
-The accepted initial target is https://drjetski.com. Cloudflare provisioning and
-the actual deployment are still pending; account setup has not been verified.
-Existing pending-download states and clearly marked content/media placeholders
-are acceptable for this early WIP. R2 setup can wait until substantial media or
-software binaries need public delivery.
+The owner confirms the static site is deployed through Git-connected **Workers
+Builds**, not Pages. The production target is https://drjetski.com. Actual account
+settings, branch mappings, and deployed routes have not been independently
+verified. Existing pending downloads and marked placeholders are acceptable for
+the early WIP; the Sender launch gate above still applies to public staging.
 
-1. In Cloudflare, create a **Pages** project using Git integration and authorize
-   access to the existing GitHub repository `AndersKlint/dr-jetski-website`.
-   Choose a static Pages project; Astro static output needs no SSR adapter.
-2. Set the production branch to `release` (already created by the owner), enable
-   preview deployments for `main` (or optionally all non-production branches),
-   and use the repository root as the root directory (leave the root-directory
-   override empty). Apply the same build settings to production and previews:
+In **Workers & Pages**, open the existing `dr-jetski-website` Worker rather than
+creating a Pages project. Verify its Git connection to
+`AndersKlint/dr-jetski-website` and these build settings:
 
-   | Setting | Value |
-   | --- | --- |
-   | Build command | `npm run check && npm run build` |
-   | Build output directory | `dist` |
-   | Environment variable | `NODE_VERSION=22.22.0` (or a compatible supported newer version) |
+| Setting | Value |
+| --- | --- |
+| Root directory | Repository root |
+| Build command | `npm run check && npm run build` |
+| Deploy command | `npx wrangler deploy` |
+| Static assets | `wrangler.json`: `assets.directory` is `./dist` |
+| Worker name | `dr-jetski-website`, matching `wrangler.json` and the dashboard |
+| Environment variable | `NODE_VERSION=22.22.0` (or a compatible supported newer version) |
 
-3. Start the first deployment and inspect its build log and generated site.
-4. In the Pages project's **Custom domains**, add `drjetski.com` and follow
-   Cloudflare's domain/DNS instructions, including any required zone/nameserver
-   setup for the apex domain. Register the domain with Pages through this flow;
-   manually adding a DNS record alone does not connect it to the project.
-5. Once domain activation and HTTPS are ready, verify the homepage, project
-   routes, media, and the `/projects/vocal-aligner` redirect on https://drjetski.com.
+The intended mapping remains `release` for production and `main` for staging.
+Verify the actual production branch and non-production preview settings in
+Workers Builds before relying on promotion. Use the actual Worker preview URL
+shown in the dashboard for a successful `main` build; no staging hostname is
+assumed provisioned. Verify that `drjetski.com` is attached to the production
+Worker, then check HTTPS, project routes, media, and the
+`/projects/vocal-aligner` redirect on the deployed site.
 
-Connect only the source repository through Git integration. `dist/` is generated
-locally or by Cloudflare and is ignored by Git; do not commit or manually upload
-it. `make check` validates and builds locally without publishing; optionally run
-`npm run preview` to inspect that build.
+Connect only source through Git. Cloudflare generates `dist/` before Wrangler
+uploads its static assets; do not commit `dist/` or manually upload it as part of
+this workflow. `make check` only validates and builds locally; use
+`npm run preview` to inspect that build. Astro static output needs no SSR adapter or R2
+Worker binding.
 
-After Git integration is configured, pushes to `main` trigger staging previews
-at `https://main.<project>.pages.dev`; pushes to `release` trigger production at
-https://drjetski.com once its custom domain is active. Replace `<project>` with
-the actual Pages project name; it is a placeholder, not a provisioned project.
-Preview URLs are public by default; Cloudflare Access protection is optional.
-
-For an optional `staging.drjetski.com` hostname, first obtain a successful `main`
-preview deployment. Add `staging.drjetski.com` in the Pages project's **Custom
-domains**; Pages creates its DNS CNAME. Update that existing CNAME's target to
-`main.<project>.pages.dev` using the actual project name and ensure it is
-**proxied**. Verify domain activation,
-HTTPS, and that the hostname serves the `main` preview. A DNS record alone does
-not register the hostname with Pages.
+See [DOWNLOADS.md](DOWNLOADS.md) for owner-operated R2 setup, protection, upload,
+and delivery verification. Binaries go directly to R2, outside the site build.
 
 ## Authoring contract
 
@@ -174,13 +167,15 @@ The merge uses fetched `origin/main`, so unpushed local `main` commits are not
 deployed. Fast-forward failures require resolving the branch history before
 retrying. If any command fails, make stops and may leave `release` checked out;
 there is no automatic cleanup or branch restoration. A successful push triggers
-Pages asynchronously when `release` advances; the target does not wait for the
-Cloudflare build or verify deployment success. Inspect the Pages deployment and
+Workers Builds asynchronously when `release` advances and the intended branch
+mapping is configured; the target does not wait for the Cloudflare build or
+verify deployment success. Inspect the Worker deployment and
 production site afterward.
 
-Publishing a software release also means uploading the versioned artifact to
-R2 and adding its real URL/version/size/filename to the entry before this Git
-workflow. Staging and production may use the same R2 assets.
+Publishing a software release also means explicitly running the local release
+uploader, verifying public delivery, and only then adding its real URL/version/size/filename
+to the entry before this Git workflow. Follow [DOWNLOADS.md](DOWNLOADS.md).
+Staging and production may use the same R2 assets.
 
 ## Owner-input TODOs
 

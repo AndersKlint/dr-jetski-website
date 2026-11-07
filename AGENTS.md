@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Dr. Jetski Studios is a project catalogue and software-download site. Build with Astro, TypeScript, and static output on Cloudflare Pages; distribute binaries and substantial preview media through Cloudflare R2. Prioritize useful project presentation, fast loading, and inexpensive operation.
+Dr. Jetski Studios is a project catalogue and software-download site. Build with Astro, TypeScript, and static output on Cloudflare Workers Static Assets deployed through Workers Builds Git integration; distribute binaries and substantial preview media through Cloudflare R2. Prioritize useful project presentation, fast loading, and inexpensive operation.
 
 ## Project documents
 

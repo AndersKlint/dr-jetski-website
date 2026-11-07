@@ -68,6 +68,10 @@ and playback acceptance remains pending with the owner.
 
 ## Early WIP deployment milestone
 
+Historical record: the Pages-specific setup proposed below is superseded by the
+current Workers hosting and downloads preparation milestone. Retain its local
+verification as history, not as instructions to provision a Pages project.
+
 Accepted scope: publish the current static site to the confirmed domain in
 [DESIGN.md](DESIGN.md), allowing existing pending downloads and clearly marked
 content/media placeholders. This is an early WIP, not completion of phase 4.
@@ -87,7 +91,11 @@ content/media placeholders. This is an early WIP, not completion of phase 4.
 - Defer R2 provisioning and binary publication until needed for substantial
   media/downloads; full release metadata and final content remain phase 4 work.
 
-## Current milestone: staging and production promotion workflow
+## Historical milestone: staging and production promotion workflow
+
+The Git promotion commands and their verification remain applicable. The
+Pages-specific hosting configuration and preview-hostname instructions below are
+superseded by the current Workers milestone; they are not current setup tasks.
 
 The revised branch decision is recorded in [DESIGN.md](DESIGN.md); operational
 instructions are in [README.md](README.md). The owner confirms `release` already
@@ -122,6 +130,103 @@ exists. The initial `make prod` command and its verification above are historica
   switch, pull, merge, or push was executed. Cloudflare configuration,
   staging/production deployment, custom-domain HTTPS,
   deployed routes, redirects, and media verification remain pending.
+
+## Workers hosting and downloads preparation
+
+Accepted scope: correct the documented hosting model and prepare the first R2
+release without account changes, uploads, or deployment. Hosting decisions are in
+[DESIGN.md](DESIGN.md), deployment operations in [README.md](README.md), and R2
+account/upload/protection operations in [DOWNLOADS.md](DOWNLOADS.md).
+
+- The owner reports the site already uses Workers Static Assets deployed by
+  Workers Builds Git integration. Repository inspection confirms `wrangler.json`
+  names `dr-jetski-website`, serves `./dist`, and includes `previews: {}`. No
+  Makefile or Wrangler changes are needed for this preparation milestone.
+- Retain the intended `release` production / `main` staging workflow and existing
+  `make check` / `make deploy-prod` commands. Verify the existing Workers Builds
+  branch, build, and deployment settings in the dashboard; record actual URLs
+  rather than assuming Pages branch aliases. Independently verify domain/DNS,
+  HTTPS, deployed routes, redirects, and media. These checks remain pending.
+- Verify the agreed R2 Standard public releases bucket `dr-jetski-downloads`
+  and `downloads.drjetski.com` using DOWNLOADS.md. The owner now reports the bucket,
+  rate-limit rule, and budget alert are set up; no live settings are independently
+  verified. Domain activation, disabled `r2.dev`, credentials, public delivery, and
+  protection effectiveness remain unverified. A renewed November 7, 2026
+  orchestrator `curl --head https://downloads.drjetski.com/` check still fails DNS
+  resolution from this environment. API credential/access verification is
+  separate from public custom-domain activation; neither establishes the other.
+- The supplied local `JetAlign-v0.5.0-beta.2-linux-x86_64.tar.gz` is verified as
+  a Linux CLAP/VST3 bundle, version `v0.5.0-beta.2`, size 4,571,716 bytes. Prepare
+  one combined Linux download record, retaining a pending state with no URL until
+  the versioned public artifact is uploaded and verified. Other releases remain
+  dependent on supplied artifacts and destinations.
+- DOWNLOADS.md owns the operational protection and cost constraints; preparation
+  does not mean protection is installed, billing is capped, or public delivery
+  works. No account operation, upload, or deployment is performed by this
+  milestone. Content and documentation preparation is implemented. Independent
+  orchestrator verification re-read the archive and confirmed its exact size and
+  SHA-256; `make check` passed Astro content/type checks (43 files, 0 errors,
+  warnings, or hints) and the production build (14 routes). DNS control confirmed
+  `drjetski.com` resolved while `downloads.drjetski.com` did not at that prior check. No unit tests,
+  browser checks, or live delivery tests were run. Owner account, public delivery,
+  and protection verification gates above remain pending despite the subsequent
+  owner-reported setup. Phase 4 remains incomplete.
+
+## Current milestone: local upload-only release folders
+
+Approved bounded scope: implement the local uploader and document its operation,
+without account changes, authenticated account calls, uploads, or deployment.
+Implementation and integration are complete with local verification below; live
+API behavior and public delivery remain unverified. Phase 4 remains incomplete.
+
+- Ignore `src/content/projects/<slug>/releases/<version>/<filename>` in Git and
+  exclude it from the static build. Map it to R2
+  `releases/<slug>/<version>/<filename>`. Stage the supplied JetAlign Linux archive
+  at `releases/v0.5.0-beta.2/` within its project, retaining the original in Downloads
+  and the verified metadata above; keep its download URL absent.
+- Require explicit `npm run releases:upload -- --project <slug>`; support `--help`
+  and authenticated read-only `--dry-run`. Install the S3 SDK through npm, with no
+  AWS CLI dependency. Load ignored local `.env` through Node
+  `--env-file-if-exists`, with an empty-value `.env.example`.
+- Require 32-hex `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, and `R2_SECRET_ACCESS_KEY`;
+  optional `R2_BUCKET` defaults to `dr-jetski-downloads`. Document bucket-scoped
+  Object Read & Write S3 credentials and local-only secret handling in DOWNLOADS.md.
+- Discover supported installers/archives in version folders and stream hashes.
+  HEAD each remote key first: skip only matching SHA-256 metadata plus size,
+  upload only on 404, and stop on other errors, conflicts, or missing SHA metadata.
+  Do not adopt legacy objects automatically or download all remote bytes each run.
+- Upload atomically with `If-None-Match: *`, MIME/attachment headers, immutable
+  caching, SHA-256 metadata, and Content-MD5 integrity. Never overwrite, delete,
+  sync, or prune; removing local files leaves remote versions intact. Retention
+  remains manual removal of obsolete unlinked versions, with current plus last
+  known-good recommended rather than an automated policy.
+- Print URL/version/filename/size/hash without modifying metadata, availability,
+  or deployment. The owner must verify public downloaded bytes before manually
+  publishing the Linux URL and availability; Windows stays pending and the
+  [Sender gate](README.md#jetalign-updates-form) still applies.
+- Operational instructions are authoritative in [DOWNLOADS.md](DOWNLOADS.md);
+  folder authoring is in [PROJECT-ASSETS.md](PROJECT-ASSETS.md). No tests or live
+  account verification are part of this milestone's implementation work.
+
+Integrated verification:
+
+- Installed S3 SDK `3.1164.0` and Node 22 type declarations. The JetAlign archive
+  is staged in its ignored release folder; independent `cmp` against the source
+  and SHA-256 verification passed. Git ignore checks confirmed the archive and
+  local `.env` are excluded.
+- CLI help passed. An actual HanScan empty-tree dry-run exited without credentials
+  or cloud access. JetAlign discovery with credentials explicitly absent reached
+  the expected `R2_ACCOUNT_ID` required failure before network access. Native S3
+  adapter import passed without API calls.
+- Independent static safety review found no major issues. Final orchestrator
+  `make check` passed: 47 files, 0 errors/warnings/hints, and 14 production routes.
+  `git diff --check` passed.
+- No unit tests or test harnesses, authenticated cloud reads, uploads, account
+  changes, deployment, browser acceptance, or 200 MB transfer validation were
+  performed. Real credentials/API access and actual remote skip/conflict responses
+  remain unverified. The custom hostname still fails DNS resolution from this
+  environment; public-domain activation and downloaded-byte verification remain
+  separate outstanding gates. No live functionality validation is claimed.
 
 ## HanScan privacy policy
 
@@ -507,9 +612,9 @@ Earlier verification above is unchanged.
 
 ## 4. Downloads and deployment
 
-- Connect the source repository to Cloudflare Pages with `release` production and `main` staging previews, following the current workflow milestone.
-- Configure the studio domain and an R2 Standard bucket with a production downloads subdomain.
-- Upload current software builds under versioned paths, keeping binaries out of Git and the Pages build.
+- Verify the existing Workers Static Assets / Workers Builds Git integration and the intended `release` production / `main` staging workflow, following the current hosting milestone and [README.md](README.md). Confirm actual deployment URLs and studio-domain configuration.
+- Configure and verify the agreed R2 Standard bucket and public downloads hostname, billing safeguards, and download protection following [DOWNLOADS.md](DOWNLOADS.md).
+- Explicitly upload current software builds from ignored local release folders using the uploader, keeping binaries out of Git and the Workers static-assets build; verify public delivery before manually adding actionable URLs.
 - Serve substantial preview video through R2 as needed; retain small optimized imagery in the static site.
 - Set appropriate content types and download filenames; verify real file delivery and video playback from the published origin.
 - Populate actual release versions, sizes, installation notes, source links, and store/registry destinations as available.
