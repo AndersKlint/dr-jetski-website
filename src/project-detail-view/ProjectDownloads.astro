@@ -147,9 +147,16 @@ function downloadMeta(download: ProjectDownload): string {
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
   }
 
+  .is-simplified .download {
+    display: flex;
+    flex-direction: column;
+  }
+
   .download-action {
     display: inline-block;
-    margin-top: 0.85rem;
+    margin-top: auto;
+    padding-top: 0.85rem;
+    align-self: flex-start;
   }
 
   .download-link {

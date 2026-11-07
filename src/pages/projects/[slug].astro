@@ -32,6 +32,7 @@ const { Content } = await render(entry);
 const detail = prepareProjectDetail(project);
 const isJetAlign = project.slug === 'jetalign';
 const isHanScan = project.slug === 'hanscan';
+const isHanKan = project.slug === 'hankan';
 ---
 <SiteLayout
   title={`${project.displayName} — Dr. Jetski Studios`}
@@ -47,7 +48,8 @@ const isHanScan = project.slug === 'hanscan';
     isCompactMedia={detail.isCompactMedia}
     privacyHref={privacyHref}
     termsHref={termsHref}
-    isSimplified={isJetAlign || isHanScan || project.slug === 'waytoclip'}
+    isSimplified={isJetAlign || isHanScan || isHanKan || project.slug === 'waytoclip'}
+    isDetailsSeparate={isHanKan}
   >
     <Fragment slot="before-downloads">{isJetAlign && <JetAlignAudio beforeSrc={guitarBefore} afterSrc={guitarAfter} />}</Fragment>
     <Fragment slot="after-details">{isJetAlign && <SenderForm />}</Fragment>

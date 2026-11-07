@@ -13,9 +13,10 @@ interface Props {
   privacyHref?: string;
   termsHref?: string;
   isSimplified?: boolean;
+  isDetailsSeparate?: boolean;
 }
 
-const { project, downloads, isCompactMedia = false, privacyHref, termsHref, isSimplified = false } = Astro.props;
+const { project, downloads, isCompactMedia = false, privacyHref, termsHref, isSimplified = false, isDetailsSeparate = false } = Astro.props;
 const hasBody = project.body.trim().length > 0;
 const { rawColor, readableAccent } = prepareProjectColor(project.projectColor);
 ---
@@ -45,14 +46,14 @@ const { rawColor, readableAccent } = prepareProjectColor(project.projectColor);
     links={project.links}
     isSimplified={isSimplified}
   >
-    {isSimplified && hasBody && (
+    {isSimplified && !isDetailsSeparate && hasBody && (
       <section class="download-details" aria-label="Installation">
         <slot />
       </section>
     )}
   </ProjectDownloads>}
-  {!isSimplified && hasBody && (
-    <section class="body" aria-label="Project details">
+  {(!isSimplified || isDetailsSeparate) && hasBody && (
+    <section class:list={['body', { 'is-separate-details': isDetailsSeparate }]} aria-label="Project details">
       <slot />
     </section>
   )}
@@ -174,7 +175,8 @@ const { rawColor, readableAccent } = prepareProjectColor(project.projectColor);
     font-weight: 700;
   }
 
-  .download-details :global(pre) {
+  .download-details :global(pre),
+  .is-separate-details :global(pre) {
     margin: 0.75rem 0 1rem;
     padding: 1rem;
     border: 1px solid var(--line);

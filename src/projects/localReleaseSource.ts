@@ -22,6 +22,7 @@ const releaseContentTypes: ReadonlyArray<readonly [string, string]> = [
   ['.deb', 'application/octet-stream'],
   ['.rpm', 'application/octet-stream'],
   ['.appimage', 'application/octet-stream'],
+  ['.flatpak', 'application/vnd.flatpak'],
   ['.apk', 'application/vnd.android.package-archive'],
   ['.aab', 'application/octet-stream'],
 ];

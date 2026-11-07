@@ -53,6 +53,8 @@ const { links } = Astro.props;
   }
 
   .platform {
+    display: flex;
+    flex-direction: column;
     background: var(--charcoal-raised);
     border: 1px solid var(--line);
     border-radius: var(--radius);
@@ -67,7 +69,9 @@ const { links } = Astro.props;
 
   a {
     display: inline-block;
-    margin-top: 0.85rem;
+    margin-top: auto;
+    padding-top: 0.85rem;
+    align-self: flex-start;
     color: var(--project-accent);
     font-weight: 700;
     font-size: 1.05rem;

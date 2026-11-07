@@ -1,4 +1,24 @@
+project-color: "#3A8DFF"
 items:
-  - media: preview.svg
-    alt: "Illustrative placeholder: concept mockup of HanKan reading mode with a popup dictionary over a document, not a real screenshot."
-    isPlaceholder: true
+  - media: hankan-desktop-popup.png
+    alt: "HanKan displaying a Chinese workbook PDF with a popup dictionary showing pinyin and English definitions for 提前."
+    text: "Tap a word to look it up"
+    highlighted-words: "word"
+
+  - media: hankan-desktop-pdf-highlight.png
+    alt: "Chinese workbook PDF in HanKan with green and pink highlights marking parts of exercise sentences."
+    text: "Highlight what matters"
+    highlighted-words: "Highlight"
+
+  - media: hankan-desktop-read-write-mode.png
+    alt: "HanKan's Chinese text document with formatting controls and a popup dictionary defining 冰淇淋 as ice cream."
+    text: "Paste, read, and write Chinese"
+    highlighted-words: "paste, read, write"
+
+  - media: hankan-desktop-light-dark-mode.png
+    alt: "Split comparison of HanKan's light and dark themes displaying the same Chinese text document."
+    text: "Light or dark. Your choice."
+    highlighted-words: "Light, dark"
+
+  - preview: hankan-desktop-popup.png
+    text: "Lookup words in a PDF with a single tap"
