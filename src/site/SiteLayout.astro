@@ -2,7 +2,8 @@
 import "@fontsource-variable/bricolage-grotesque";
 import "@fontsource-variable/inter";
 import MediaMotionControl from "../media/MediaMotionControl.astro";
-import { compactLogoSrc, iconSrc } from "../banner/studioBrandAssets";
+import { iconSrc } from "../banner/studioBrandAssets";
+import CompactStudioLogo from "../banner/CompactStudioLogo.astro";
 import "./global.css";
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
   imageAlt?: string;
   noindex?: boolean;
   isProjectPage?: boolean;
+  projectColor?: string;
 }
 
 const {
@@ -21,6 +23,7 @@ const {
   imageAlt,
   noindex = false,
   isProjectPage = false,
+  projectColor,
 } = Astro.props;
 
 function publicOrigin(): string | undefined {
@@ -98,14 +101,9 @@ const isHome = Astro.url.pathname === "/";
               class="site-mark"
               href="/"
               aria-label="Dr. Jetski Studios — home"
+              style={projectColor ? { '--studio-signature-color': projectColor } : undefined}
             >
-              <img
-                class="site-mark-compact"
-                src={compactLogoSrc}
-                alt=""
-                width="240"
-                height="48"
-              />
+              <CompactStudioLogo />
             </a>
           )
         }

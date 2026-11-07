@@ -1,0 +1,19 @@
+---
+import compactLogo from '../../logo/dr-jetski-studios-logo-compact.svg?raw';
+
+const themedLogo = compactLogo.replace('fill="#ee7135"', 'fill="var(--studio-signature-color, #ee7135)"');
+---
+
+<span class="site-mark-compact" aria-hidden="true" set:html={themedLogo} />
+
+<style>
+  span {
+    display: block;
+  }
+
+  span :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>

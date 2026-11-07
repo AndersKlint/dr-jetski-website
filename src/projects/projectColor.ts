@@ -6,6 +6,12 @@ function relativeLuminance(channels: number[]): number {
   return linear[0] * 0.2126 + linear[1] * 0.7152 + linear[2] * 0.0722;
 }
 
+export function prepareProjectTextColor(projectColor = '#ee7135', projectSlug?: string): string {
+  return projectSlug === 'waytoclip'
+    ? `hsl(from ${projectColor} h s calc(l + 25))`
+    : projectColor;
+}
+
 export function prepareProjectColor(projectColor = '#ee7135'): {
   rawColor: string;
   readableAccent: string;

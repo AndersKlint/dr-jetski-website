@@ -1,7 +1,7 @@
 ---
 import type { Project, ProjectDownload } from '../projects/Project';
 import { isTrialMaturity, maturityLabel, typeLabel } from '../projects/projectLabels';
-import { prepareProjectColor } from '../projects/projectColor';
+import { prepareProjectColor, prepareProjectTextColor } from '../projects/projectColor';
 import ProjectDownloads from './ProjectDownloads.astro';
 import ProjectGallery from './ProjectGallery.astro';
 import HanScanAvailability from './HanScanAvailability.astro';
@@ -19,8 +19,9 @@ interface Props {
 const { project, downloads, isCompactMedia = false, privacyHref, termsHref, isSimplified = false, isDetailsSeparate = false } = Astro.props;
 const hasBody = project.body.trim().length > 0;
 const { rawColor, readableAccent } = prepareProjectColor(project.projectColor);
+const headlineColor = prepareProjectTextColor(project.projectColor, project.slug);
 ---
-<main class="detail" id="main-content" data-project={project.slug} style={`--project-color: ${rawColor}; --project-accent: ${readableAccent}`}>
+<main class="detail" id="main-content" data-project={project.slug} style={`--project-color: ${rawColor}; --project-accent: ${readableAccent}; ${headlineColor !== rawColor ? `--project-headline-color: ${headlineColor};` : ''}`}>
   <ProjectGallery gallery={project.gallery} isCompact={isCompactMedia} />
   <header class="intro">
     <p class="kicker">
@@ -66,10 +67,6 @@ const { rawColor, readableAccent } = prepareProjectColor(project.projectColor);
     max-width: var(--measure);
     margin-inline: auto;
     padding: 2rem 1.25rem 0;
-  }
-
-  .detail[data-project='waytoclip'] {
-    --project-headline-color: hsl(from var(--project-color) h s calc(l + 25));
   }
 
   .intro {
