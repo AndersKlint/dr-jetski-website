@@ -33,6 +33,7 @@ const detail = prepareProjectDetail(project);
 const isJetAlign = project.slug === 'jetalign';
 const isHanScan = project.slug === 'hanscan';
 const isHanKan = project.slug === 'hankan';
+const isClipThat = project.slug === 'clipthat';
 ---
 <SiteLayout
   title={`${project.displayName} — Dr. Jetski Studios`}
@@ -48,8 +49,8 @@ const isHanKan = project.slug === 'hankan';
     isCompactMedia={detail.isCompactMedia}
     privacyHref={privacyHref}
     termsHref={termsHref}
-    isSimplified={isJetAlign || isHanScan || isHanKan || project.slug === 'waytoclip'}
-    isDetailsSeparate={isHanKan}
+    isSimplified={isJetAlign || isHanScan || isHanKan || isClipThat || project.slug === 'waytoclip'}
+    isDetailsSeparate={isHanKan || isClipThat}
   >
     <Fragment slot="before-downloads">{isJetAlign && <JetAlignAudio beforeSrc={guitarBefore} afterSrc={guitarAfter} />}</Fragment>
     <Fragment slot="after-details">{isJetAlign && <SenderForm />}</Fragment>
