@@ -31,6 +31,7 @@ const { project, entry, privacyHref, termsHref } = Astro.props as Props;
 const { Content } = await render(entry);
 const detail = prepareProjectDetail(project);
 const isJetAlign = project.slug === 'jetalign';
+const isHanScan = project.slug === 'hanscan';
 ---
 <SiteLayout
   title={`${project.displayName} — Dr. Jetski Studios`}
@@ -46,7 +47,7 @@ const isJetAlign = project.slug === 'jetalign';
     isCompactMedia={detail.isCompactMedia}
     privacyHref={privacyHref}
     termsHref={termsHref}
-    isSimplified={isJetAlign}
+    isSimplified={isJetAlign || isHanScan}
   >
     <Fragment slot="before-downloads">{isJetAlign && <JetAlignAudio beforeSrc={guitarBefore} afterSrc={guitarAfter} />}</Fragment>
     <Fragment slot="after-details">{isJetAlign && <SenderForm />}</Fragment>

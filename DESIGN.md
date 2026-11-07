@@ -87,6 +87,8 @@ The carousel stays before the substantive description/download panel on all scre
 
 HanScan has a straightforward static text privacy-policy page at https://drjetski.com/projects/hanscan/privacy. A small, normal “Privacy policy” link appears at the bottom of HanScan's project information, with no homepage or main-navigation entry.
 
+HanScan follows JetAlign's simplified information layout while retaining its existing gallery and blue accent. Use a short description of reading Chinese from photos and screenshots with a popup dictionary, pinyin and English translation, followed by the offline model-download qualification and “Free. No ads. No account required.” Show compact Android and iOS cards: Android links to the actual Google Play listing; iOS says “Coming soon” without a link. Omit duplicate platform badges, availability paragraphs, APK-pending copy and longer feature sections. Android remains the only currently supported platform.
+
 JetAlign alone embeds the owner's Sender updates form below the installation
 section that follows downloads. The accessibly named `#updates` section uses
 the existing 62ch detail measure and no additional visible heading or copy: Sender
@@ -120,7 +122,7 @@ processing. Show three compact download cards: Linux with version, CLAP / VST3,
 file size, and download action; Windows and Mac with only their names and Coming
 soon. Do not display filenames in download cards. Keep the existing updates form
 below the installation section.
-This simplified presentation applies only to JetAlign; live release delivery
+The installation, audio and updates presentation applies only to JetAlign; live release delivery
 verification remains a separate launch gate.
 
 ## Content and delivery
@@ -141,7 +143,7 @@ Project descriptions below reflect the owner's account, rather than independentl
 
 ### HanScan
 
-Flutter phone app, currently Android, with possible future iOS support. Uses PaddleOCR v6 for accurate offline recognition of Chinese text from camera or gallery images. Overlays results at their image positions, with modes for original hanzi and a tap-to-open dictionary, pinyin, or English translation. Intended for Chinese learners reading textbooks and travelers reading signs or menus. Finished, with an Android APK ready; no Play Store release yet. OCR is described as offline; translation connectivity is not yet established.
+Flutter phone app available on Google Play for Android, with iOS coming soon. Reads Chinese from photos and screenshots with a popup dictionary, pinyin and English translation. OCR and dictionary work offline; English translation works offline after a one-time model download. Free, with no ads or account requirement.
 
 ### LaoZi AI Flashcards
 
@@ -187,7 +189,7 @@ Small Linux desktop app displaying the current song's album artwork, title, and 
 
 | Project | Owner-reported readiness | Launch treatment |
 | --- | --- | --- |
-| HanScan | Finished; Android APK ready; not on Play Store | Featured priority 1; direct APK download destination needed |
+| HanScan | Available on Google Play for Android; iOS coming soon | Featured priority 1; link to the Google Play listing and show non-actionable iOS coming soon |
 | JetAlign | Finished beta; Linux and Windows VST3/CLAP builds available | Featured priority 2; publish beta downloads at launch |
 | WayToClip | Finished; submitted to GNOME Extensions and awaiting review | Featured priority 3; show pending-review note, GitHub link, manual-install instructions, and pluginbundle.zip download |
 | LaoZi AI Flashcards | Fully functional alpha; Android APK ready; not on Play Store | Featured priority 4; publish alpha download at launch; other platform downloads still to confirm |

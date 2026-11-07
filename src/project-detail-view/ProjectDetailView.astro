@@ -4,6 +4,7 @@ import { isTrialMaturity, maturityLabel, typeLabel } from '../projects/projectLa
 import { prepareProjectColor } from '../projects/projectColor';
 import ProjectDownloads from './ProjectDownloads.astro';
 import ProjectGallery from './ProjectGallery.astro';
+import HanScanAvailability from './HanScanAvailability.astro';
 
 interface Props {
   project: Project;
@@ -35,7 +36,9 @@ const { rawColor, readableAccent } = prepareProjectColor(project.projectColor);
     {!isSimplified && <p class="availability">{project.publicationNote ?? project.availability.message}</p>}
   </header>
   <slot name="before-downloads" />
-  <ProjectDownloads
+  {project.slug === 'hanscan' ? (
+    <HanScanAvailability links={project.links}><slot /></HanScanAvailability>
+  ) : <ProjectDownloads
     downloads={downloads}
     availabilityMessage={project.availability.message}
     publicationNote={project.publicationNote}
@@ -47,7 +50,7 @@ const { rawColor, readableAccent } = prepareProjectColor(project.projectColor);
         <slot />
       </section>
     )}
-  </ProjectDownloads>
+  </ProjectDownloads>}
   {!isSimplified && hasBody && (
     <section class="body" aria-label="Project details">
       <slot />

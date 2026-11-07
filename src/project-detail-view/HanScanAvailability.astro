@@ -1,0 +1,89 @@
+---
+import type { ProjectLink } from '../projects/Project';
+
+interface Props {
+  links: ProjectLink[];
+}
+
+const { links } = Astro.props;
+---
+<div class="details"><slot /></div>
+<section class="downloads" aria-labelledby="downloads-heading">
+  <h2 id="downloads-heading">Downloads</h2>
+  <ul class="platforms">
+    <li class="platform">
+      <h3>Android</h3>
+      {links.map((link) => <a href={link.url}>{link.label}</a>)}
+    </li>
+    <li class="platform">
+      <h3>iOS</h3>
+      <p>Coming soon</p>
+    </li>
+  </ul>
+</section>
+<style>
+  .details {
+    max-width: 62ch;
+    line-height: 1.75;
+  }
+
+  .details :global(p) {
+    margin: 1rem 0 0;
+  }
+
+  .downloads {
+    margin-top: 2.5rem;
+    border-top: 1px solid var(--line);
+    padding-top: 1.5rem;
+  }
+
+  h2 {
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
+    margin: 0 0 1rem;
+    letter-spacing: -0.025em;
+  }
+
+  .platforms {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    gap: 1rem;
+  }
+
+  .platform {
+    background: var(--charcoal-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+  }
+
+  h3 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+
+  a {
+    display: inline-block;
+    margin-top: 0.85rem;
+    color: var(--project-accent);
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+
+  a:hover {
+    color: var(--text-primary);
+  }
+
+  a:focus-visible {
+    outline-color: var(--project-accent);
+  }
+
+  .platform p {
+    margin: 0.5rem 0 0;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+  }
+</style>
