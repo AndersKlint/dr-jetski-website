@@ -64,7 +64,7 @@ export interface ImageGalleryItem {
   alt: string;
   isPlaceholder?: boolean;
   featureOverlay?: FeatureOverlay;
-  homepageCrop?: MediaCrop;
+  crop?: MediaCrop;
 }
 
 export interface PreviewGalleryItem {
@@ -77,7 +77,7 @@ export interface PreviewGalleryItem {
   height: number;
   isPlaceholder?: boolean;
   featureOverlay?: FeatureOverlay;
-  homepageCrop?: MediaCrop;
+  crop?: MediaCrop;
 }
 
 export interface DemoGalleryItem {
@@ -91,10 +91,11 @@ export interface DemoGalleryItem {
   hasAudio: boolean;
   isPlaceholder?: boolean;
   featureOverlay?: FeatureOverlay;
-  homepageCrop?: MediaCrop;
+  crop?: MediaCrop;
 }
 
 export type GalleryItem = ImageGalleryItem | PreviewGalleryItem | DemoGalleryItem;
+export type MobilePreviewItem = ImageGalleryItem | PreviewGalleryItem;
 
 export interface Project {
   slug: string;
@@ -114,6 +115,7 @@ export interface Project {
   links: ProjectLink[];
   gallery: GalleryItem[];
   homepagePreview?: GalleryItem;
+  mobilePreview?: [MobilePreviewItem, MobilePreviewItem];
   href: string;
   body: string;
 }

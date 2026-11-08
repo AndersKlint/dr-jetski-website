@@ -2,6 +2,30 @@
 
 ## Status
 
+Media cropping now uses optional `crop` on every media/preview record, replacing
+`preview_crop`. Normal-media crops apply to homepage cards (including pairs),
+carousel media and geometry, and store exports. Single homepage previews inherit
+their matching gallery crop unless explicitly overridden. HanScan and wumi media
+retain the rectangle below `yStart: 0.04`, including HanScan's video/poster.
+Source files remain unchanged. This supersedes earlier uncropped-carousel and
+uncropped-pair policies. Verification is build/type checks only; visual acceptance
+is reserved for the owner.
+
+The mobile-app homepage preview tracer bullet is promoted to the standard design
+in DESIGN.md. A shared presentational component consumes a validated, explicitly
+authored two-item `mobile-preview` selection from `media.yaml`, without project-slug
+branches. HanScan selects its uncropped looping demo and `slope.png`; wumi selects
+generation/import and study-back. Featured and compact cards support the same pair;
+single-media cards, authored captions, carousels, and store exports retain their
+existing behavior. Authoring and validation are defined in PROJECT-ASSETS.md.
+
+Verification passed: `make check` (content/type checks and production build) and
+`git diff --check`. Browser checks covered both pairs at 320px, 390px, and 1440px,
+correct source order, uncropped media, image loading, single-link cards, and no
+horizontal overflow. HanScan automatic playback, global pause, and reduced-motion
+unloaded posters passed. Mobile card screenshots were visually inspected. No unit
+tests or deployment were performed; owner visual acceptance remains pending.
+
 Implementation plan confirmed by the owner alongside [DESIGN.md](DESIGN.md). Terminology is defined in [GLOSSARY.md](GLOSSARY.md).
 
 Phase 1 is complete: the Astro static foundation, validated content model, catalogue selection service, and ten authored launch projects are implemented.

@@ -162,7 +162,7 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
     const filename = `${basename(source, extname(source))}.png`;
     if (outputs.has(filename.toLowerCase())) throw new Error(`Colliding output basename: ${filename}`);
     outputs.add(filename.toLowerCase());
-    images.push({ filename, source, dataUrl: await loadImageDataUrl(source),
+    images.push({ filename, source, dataUrl: await loadImageDataUrl(source), crop: item.crop,
       heading: values['stylized-text'] ? item.featureOverlay?.text : undefined,
       overlay: !values['stylized-text'] && !values['no-text-overlay'] && item.featureOverlay ? {
         ...item.featureOverlay,
@@ -198,22 +198,29 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
     await mkdir(outputDirectory, { recursive: true });
     for (const image of images) {
       const measuringPage = await browser.newPage();
-      const { dimensions, dataUrl } = await measuringPage.evaluate(async ({ dataUrl, cropStatusBar, source }) => {
+      const { dimensions, dataUrl } = await measuringPage.evaluate(async ({ dataUrl, cropStatusBar, crop, source }) => {
         const image = new Image();
         image.src = dataUrl;
         await image.decode();
-        if (cropStatusBar >= image.naturalHeight) {
-          throw new Error(`${source}: --crop-status-bar (${cropStatusBar}) must be less than the image height (${image.naturalHeight})`);
+        const x = Math.round((crop?.xStart ?? 0) * image.naturalWidth);
+        const y = Math.round((crop?.yStart ?? 0) * image.naturalHeight);
+        const width = Math.round((crop?.xEnd ?? 1) * image.naturalWidth) - x;
+        const height = Math.round((crop?.yEnd ?? 1) * image.naturalHeight) - y;
+        if (width < 1 || height < 1) {
+          throw new Error(`${source}: crop must retain at least one source pixel in each dimension`);
         }
-        const dimensions = { width: image.naturalWidth, height: image.naturalHeight - cropStatusBar };
-        if (cropStatusBar === 0) return { dimensions, dataUrl };
+        if (cropStatusBar >= height) {
+          throw new Error(`${source}: --crop-status-bar (${cropStatusBar}) must be less than the retained image height (${height})`);
+        }
+        const dimensions = { width, height: height - cropStatusBar };
+        if (crop === undefined && cropStatusBar === 0) return { dimensions, dataUrl };
         const croppedImage = document.createElement('canvas');
         croppedImage.width = dimensions.width;
         croppedImage.height = dimensions.height;
-        croppedImage.getContext('2d').drawImage(image, 0, cropStatusBar, dimensions.width, dimensions.height,
+        croppedImage.getContext('2d').drawImage(image, x, y + cropStatusBar, dimensions.width, dimensions.height,
           0, 0, dimensions.width, dimensions.height);
         return { dimensions, dataUrl: croppedImage.toDataURL('image/png') };
-      }, { dataUrl: image.dataUrl, cropStatusBar, source: image.source });
+      }, { dataUrl: image.dataUrl, cropStatusBar, crop: image.crop, source: image.source });
       await measuringPage.close();
       const canvas = isTablet ? { width: 3840, height: 2160 }
         : dimensions.width > dimensions.height ? { width: 2560, height: 1440 } : { width: 1440, height: 2560 };

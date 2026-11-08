@@ -12,7 +12,7 @@ interface Props {
 
 const {
   media,
-  crop,
+  crop = media?.crop,
   isPriority = false,
   isPlaybackManaged = false,
   previewId,

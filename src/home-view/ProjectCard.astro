@@ -2,6 +2,7 @@
 import type { Project } from "../projects/Project";
 import MediaPreview from "../media/MediaPreview.astro";
 import FeatureCaption from "../media/FeatureCaption.astro";
+import MobileAppPreview from "./MobileAppPreview.astro";
 import {
   isTrialMaturity,
   maturityLabel,
@@ -21,11 +22,14 @@ const { project, isPriority = false } = Astro.props;
     class="card-media"
     data-has-controls={project.homepagePreview?.kind === "demo"}
   >
-    <MediaPreview
-      media={project.homepagePreview}
-      crop={project.homepagePreview?.homepageCrop}
-      isPriority={isPriority}
-    />
+    {project.mobilePreview ? (
+      <MobileAppPreview media={project.mobilePreview} isPriority={isPriority} />
+    ) : (
+      <MediaPreview
+        media={project.homepagePreview}
+        isPriority={isPriority}
+      />
+    )}
   </div>
   <div class="card-body">
     <h3 class="card-title">

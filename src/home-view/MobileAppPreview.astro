@@ -1,0 +1,21 @@
+---
+import type { MobilePreviewItem } from '../projects/Project';
+import MediaPreview from '../media/MediaPreview.astro';
+import PreviewPair from './PreviewPair.astro';
+
+interface Props {
+  media: [MobilePreviewItem, MobilePreviewItem];
+  isPriority?: boolean;
+}
+
+const { media, isPriority = false } = Astro.props;
+const previewSizes = '(min-width: 74rem) 15rem, (min-width: 46rem) 20vw, 42vw';
+const previews = media.map((item) => item.kind === 'image'
+  ? { ...item, image: { ...item.image, sizes: previewSizes } }
+  : { ...item, poster: { ...item.poster, sizes: previewSizes } });
+---
+
+<PreviewPair>
+  <MediaPreview slot="left" media={previews[0]} isPriority={isPriority} />
+  <MediaPreview slot="right" media={previews[1]} isPriority={isPriority} />
+</PreviewPair>

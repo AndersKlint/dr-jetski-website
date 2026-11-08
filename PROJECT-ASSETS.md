@@ -109,13 +109,32 @@ not a published destination. Never invent a destination. `isPlaceholder` is an
 optional boolean for temporary media. Posters are local files, not separate gallery
 items; faded video neighbors show posters without loading or playing the video.
 
+## Mobile-app homepage previews
+
+Mobile-focused apps use the paired homepage design defined in [DESIGN.md](DESIGN.md).
+Author exactly two distinct gallery filenames in left-to-right order at the YAML root:
+
+```yaml
+mobile-preview: [hanscan-demo.mp4, slope.png]
+```
+
+Each filename must match exactly one normal `media` record by its case-sensitive
+basename. Images and silent looping previews are allowed; controlled `demo` videos
+are not. Missing, ambiguous, duplicate, or unsupported selections fail the build.
+The pair reuses gallery media, posters, dimensions, alt text, and crops.
+It adds no gallery items and does not change carousel order or store exports.
+Keep the existing optional `preview` record to author the single homepage caption;
+its media selection, alt override, and crop do not override either paired item.
+Without `mobile-preview`, the existing single-media homepage behavior is retained.
+Desktop-focused apps need not use a pair merely because they support Android or iOS.
+
 ## Per-media settings
 
 `media.yaml` beside `index.md` supplies the gallery and per-media settings, read
 directly without registration in the project metadata. The dev server watches
 additions, edits, and deletions without a restart.
 
-Use a root YAML mapping with one optional `project-color` and an `items` sequence
+Use a root YAML mapping with optional `project-color` and `mobile-preview` and an `items` sequence
 of normal `media` records and at most one optional `preview` record. `items`
 defaults to an empty sequence. Each record has exactly one selector, `media` or `preview`:
 
@@ -126,9 +145,9 @@ items:
     text: "Chinese, Pinyin & English OCR"
     text_side: right
     text_pos_y: 0.12
-    text_offset: {x: 0, y: 0}
+    text_offset: { x: 0, y: 0 }
     style: dark
-    preview_crop: {xStart: 0, xEnd: 1, yStart: 0.16, yEnd: 0.84}
+    crop: { xStart: 0, xEnd: 1, yStart: 0.04, yEnd: 1 }
   - media: hanscan-demo.mp4
     kind: preview
     poster: hanscan-demo-poster.webp
@@ -138,18 +157,18 @@ items:
     text: "OCR, Pinyin & Translation"
     highlighted-words: "OCR, Pinyin, Translation"
     text_pos_y: 0.12
-    text_offset: {x: 0, y: 0}
+    text_offset: { x: 0, y: 0 }
     style: dark
   - media: slope.png
     alt: "HanScan reading Chinese text on a slope sign."
     text: |
       Quick offline OCR
       from anywhere
-    text_offset: {x: -12, y: 8}
+    text_offset: { x: -12, y: 8 }
     style: light
   - media: preview.webp
     alt: "My Project's main window."
-    preview_crop: {xStart: 0.1, xEnd: 0.9, yStart: 0, yEnd: 1}
+    crop: { xStart: 0.1, xEnd: 0.9, yStart: 0, yEnd: 1 }
 ```
 
 ### Project color
@@ -199,20 +218,22 @@ items:
   works with an empty gallery and is excluded from store screenshot exports.
 - Both record types support the optional caption, export, and crop settings below;
   `highlighted-words` is normal-record-only. An explicit
-  preview uses only its own caption, export, and crop settings and their defaults,
+  preview uses only its own caption and export settings and their defaults,
   never those of the matching normal media record. Omitted `text` means no homepage caption;
-  omitted `preview_crop` means no crop.
+  omitted `crop` inherits the matching gallery item's crop. An explicit full-image
+  crop (`xStart: 0, xEnd: 1, yStart: 0, yEnd: 1`) overrides an inherited crop.
+  Standalone preview images without `crop` remain uncropped.
 - Without a `preview` entry, use the first gallery item with its normal `media`
   settings, preserving the current fallback behavior.
 - Normal `media` records continue to control gallery captions and presentation;
-  explicit preview settings apply only on the homepage. All gallery items remain
-  uncropped.
+  explicit preview settings apply only on the homepage. Normal media crops apply
+  in the carousel, paired previews, and store exports.
 - The HanScan example above has its homepage caption, position, offsets,
-  dark style, and `yEnd: 0.84` crop in the dedicated preview record; the normal
+  dark style, and `yStart: 0.04` crop in the dedicated preview record; the normal
   media record has its own gallery caption and no crop.
   Captions are independent: changing only the preview's `text` to
   `Read Chinese anywhere` would leave the gallery caption
-   `OCR, Pinyin & Translation` unchanged.
+  `OCR, Pinyin & Translation` unchanged.
 
 For a homepage-only image, reference it explicitly with alt text; only the normal
 `media` record below enters the gallery and store screenshot exports:
@@ -245,26 +266,26 @@ example; add `alt` to the preview only when it needs different alternative text.
 - The following position, side, offset, and style settings are retained for
   screenshot exports only; they do not position or style website captions.
 - `text_pos_y` is optional, defaults to `0.5`, and must be a finite number from
-   `0` to `1` inclusive. It sets the banner's vertical center relative to the
-    exported image. There is no
-   horizontal position fraction.
+  `0` to `1` inclusive. It sets the banner's vertical center relative to the
+  exported image. There is no
+  horizontal position fraction.
 - `text_side` is optional and accepts only `left` (default) or `right`, on normal
-   `media` records or independent `preview` records. Left anchors the label at
-   the left edge, extending rightward; right anchors it at the right edge,
-   extending leftward, with the highlight on the far right. Mirror the shared
-   horizontal inset and placement, keeping text readable and unmirrored.
+  `media` records or independent `preview` records. Left anchors the label at
+  the left edge, extending rightward; right anchors it at the right edge,
+  extending leftward, with the highlight on the far right. Mirror the shared
+  horizontal inset and placement, keeping text readable and unmirrored.
 - Edge-clamp the base banner position inside the media before applying
-   `text_offset`. This optional mapping contains numeric CSS-pixel `x` and `y`
-   offsets, each independently defaulting to `0`. Negative values are allowed.
-   After clamping, shift outward by 38 CSS pixels: left for `left`, right for `right`.
-   Apply authored offsets additively on top of that placement so intentional
-   overflow outside the media remains visible; offsets do not reserve space or
-   change layout dimensions. Offsets stay in screen axes on either side:
-   positive `x` moves right and positive `y` moves down.
+  `text_offset`. This optional mapping contains numeric CSS-pixel `x` and `y`
+  offsets, each independently defaulting to `0`. Negative values are allowed.
+  After clamping, shift outward by 38 CSS pixels: left for `left`, right for `right`.
+  Apply authored offsets additively on top of that placement so intentional
+  overflow outside the media remains visible; offsets do not reserve space or
+  change layout dimensions. Offsets stay in screen axes on either side:
+  positive `x` moves right and positive `y` moves down.
 - `style` is optional and accepts only `dark` (default) or `light`. Dark retains
   the existing opaque cool-neutral gradient and near-white text; light uses a
   light-neutral background and dark text. Both retain the same typography,
-   authored accent color, rounded shape, padding, and shadow.
+  authored accent color, rounded shape, padding, and shadow.
 - Export overlays retain their typography, geometry, shadow, scaling, and
   placement behavior; their accent uses the project color unless overridden by CLI.
   Website captions use the selected record's text and optional detail-only word
@@ -291,18 +312,25 @@ example; add `alt` to the preview only when it needs different alternative text.
   never gain this emphasis. Screenshot-generator bubbles and stylized headings
   ignore this field and retain their existing rendering and export options.
 
-### Homepage preview crops
+### Media crops
 
-- `preview_crop` is optional; omission means no crop. When supplied, it requires
+- `crop` is optional on every media and preview record; omission means no crop
+  except for a preview inheriting its matching gallery item's crop. When supplied, it requires
   all four normalized coordinates in authoring order `xStart`, `xEnd`, `yStart`,
   `yEnd`. Each must be finite and within `0`–`1` inclusive, with
   `xStart < xEnd` and `yStart < yEnd` so the retained rectangle has positive spans.
-- Crops apply only when the matching item is the selected homepage preview,
-  for both featured and compact cards. All project-gallery items stay uncropped,
-  including the selected item and faded neighbors.
+- Normal media crops apply everywhere: featured and compact homepage cards,
+  paired mobile previews, selected carousel items, faded neighbors, and store
+  screenshot exports. Preview-record crops override only single-media homepage
+  previews. The old `preview_crop` key is not supported.
 - Apply the same crop to poster and video without modifying source files.
   Displayed aspect ratio and layout height follow the retained rectangle rather
   than reserving the uncropped footprint. Website captions sit beneath that area.
+- HanScan and wumi use `{ xStart: 0, xEnd: 1, yStart: 0.04, yEnd: 1 }`
+  on all normal media, removing the top 5.6% while retaining the source files.
+- Store exports apply the authored crop first, rounding coordinates to source
+  pixels; `--crop-status-bar` then removes additional pixels from the retained
+  image. Export layout, captions, frames, and sizing use the resulting dimensions.
 
 ## Store screenshot generation
 
@@ -346,7 +374,7 @@ overlay removal does not change export rendering or options.
   uses the project's original images.
 - `--highlight-color` is optional: exactly six hexadecimal digits, optionally
   prefixed with `#` (quote a leading `#` in the shell). It overrides the caption's
-   accent on the chosen side in dark and light styles, with or without either frame, only in
+  accent on the chosen side in dark and light styles, with or without either frame, only in
   the generated document. Precedence: explicit CLI override, then root
   `project-color`, then studio orange `#ee7135`.
 - `--text-offset <x,y>` optionally replaces both YAML `text_offset` coordinates
@@ -429,8 +457,8 @@ overlay removal does not change export rendering or options.
   the current working directory.
 - The tool processes original images in `media.yaml` normal-record order, including
   images without captions, and skips all videos. Author captions in normal
-   `media` records in `media.yaml` using `text`, `text_side`, `text_pos_y`, `text_offset`,
-   and `style` as documented above, with root `project-color` for the accent. It uses the shared parser's
+  `media` records in `media.yaml` using `text`, `text_side`, `text_pos_y`, `text_offset`,
+  and `style` as documented above, with root `project-color` for the accent. It uses the shared parser's
   gallery items and ignores homepage-only images and homepage-specific captions
   and crops.
 - With `--device phone`, final output is 1440×2560 for portrait or square images
@@ -466,18 +494,18 @@ overlay removal does not change export rendering or options.
   recommends at least four screenshots at 1080px or higher in 9:16 portrait or
   16:9 landscape. Geometry and format alone do not guarantee suitability for all
   device listings or promotion eligibility; manually review captions and other
-   content requirements before uploading. The optional generic phone frame is a
-   marketing asset, not a claim of Google Play promotion compliance; official
-   guidance recommends avoiding device imagery. There are no image-selection options.
+  content requirements before uploading. The optional generic phone frame is a
+  marketing asset, not a claim of Google Play promotion compliance; official
+  guidance recommends avoiding device imagery. There are no image-selection options.
 
 ## Preparation
 
-| Asset | Format | Guidance |
-| --- | --- | --- |
-| Images | PNG, JPEG, WebP; SVG diagrams | longest edge 1600–2400px when available, preserve aspect, no upscaling |
-| Looping preview | MP4 (H.264) | 5–15s, silent, ≤1280px longest edge, 24–30fps, a few MB |
-| Preview poster | PNG, JPEG, WebP | local, same aspect as the video, with authored `alt`, `width`, and `height` |
-| Demo | MP4 (H.264) | may be longer and include audio; never autoplays |
+| Asset           | Format                        | Guidance                                                                    |
+| --------------- | ----------------------------- | --------------------------------------------------------------------------- |
+| Images          | PNG, JPEG, WebP; SVG diagrams | longest edge 1600–2400px when available, preserve aspect, no upscaling      |
+| Looping preview | MP4 (H.264)                   | 5–15s, silent, ≤1280px longest edge, 24–30fps, a few MB                     |
+| Preview poster  | PNG, JPEG, WebP               | local, same aspect as the video, with authored `alt`, `width`, and `height` |
+| Demo            | MP4 (H.264)                   | may be longer and include audio; never autoplays                            |
 
 ## Downloads
 

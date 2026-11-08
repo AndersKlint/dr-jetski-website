@@ -2,7 +2,7 @@ import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import { projectHref, type GalleryItem, type Project, type ResponsiveImage } from './Project';
+import { projectHref, type GalleryItem, type MobilePreviewItem, type Project, type ResponsiveImage } from './Project';
 import { ProjectCatalogService } from './ProjectCatalogService';
 import { mediaSourceBasename, parseMediaPresentation, type AuthoredMediaItem, type ProjectMediaPresentation } from './mediaPresentation';
 
@@ -152,7 +152,7 @@ async function toGalleryItem(
   entry: ProjectEntry,
   index: number,
 ): Promise<GalleryItem> {
-  const presentation = { featureOverlay: item.featureOverlay, homepageCrop: item.homepageCrop };
+  const presentation = { featureOverlay: item.featureOverlay, crop: item.crop };
   if (item.kind === 'image') {
     const image = resolveImage(item.media, entry);
     return {
@@ -201,13 +201,25 @@ async function toProject(entry: ProjectEntry): Promise<Project> {
   if (fileSlug !== null && fileSlug !== entry.data.slug) {
     throw new Error(`Project slug "${entry.data.slug}" does not match its folder name "${fileSlug}"`);
   }
-  const { gallery: authoredGallery, preview, projectColor } = mediaPresentationForProject(entry);
+  const { gallery: authoredGallery, preview, projectColor, mobilePreview: mobilePreviewSources } = mediaPresentationForProject(entry);
   const previewIndex = preview === undefined ? 0 : authoredGallery.findIndex(
     (item) => mediaSourceBasename(item.media) === preview.mediaSource,
   );
   const gallery = await Promise.all(
     authoredGallery.map((item, index) => toGalleryItem(item, entry, index)),
   );
+  const resolveMobilePreview = (source: string): MobilePreviewItem => {
+    const index = authoredGallery.findIndex((item) => mediaSourceBasename(item.media) === source);
+    const item = gallery[index];
+    if (item === undefined || item.kind === 'demo') {
+      throw new Error(`Project "${entry.data.slug}" has an invalid mobile preview "${source}"`);
+    }
+    return item;
+  };
+  const mobilePreview: Project['mobilePreview'] = mobilePreviewSources === undefined ? undefined : [
+    resolveMobilePreview(mobilePreviewSources[0]),
+    resolveMobilePreview(mobilePreviewSources[1]),
+  ];
   let homepagePreview = gallery[0];
   if (preview !== undefined) {
     if (previewIndex === -1) {
@@ -216,7 +228,7 @@ async function toProject(entry: ProjectEntry): Promise<Project> {
         media: preview.mediaSource,
         alt: preview.alt!,
         featureOverlay: preview.featureOverlay,
-        homepageCrop: preview.homepageCrop,
+        crop: preview.crop,
       }, entry, 0);
     } else {
       const selectedItem = gallery[previewIndex]!;
@@ -224,7 +236,7 @@ async function toProject(entry: ProjectEntry): Promise<Project> {
         ...selectedItem,
         alt: preview.alt ?? selectedItem.alt,
         featureOverlay: preview.featureOverlay,
-        homepageCrop: preview.homepageCrop,
+        crop: preview.crop ?? selectedItem.crop,
       };
     }
   }
@@ -246,6 +258,7 @@ async function toProject(entry: ProjectEntry): Promise<Project> {
     links: entry.data.links,
     gallery,
     homepagePreview,
+    mobilePreview,
     href: projectHref(entry.data.slug),
     body: entry.body ?? '',
   };

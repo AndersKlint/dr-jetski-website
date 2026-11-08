@@ -4,7 +4,7 @@ import type { FeatureOverlay, MediaCrop } from './Project';
 
 export interface MediaPresentation {
   featureOverlay?: FeatureOverlay;
-  homepageCrop?: MediaCrop;
+  crop?: MediaCrop;
 }
 
 export interface ProjectMediaPresentation {
@@ -12,6 +12,7 @@ export interface ProjectMediaPresentation {
   mediaBySource: Map<string, MediaPresentation>;
   gallery: AuthoredMediaItem[];
   preview?: MediaPresentation & { mediaSource: string; alt?: string };
+  mobilePreview?: [string, string];
 }
 
 const coordinate = z.number().min(0).max(1);
@@ -42,7 +43,7 @@ const presentationFields = {
     y: z.number().default(0),
   }).strict().default({ x: 0, y: 0 }),
   style: z.enum(['dark', 'light']).default('dark'),
-  preview_crop: mediaCropSchema.optional(),
+  crop: mediaCropSchema.optional(),
 };
 
 const videoSourceSchema = z.string().refine((value) => {
@@ -76,6 +77,10 @@ const mediaItemSchema = z.union([
   z.object({ ...videoFields, kind: z.literal('demo'), hasAudio: z.boolean() }).strict(),
 ]);
 const presentationSchema = z.object({
+  'mobile-preview': z.tuple([mediaFilenameSchema, mediaFilenameSchema]).refine(
+    ([left, right]) => left !== right,
+    { message: 'Expected two distinct gallery filenames' },
+  ).optional(),
   'project-color': z.string().regex(/^#?[0-9a-fA-F]{6}$/, {
     message: 'Expected exactly six hex digits, optionally prefixed with #',
   }).transform((value) => `#${value.replace(/^#/, '')}`).optional(),
@@ -135,7 +140,7 @@ export function parseMediaPresentation(raw: string, filePath: string): ProjectMe
         style: entry.style,
         highlightColor: projectColor,
       },
-      homepageCrop: entry.preview_crop,
+      crop: entry.crop,
     };
     if ('preview' in entry) {
       if (preview !== undefined) {
@@ -147,7 +152,7 @@ export function parseMediaPresentation(raw: string, filePath: string): ProjectMe
         throw new Error(`${filePath}: items.${index}.media: Duplicate media filename "${entry.media}"`);
       }
       presentations.set(entry.media, presentation);
-      const { text, 'highlighted-words': highlightedWords, text_pos_y, text_side, text_offset, style, preview_crop, ...media } = entry;
+      const { text, 'highlighted-words': highlightedWords, text_pos_y, text_side, text_offset, style, crop, ...media } = entry;
       gallery.push({ ...media, ...presentation });
     }
   }
@@ -160,5 +165,12 @@ export function parseMediaPresentation(raw: string, filePath: string): ProjectMe
       throw new Error(`${filePath}: preview.alt: A standalone homepage image "${preview.mediaSource}" requires nonblank alt text`);
     }
   }
-  return { projectColor, mediaBySource: presentations, gallery, preview };
+  const mobilePreview = parsed.data['mobile-preview'];
+  for (const source of mobilePreview ?? []) {
+    const matches = gallery.filter((item) => mediaSourceBasename(item.media) === source);
+    if (matches.length !== 1 || matches[0]!.kind === 'demo') {
+      throw new Error(`${filePath}: mobile-preview: "${source}" must match exactly one gallery image or silent looping preview`);
+    }
+  }
+  return { projectColor, mediaBySource: presentations, gallery, preview, mobilePreview };
 }

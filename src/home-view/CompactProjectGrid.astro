@@ -2,6 +2,7 @@
 import type { Project } from '../projects/Project';
 import MediaPreview from '../media/MediaPreview.astro';
 import FeatureCaption from '../media/FeatureCaption.astro';
+import MobileAppPreview from './MobileAppPreview.astro';
 import { isTrialMaturity, maturityLabel, typeLabel } from '../projects/projectLabels';
 
 interface Props {
@@ -17,7 +18,11 @@ const { projects } = Astro.props;
       <li>
         <article class="compact-card">
           <div class="compact-media" data-has-controls={project.homepagePreview?.kind === 'demo'}>
-            <MediaPreview media={project.homepagePreview} crop={project.homepagePreview?.homepageCrop} />
+            {project.mobilePreview ? (
+              <MobileAppPreview media={project.mobilePreview} />
+            ) : (
+              <MediaPreview media={project.homepagePreview} />
+            )}
           </div>
           <div class="compact-body">
             <h3 class="compact-title">

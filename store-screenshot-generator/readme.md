@@ -91,7 +91,7 @@ Landscape tablet export at 3840×2160, using matching tablet screenshots and bac
 | `--no-padding` | Set the minimum margin to zero; overrides `--padding`. |
 | `--no-text-overlay` | Remove caption bubbles, including their background, accent, and shadow. |
 | `--text-offset <x,y>` | Override every caption's offset in CSS pixels; positive x moves right, positive y moves down. For negative values, use `--text-offset=-20,60`. |
-| `--crop-status-bar <pixels>` | Remove this many pixels from the top of every source image before sizing and effects. Non-negative integer, default `0`; must be less than each image's height. |
+| `--crop-status-bar <pixels>` | Remove this many additional pixels from the top after the authored YAML `crop`, before sizing and effects. Non-negative integer, default `0`; must be less than the retained image's height. |
 | `--phone-frame` | Add the silver phone frame with a fixed 9:20 screen; rotates for landscape images. |
 | `--stylized-frame` | Give the screenshot rounded corners and a strong drop shadow, with no border. Preserves its natural aspect ratio. Cannot be combined with `--phone-frame`. |
 | `--stylized-text` | Replace caption bubbles with large, centered white Inter headings above the screenshot. Uses each image's normal YAML text and scales the screenshot to fit beneath it. |

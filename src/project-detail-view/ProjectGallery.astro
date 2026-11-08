@@ -24,9 +24,12 @@ const slots =
 const slotByIndex = new Map(slots.map((slot) => [slot.index, slot]));
 
 function mediaAspectRatio(item: GalleryItem): number {
-  return item.kind === "image"
+  const ratio = item.kind === "image"
     ? item.image.width / item.image.height
     : item.width / item.height;
+  return item.crop
+    ? ratio * (item.crop.xEnd - item.crop.xStart) / (item.crop.yEnd - item.crop.yStart)
+    : ratio;
 }
 ---
 
@@ -318,6 +321,18 @@ function mediaAspectRatio(item: GalleryItem): number {
     height: 100%;
     max-height: none;
     object-fit: contain;
+  }
+
+  .stack-media :global(.media-preview.is-cropped img),
+  .stack-media :global(.media-preview.is-cropped video) {
+    position: absolute;
+    inset: auto;
+    left: var(--crop-left);
+    top: var(--crop-top);
+    width: var(--crop-width);
+    height: var(--crop-height);
+    max-width: none;
+    max-height: none;
   }
 
   .stack-select {

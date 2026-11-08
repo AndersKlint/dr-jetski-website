@@ -6,6 +6,17 @@ Design confirmed by the owner after the design interview. See [PLAN.md](PLAN.md)
 
 ## Confirmed direction
 
+Media crop policy supersedes earlier uncropped-media requirements below: every
+normal media entry may author an optional normalized `crop`, applied consistently
+to homepage previews, paired mobile previews, carousel media and geometry, and
+store screenshot exports without modifying source files. Single-media homepage
+preview overrides may author their own crop or inherit the gallery crop. HanScan
+and wumi media remove the top 5.6% (`yStart: 0.04`), including the HanScan
+video/poster. Other projects remain unchanged unless they author a crop.
+`PROJECT-ASSETS.md` defines validation and authoring; `crop` replaces
+`preview_crop` without a compatibility alias. Cropped media preserve the retained
+rectangle's natural proportions; carousel height caps and playback rules remain.
+
 - Dr. Jetski Studios is the primary brand and home for the project catalogue.
 - Visitors discovering and using software take priority over consulting prospects when homepage space competes. Professional background and technical detail should remain accessible.
 - The visual direction is a crisp, high-contrast, restrained, slightly industrial studio UI, retaining personality in the existing typography, logo, and screenshots.
@@ -42,6 +53,8 @@ Design confirmed by the owner after the design interview. See [PLAN.md](PLAN.md)
 
 ## Homepage composition
 
+Mobile-app homepage previews use the standard two-screen presentation: two naturally proportioned media items side by side, respecting their authored crops, each in a rounded thin dark frame with a subtle shadow, on a neutral charcoal gradient background. Keep two columns on phones as well as desktop. Configure their left-to-right selection in `media.yaml` using `mobile-preview`; do not hardcode project slugs in views. Images and silent looping previews are supported, with existing playback preferences, lazy loading, and page-wide limits. The single authored homepage caption remains below the media; whole-card navigation is unchanged. The paired layout is homepage-only; media crops also apply in carousels and store exports. Desktop-focused apps such as HanKan keep their single desktop preview even when they also support mobile platforms. New mobile-focused app entries should author a pair explicitly; no automatic platform-based selection is applied. [PROJECT-ASSETS.md](PROJECT-ASSETS.md) defines authoring and validation.
+
 ```text
 Dr. Jetski Studios                                  About/contact
 Independent apps, audio tools, and developer utilities.
@@ -68,7 +81,7 @@ Featured and compact homepage cards use whole-card navigation to their single pr
 
 Homepage previews, both featured and compact, use one optional `preview` entry in `media.yaml` to select an exactly matching gallery item, including video, or a separate local image when no gallery item matches. Gallery matches reuse media, poster, and dimensions; an optional nonblank preview alt overrides the gallery alt, otherwise it is inherited. A separate image requires its own nonblank alt and may be used with an empty gallery; standalone videos are not supported. Ambiguous matches and missing assets fail the build. Preview entries never add gallery items or change gallery order, and homepage-only images are excluded from store screenshot exports. Caption and crop settings are independent of normal `media` entries, with no inheritance. Without a `preview` entry, use the first gallery item and its normal media settings. Missing preview text means no homepage caption, even if the gallery item has one. An independent preview cannot override the project color.
 
-Homepage previews retain their existing optional crops, off by default. HanScan's dedicated preview retains its independent homepage caption and current crop; its normal media entry retains the gallery caption without a crop. Apply the same CSS crop to poster and video without modifying the source video, adjusting the displayed aspect ratio and layout height to the visible area rather than merely hiding media inside the original footprint. Captions sit beneath that area, not over it. All project-detail carousel media remain uncropped. Entries may define a crop without text; [PROJECT-ASSETS.md](PROJECT-ASSETS.md) defines the authoring format and validation rules.
+Media crops are optional, off by default, and may be authored without caption text. HanScan uses its existing looping video on the left and `slope.png` on the right, both with the authored top crop. Retain its independent homepage caption, playback behavior, and project carousel. Apply the same CSS crop to poster and video without modifying source files, adjusting displayed aspect ratio and layout height to the retained rectangle rather than hiding media inside its original footprint. Carousel layers and paired previews use the same authored crop. Captions remain outside the retained media area. [PROJECT-ASSETS.md](PROJECT-ASSETS.md) defines the authoring format and validation rules.
 
 ## Project-page composition
 
@@ -94,7 +107,7 @@ HanScan follows JetAlign's simplified information layout while retaining its exi
 
 wumi - Chinese Flashcards uses folder `src/content/projects/wumi`, slug `wumi`, route `/projects/wumi`, and featured priority 4. Follow HanScan's simplified information layout with the existing generic simplified download cards, not HanScan's Android/iOS store cards. Use primary green `#6EAA7B`, an alpha label, and a short description of AI-generated Chinese flashcards from photos of vocabulary lists, entered words, and PDF pages, with spaced repetition for study. Omit duplicate platform badges, availability paragraphs, and longer feature lists. Keep the existing Android alpha APK card pending without a release link; do not add platforms or coming-soon cards, or claim free, offline, or no-account use.
 
-wumi's real screenshots follow chronological order using file modification times because no embedded capture dates are available: `wumi-main.png`, `wumi-deck-details.png`, `wumi-study-back.png`, `wumi-edit-card.png`, `wumi-generate-import.png`, `wumi-review-generated.png`, `wumi-customize-spaced-repetition.png`, `wumi-customize-card-layout.png`, `wumi-card-browser.png`, then `wumi-dark-mode.png`. Use the separate local `wumi-preview.png` as the homepage-only preview without changing carousel order or store screenshot exports. Exclude `wumi-decks.png` from the gallery because it is byte-identical to `wumi-main.png`.
+wumi uses the standard paired mobile-app homepage preview with `wumi-generate-import.png` left and `wumi-study-back.png` right. Keep its existing authored homepage caption. Its gallery order remains authored in `media.yaml` independently of the homepage selection; store screenshot exports are unchanged. Exclude `wumi-decks.png` from the gallery because it is byte-identical to `wumi-main.png`.
 
 WayToClip follows JetAlign's simplified information layout while retaining its existing gallery and green accent. Use the description “A keyboard-driven clipboard manager for GNOME Shell. Press a shortcut to open history at your cursor, then press 1–9 to paste. Fast, simple, efficient.” Show one Linux (GNOME Shell) ZIP card and a clearly labeled GitHub source link. Omit duplicate platform badges, availability paragraphs, and feature lists. Place a concise Installation subsection (h3) beneath the download card: require GNOME Shell 46–51, install the downloaded ZIP with `gnome-extensions install`, log out and back in, then enable `waytoclip@andersklint.github.io`. Boldly state that no shortcut is set by default and direct visitors to “Toggle the cursor popup” in extension settings, with Alt+X as an example. Briefly credit CLCL and Clipboard Indicator with links. The GNOME Extensions listing remains under review; do not show a store action. Public ZIP delivery is verified; link the manual download and mark availability as available.
 
@@ -200,19 +213,19 @@ Small Linux desktop app displaying the current song's album artwork, title, and 
 
 ## Availability and launch visibility
 
-| Project | Owner-reported readiness | Launch treatment |
-| --- | --- | --- |
-| HanScan | Available on Google Play for Android; iOS coming soon | Featured priority 1; link to the Google Play listing and show non-actionable iOS coming soon |
-| JetAlign | Finished beta; Linux and Windows VST3/CLAP builds available | Featured priority 2; publish beta downloads at launch |
-| WayToClip | Finished; public manual ZIP delivery verified; GNOME Extensions review pending | Featured priority 3; simplified Linux ZIP download card, GitHub source link, manual-install instructions, and pending-review note; no store action |
-| wumi - Chinese Flashcards | Fully functional alpha; Android APK ready; public link pending; not on Play Store | Featured priority 4; simplified pending Android APK card until public delivery is verified; other platform downloads still to confirm |
-| HanKan - Chinese Reader | Beta 0.5.2-beta desktop downloads publicly verified; Linux, Windows, and Android supported; runtime behavior unverified | Featured priority 5; linked simplified Flatpak/EXE/portable ZIP cards, standalone Installation section, GitHub source link; Android Google Play, macOS, and iOS coming soon |
-| ClipThat! | Beta 0.6.3-beta; Linux Flatpak and Windows installer/portable downloads publicly verified; runtime behavior unverified | Featured priority 6; three linked simplified desktop download cards, standalone Installation section with Linux and grouped Windows instructions, GitHub source link |
-| Paddle-my-pdf | Finished CLI; unpolished, no installer, Python requirements file | Confirm source/install destination |
-| dart_paddle_ocr | Finished implementation; package not yet polished, still closed source; pub.dev publication planned | Include an informative page with publication-in-preparation status; no public package/source actions yet |
-| chinese_popup_dict | Finished implementation; package not yet polished, still closed source; pub.dev publication planned | Include an informative page with publication-in-preparation status; no public package/source actions yet |
-| WORLD-vocoder-vst | Prototype | Exclude from the launch site; future project |
-| spotify-screensaver | Finished script; screenshot available | Confirm source/install destination |
+| Project                   | Owner-reported readiness                                                                                                | Launch treatment                                                                                                                                                            |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| HanScan                   | Available on Google Play for Android; iOS coming soon                                                                   | Featured priority 1; link to the Google Play listing and show non-actionable iOS coming soon                                                                                |
+| JetAlign                  | Finished beta; Linux and Windows VST3/CLAP builds available                                                             | Featured priority 2; publish beta downloads at launch                                                                                                                       |
+| WayToClip                 | Finished; public manual ZIP delivery verified; GNOME Extensions review pending                                          | Featured priority 3; simplified Linux ZIP download card, GitHub source link, manual-install instructions, and pending-review note; no store action                          |
+| wumi - Chinese Flashcards | Fully functional alpha; Android APK ready; public link pending; not on Play Store                                       | Featured priority 4; simplified pending Android APK card until public delivery is verified; other platform downloads still to confirm                                       |
+| HanKan - Chinese Reader   | Beta 0.5.2-beta desktop downloads publicly verified; Linux, Windows, and Android supported; runtime behavior unverified | Featured priority 5; linked simplified Flatpak/EXE/portable ZIP cards, standalone Installation section, GitHub source link; Android Google Play, macOS, and iOS coming soon |
+| ClipThat!                 | Beta 0.6.3-beta; Linux Flatpak and Windows installer/portable downloads publicly verified; runtime behavior unverified  | Featured priority 6; three linked simplified desktop download cards, standalone Installation section with Linux and grouped Windows instructions, GitHub source link        |
+| Paddle-my-pdf             | Finished CLI; unpolished, no installer, Python requirements file                                                        | Confirm source/install destination                                                                                                                                          |
+| dart_paddle_ocr           | Finished implementation; package not yet polished, still closed source; pub.dev publication planned                     | Include an informative page with publication-in-preparation status; no public package/source actions yet                                                                    |
+| chinese_popup_dict        | Finished implementation; package not yet polished, still closed source; pub.dev publication planned                     | Include an informative page with publication-in-preparation status; no public package/source actions yet                                                                    |
+| WORLD-vocoder-vst         | Prototype                                                                                                               | Exclude from the launch site; future project                                                                                                                                |
+| spotify-screensaver       | Finished script; screenshot available                                                                                   | Confirm source/install destination                                                                                                                                          |
 
 ## Execution details and owner-supplied content
 

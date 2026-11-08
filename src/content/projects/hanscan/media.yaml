@@ -1,6 +1,8 @@
 project-color: "#3A8DFF"
+mobile-preview: [hanscan-demo.mp4, slope.png]
 items:
   - media: hanscan-demo.mp4
+    crop: { xStart: 0, xEnd: 1, yStart: 0.04, yEnd: 1 }
     kind: preview
     poster: hanscan-demo-poster.webp
     alt: "Short silent clip of HanScan recognizing a Chinese workbook exercise, then showing pinyin and English translation overlays."
@@ -13,36 +15,42 @@ items:
     style: dark
 
   - media: slope.png
+    crop: { xStart: 0, xEnd: 1, yStart: 0.04, yEnd: 1 }
     alt: "HanScan translating a Chinese road sign in English mode, with the recognized text shown over a steep-slope warning sign."
     text: "Fully offline.\nScan from anywhere."
     highlighted-words: "offline"
     text_pos_y: 0.12
 
   - media: workbook_popup.png
+    crop: { xStart: 0, xEnd: 1, yStart: 0.04, yEnd: 1 }
     alt: "HanScan dictionary popup on the Chinese word 准时 (zhǔnshí), showing its reading and English definitions over a workbook exercise."
     text: Built-in popup dictionary
     highlighted-words: "popup dictionary"
     text_pos_y: 0.12
 
   - media: workbook_pinyin.png
+    crop: { xStart: 0, xEnd: 1, yStart: 0.04, yEnd: 1 }
     alt: "HanScan pinyin mode overlaying readings on a Chinese workbook matching exercise, with a pinyin transcript below."
     text: Select and copy scanned text
     highlighted-words: "Select, copy"
     text_pos_y: 0.12
 
   - media: workbook_stack_translate.png
+    crop: { xStart: 0, xEnd: 1, yStart: 0.04, yEnd: 1 }
     alt: "HanScan English mode translating a Chinese workbook matching exercise, with translated labels over the text and a transcript below."
     text: Automatic translations
     highlighted-words: "translations"
     text_pos_y: 0.12
 
   - media: handwritten.png
+    crop: { xStart: 0, xEnd: 1, yStart: 0.04, yEnd: 1 }
     alt: "HanScan recognizing handwritten Chinese instructions on a classroom chalkboard."
     text: Scan handwritten text
     highlighted-words: "handwritten"
     text_pos_y: 0.12
 
   - media: gate.png
+    crop: { xStart: 0, xEnd: 1, yStart: 0.04, yEnd: 1 }
     alt: "HanScan recognizing Chinese calligraphy on a wooden sign above colorful hanging lanterns."
     text: Read tricky calligraphy
     highlighted-words: "calligraphy"
@@ -52,5 +60,4 @@ items:
     text: "Chinese OCR with Pinyin and Translation"
     text_pos_y: 0.12
     text_offset: { x: 0, y: 0 }
-    preview_crop: { xStart: 0, xEnd: 1, yStart: 0.16, yEnd: 0.78 }
     style: dark
