@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import { parseDocument } from 'yaml';
 import { chromium } from 'playwright-core';
-import { parseMediaPresentation, mediaSourceBasename } from '../src/projects/mediaPresentation.ts';
+import { parseMediaPresentation } from '../src/projects/mediaPresentation.ts';
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const root = resolve(scriptDirectory, '..');
@@ -155,9 +155,6 @@ Requires installed Chrome, or CHROME_PATH pointing to its executable.`);
   }
   const presentation = parseMediaPresentation(sidecar, sidecarPath);
   const gallery = presentation.gallery;
-  if (presentation.preview && !gallery.some(item => mediaSourceBasename(item.media) === presentation.preview.mediaSource)) {
-    throw new Error(`${sidecarPath}: preview must match an existing gallery source`);
-  }
   const outputs = new Set();
   const images = [];
   for (const item of gallery.filter(item => item.kind === 'image')) {

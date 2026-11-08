@@ -11,7 +11,7 @@ export interface ProjectMediaPresentation {
   projectColor?: string;
   mediaBySource: Map<string, MediaPresentation>;
   gallery: AuthoredMediaItem[];
-  preview?: MediaPresentation & { mediaSource: string };
+  preview?: MediaPresentation & { mediaSource: string; alt?: string };
 }
 
 const coordinate = z.number().min(0).max(1);
@@ -55,10 +55,12 @@ const videoSourceSchema = z.string().refine((value) => {
   }
 }, { message: 'Expected a local video filename or a real HTTPS video URL' });
 
+const altTextSchema = z.string().refine((value) => value.trim().length > 0, { message: 'Expected nonblank alt text' });
+
 const mediaFields = {
   ...presentationFields,
   'highlighted-words': z.string().transform((value) => value.split(',').map((term) => term.trim()).filter((term) => term.length > 0)).optional(),
-  alt: z.string().refine((value) => value.trim().length > 0, { message: 'Expected nonblank alt text' }),
+  alt: altTextSchema,
   isPlaceholder: z.boolean().optional(),
 };
 const videoFields = {
@@ -79,7 +81,7 @@ const presentationSchema = z.object({
   }).transform((value) => `#${value.replace(/^#/, '')}`).optional(),
   items: z.array(z.union([
     mediaItemSchema,
-    z.object({ ...presentationFields, preview: mediaFilenameSchema }).strict(),
+    z.object({ ...presentationFields, preview: mediaFilenameSchema, alt: altTextSchema.optional() }).strict(),
   ])).default([]),
 }).strict();
 
@@ -139,7 +141,7 @@ export function parseMediaPresentation(raw: string, filePath: string): ProjectMe
       if (preview !== undefined) {
         throw new Error(`${filePath}: items.${index}.preview: Only one preview record is allowed`);
       }
-      preview = { mediaSource: entry.preview, ...presentation };
+      preview = { mediaSource: entry.preview, alt: entry.alt, ...presentation };
     } else {
       if (presentations.has(entry.media)) {
         throw new Error(`${filePath}: items.${index}.media: Duplicate media filename "${entry.media}"`);
@@ -151,8 +153,11 @@ export function parseMediaPresentation(raw: string, filePath: string): ProjectMe
   }
   if (preview !== undefined) {
     const matches = gallery.filter((item) => mediaSourceBasename(item.media) === preview.mediaSource);
-    if (matches.length !== 1) {
+    if (matches.length > 1) {
       throw new Error(`${filePath}: preview: Expected exactly one gallery item matching "${preview.mediaSource}"`);
+    }
+    if (matches.length === 0 && preview.alt === undefined) {
+      throw new Error(`${filePath}: preview.alt: A standalone homepage image "${preview.mediaSource}" requires nonblank alt text`);
     }
   }
   return { projectColor, mediaBySource: presentations, gallery, preview };

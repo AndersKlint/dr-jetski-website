@@ -1,0 +1,56 @@
+project-color: "#6EAA7B"
+items:
+  - preview: wumi-preview.png
+    alt: "wumi showing the answer side of a Chinese flashcard for 开创, with pinyin, an English meaning, translated example sentences and four review ratings."
+    text: "Take a photo of your workbook's vocabulary list to auto-generate high quality flashcards."
+    preview_crop: { xStart: 0, xEnd: 1, yStart: 0.05, yEnd: 1.0 }
+
+  - media: wumi-study-back.png
+    alt: "The answer side of a Chinese idiom flashcard with pinyin, an English meaning, translated example sentences and four review ratings."
+    text: "Auto-generate powerful flashcards from single words or phrases"
+    highlighted-words: "Auto-generate, flashcards, words, phrases"
+
+  - media: wumi-generate-import.png
+    alt: "Generate Cards screen with a vocabulary-list photo, camera, image, PDF and text input options, and optional extra context."
+    text: "Use a picture of your vocabulary list to generate tens of flashcards in seconds"
+    highlighted-words: "picture, vocabulary list, in seconds"
+
+  - media: wumi-review-generated.png
+    alt: "Review Cards screen showing a generated card for rose with pinyin, meaning and example sentences, selection and editing controls, and Add to Deck."
+    text: "Quickly review generated cards before adding them"
+    highlighted-words: "Review, generated cards"
+
+  - media: wumi-deck-details.png
+    alt: "Deck details showing review, new, learning and mature card counts, with Study, Generate Cards and Browse Cards actions."
+    text: "Study efficiently with spaced repetition"
+    highlighted-words: "efficiently, spaced repetition"
+
+  - media: wumi-main.png
+    alt: "wumi's My Decks screen showing Chinese vocabulary decks, colored card counts and a deck group."
+    text: "Organize your vocabulary into decks and groups"
+    highlighted-words: "Organize, decks, groups"
+
+  - media: wumi-edit-card.png
+    alt: "Edit Card form with fields for Chinese characters, pinyin, meaning, native meaning and description, plus Cancel and Save buttons."
+    text: "Edit flashcards with ease"
+    highlighted-words: "edit, ease"
+
+  - media: wumi-customize-spaced-repetition.png
+    alt: "Scheduling Options with daily limits for new, review and learning cards, and configurable learning-step delays."
+    text: "Set your own study pace"
+    highlighted-words: "study pace"
+
+  - media: wumi-customize-card-layout.png
+    alt: "Flashcard Layout settings for the back of a card, with reorder handles, color controls and visibility checkboxes for its fields."
+    text: "Customize your flashcard layout"
+    highlighted-words: "Customize, layout"
+
+  - media: wumi-card-browser.png
+    alt: "Card browser spanning two decks with selected vocabulary cards and an open menu offering Custom Study, Copy to deck and Move to deck."
+    text: "Easily manage cards in the card browser"
+    highlighted-words: "easily, card browser"
+
+  - media: wumi-dark-mode.png
+    alt: "Dark-mode study screen showing the front of a Chinese flashcard with white characters, a green accent and colored card counts."
+    text: "Choose between light and dark mode"
+    highlighted-words: "light, dark mode"

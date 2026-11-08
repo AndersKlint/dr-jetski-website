@@ -205,17 +205,29 @@ async function toProject(entry: ProjectEntry): Promise<Project> {
   const previewIndex = preview === undefined ? 0 : authoredGallery.findIndex(
     (item) => mediaSourceBasename(item.media) === preview.mediaSource,
   );
-  if (previewIndex === -1) {
-    throw new Error(`/${projectDirectoryFromFile(entry)}/media.yaml: preview: No gallery item matches "${preview?.mediaSource}"`);
-  }
   const gallery = await Promise.all(
     authoredGallery.map((item, index) => toGalleryItem(item, entry, index)),
   );
-  const homepagePreview = preview === undefined ? gallery[0] : {
-    ...gallery[previewIndex]!,
-    featureOverlay: preview.featureOverlay,
-    homepageCrop: preview.homepageCrop,
-  };
+  let homepagePreview = gallery[0];
+  if (preview !== undefined) {
+    if (previewIndex === -1) {
+      homepagePreview = await toGalleryItem({
+        kind: 'image',
+        media: preview.mediaSource,
+        alt: preview.alt!,
+        featureOverlay: preview.featureOverlay,
+        homepageCrop: preview.homepageCrop,
+      }, entry, 0);
+    } else {
+      const selectedItem = gallery[previewIndex]!;
+      homepagePreview = {
+        ...selectedItem,
+        alt: preview.alt ?? selectedItem.alt,
+        featureOverlay: preview.featureOverlay,
+        homepageCrop: preview.homepageCrop,
+      };
+    }
+  }
   return {
     slug: entry.data.slug,
     projectColor,

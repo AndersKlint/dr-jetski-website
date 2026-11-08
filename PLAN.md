@@ -593,7 +593,7 @@ Earlier verification above is unchanged.
 - Choose characterful readable heading typography and neutral body typography; self-host the fonts.
 - Create the initial typeset studio wordmark and lightweight wake-line artwork.
 - Keep the introduction short enough that the first project is visible immediately in representative desktop and phone viewports.
-- Implement the non-overlapping staggered trail: HanScan left, JetAlign lower/right, WayToClip lower/left, LaoZi lower/right, HanKan lower/left, ClipThat! lower/right. Give all six cards the current #2 JetAlign scale, preserving natural media aspect ratios and variable heights.
+- Implement the non-overlapping staggered trail: HanScan left, JetAlign lower/right, WayToClip lower/left, wumi lower/right, HanKan lower/left, ClipThat! lower/right. Give all six cards the current #2 JetAlign scale, preserving natural media aspect ratios and variable heights.
 - Use layout rules that preserve editorial order in the document and during keyboard navigation; collapse to a single column on mobile.
 - Add the compact four-project collection and homepage About/contact area.
 - Make project-specific placeholder media replaceable through content files, without changing the page layout.

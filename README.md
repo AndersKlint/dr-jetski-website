@@ -185,7 +185,7 @@ Marked per file in `authoringNotes`; still needed before the full public launch
 - Public download URLs, versions, sizes, filenames, install notes (all builds).
 - HanScan: whether English translation works offline (only OCR is offline).
 - WayToClip: source URL (unknown — not linked) and GNOME listing URL.
-- LaoZi: desktop/web artifacts (only the Android APK is confirmed).
+- wumi: desktop/web artifacts (only the Android APK is confirmed).
 - HanKan Windows/Linux, ClipThat!: exact bundle/extension/installer formats.
 - Paddle-my-pdf / spotify-screensaver: source/install destinations.
 - Flutter packages: pub.dev URLs once published.

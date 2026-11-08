@@ -51,7 +51,7 @@ const isClipThat = project.slug === 'clipthat';
     isCompactMedia={detail.isCompactMedia}
     privacyHref={privacyHref}
     termsHref={termsHref}
-    isSimplified={isJetAlign || isHanScan || isHanKan || isClipThat || project.slug === 'waytoclip'}
+    isSimplified={isJetAlign || isHanScan || isHanKan || isClipThat || project.slug === 'waytoclip' || project.slug === 'wumi'}
     isDetailsSeparate={isHanKan || isClipThat}
   >
     <Fragment slot="before-downloads">{isJetAlign && <JetAlignAudio beforeSrc={guitarBefore} afterSrc={guitarAfter} />}</Fragment>

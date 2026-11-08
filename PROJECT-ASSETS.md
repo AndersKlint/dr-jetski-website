@@ -53,7 +53,7 @@ Platform availability: not yet released.
 
 Create `media.yaml` beside this template using the examples below. Normal `media`
 record order is carousel order; the first supplies the homepage preview unless a
-`preview` record selects another gallery item. Project pages show one uncropped selected item with faded
+`preview` record selects a gallery item or a separate local image. Project pages show one uncropped selected item with faded
 neighbor layers and bounded navigation through round dots, swipe, and keyboard;
 a one-item gallery omits navigation and
 an empty gallery is not rendered. Set `visibility: "public"` to publish. Add
@@ -61,7 +61,8 @@ an empty gallery is not rendered. Set `visibility: "public"` to publish. Add
 projects appear in the compact grid ordered by `editorialOrder`. Every
 referenced file must exist or the build fails. Adding a record automatically
 discovers its corresponding local asset on rebuild; files not listed do not
-appear. Missing or empty `media.yaml` means an empty gallery.
+appear, and only normal `media` records add gallery items. Missing or empty
+`media.yaml` means an empty gallery.
 
 ## HanScan privacy policy
 
@@ -167,9 +168,16 @@ items:
 - Each record requires exactly one of `media` or `preview`, never both. A normal
   `media` record authors a gallery item using an exact, case-sensitive flat local
   filename or, for video, the complete real HTTPS URL.
-- A `preview` selector matches the exact source basename of an existing gallery
-  item, not its poster. For HTTPS sources, use the filename in the URL path,
-  excluding query and hash. An unmatched selector fails the build.
+- A `preview` selector first matches the exact, case-sensitive source basename of
+  an existing gallery item, including videos, not its poster or a generated asset
+  filename. For HTTPS sources, use the filename in the URL path, excluding query
+  and hash. Multiple matches are ambiguous and fail the build.
+- With no gallery match, `preview` must reference an existing flat local image
+  filename without `./`, with its own nonblank `alt`. Dimensions are read at build
+  time. Standalone videos and remote images are not supported; missing assets fail
+  the build. Files remain explicit YAML references, not automatic gallery additions.
+- A gallery-matching preview may supply its own nonblank `alt` to override the
+  gallery alt; omission inherits the gallery alt. Explicit blank alt values fail.
 - Duplicate gallery sources are invalid, and at most one `preview` entry is
   allowed. A `preview` and a `media` entry may select the same source.
   Invalid YAML, a non-mapping root (including the old top-level sequence),
@@ -183,14 +191,16 @@ items:
 
 ### Homepage selection and independent settings
 
-- An explicit `preview` selects an existing gallery item for both featured and
-  compact homepage cards, reusing its source, poster, dimensions, and alt text.
+- An explicit `preview` selects a matching gallery item or a standalone local
+  image for both featured and compact homepage cards. Gallery matches reuse the
+  source, poster, and dimensions, with alt inherited unless explicitly overridden.
   It neither adds a gallery item nor changes gallery order; moving or adding the
-   selector anywhere in `items` has no effect on carousel order.
+  selector anywhere in `items` has no effect on carousel order. A separate preview
+  works with an empty gallery and is excluded from store screenshot exports.
 - Both record types support the optional caption, export, and crop settings below;
   `highlighted-words` is normal-record-only. An explicit
-  preview uses only its own settings and their defaults, never settings inherited
-   from the matching normal media record. Omitted `text` means no homepage caption;
+  preview uses only its own caption, export, and crop settings and their defaults,
+  never those of the matching normal media record. Omitted `text` means no homepage caption;
   omitted `preview_crop` means no crop.
 - Without a `preview` entry, use the first gallery item with its normal `media`
   settings, preserving the current fallback behavior.
@@ -202,7 +212,23 @@ items:
   media record has its own gallery caption and no crop.
   Captions are independent: changing only the preview's `text` to
   `Read Chinese anywhere` would leave the gallery caption
-  `OCR, Pinyin & Translation` unchanged.
+   `OCR, Pinyin & Translation` unchanged.
+
+For a homepage-only image, reference it explicitly with alt text; only the normal
+`media` record below enters the gallery and store screenshot exports:
+
+```yaml
+items:
+  - preview: wumi-preview.png
+    alt: "Overview of wumi's Chinese flashcard study interface."
+    text: "AI-generated Chinese flashcards"
+  - media: wumi-main.png
+    alt: "wumi's main screen."
+```
+
+Omit the normal `media` record for a separate preview with an empty gallery.
+To reuse gallery media instead, use its exact source filename as in the HanScan
+example; add `alt` to the preview only when it needs different alternative text.
 
 ### Feature captions and export-only overlay settings
 
@@ -405,7 +431,8 @@ overlay removal does not change export rendering or options.
   images without captions, and skips all videos. Author captions in normal
    `media` records in `media.yaml` using `text`, `text_side`, `text_pos_y`, `text_offset`,
    and `style` as documented above, with root `project-color` for the accent. It uses the shared parser's
-  gallery items and ignores homepage-specific captions and crops.
+  gallery items and ignores homepage-only images and homepage-specific captions
+  and crops.
 - With `--device phone`, final output is 1440×2560 for portrait or square images
   and 2560×1440 for landscape images, using dimensions after any
   `--crop-status-bar` crop. With `--device tablet`, final output is always
