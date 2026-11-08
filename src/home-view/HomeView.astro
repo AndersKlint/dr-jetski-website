@@ -17,6 +17,6 @@ const featured = [...lead, ...secondary];
 <main id="main-content">
   <StudioIdentity />
   <ProjectShowcase projects={featured} />
-  <CompactProjectGrid projects={compact} />
+  {import.meta.env.DEV && <CompactProjectGrid projects={compact} />}
   <AboutContact />
 </main>
