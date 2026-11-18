@@ -1,0 +1,35 @@
+project-color: "#44644E"
+mobile-preview: [waytocook_import_recipe_1.jpg, waytocook_recipe_flow_1.jpg]
+items:
+  - preview: waytocook_recipe_flow_1.jpg
+    text: "Scan a recipe. Let AI turn it into an easy-to-follow cooking flow."
+
+  - media: waytocook_recipe_flow_1.jpg
+    alt: "WayToCook's numbered cooking flow showing spaghetti and olive oil quantities directly above the first instruction."
+    text: "Ingredients and instructions, together at every step"
+    highlighted-words: "Ingredients, instructions"
+
+  - media: waytocook_import_recipe_1.jpg
+    alt: "Import recipe screen with four recipe photos and options to add camera images, gallery images or PDF pages before scanning."
+    text: "Scan recipes from photos or PDF pages"
+    highlighted-words: "Scan, photos, PDF"
+
+  - media: waytocook_import_recipe_2.jpg
+    alt: "Recipe text review with optional extra instructions and a slider for low, medium or high instruction detail."
+    text: "Choose the detail and add your own instructions"
+    highlighted-words: "detail, instructions"
+
+  - media: waytocook_recipe_title_and_ingredients.jpg
+    alt: "Spaghetti Carbonara with Bacon recipe preview showing an ingredient list, a servings adjuster set to eight and unit settings."
+    text: "Adjust servings and choose your units"
+    highlighted-words: "servings, units"
+
+  - media: waytocook_recipe_flow_2.jpg
+    alt: "Saved recipe cooking flow with numbered bacon and onion steps, each displaying its ingredients above the instruction."
+    text: "Follow a clear, numbered cooking flow"
+    highlighted-words: "cooking flow"
+
+  - media: waytocook_recipies_main_screen.jpg
+    alt: "WayToCook recipe book with a Bread and pastries collection and saved recipes for spaghetti carbonara, hollandaise and rårakor."
+    text: "Keep your recipes organized in collections"
+    highlighted-words: "recipes, collections"

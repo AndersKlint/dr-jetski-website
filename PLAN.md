@@ -2,6 +2,28 @@
 
 ## Status
 
+### WayToCook catalogue addition
+
+Implemented the public WayToCook project page as featured priority 7 after ClipThat!,
+preserving existing featured order and development-only compact cards.
+Uses all six supplied screenshots, the standard paired
+mobile homepage preview, and existing carousel and simplified detail presentation.
+Keeps Android internal testing and planned iOS distinct from public availability;
+adds no public download or store actions. Bundles the supplied privacy policy and
+terms verbatim through the existing legal-page routes, preserving draft notices.
+Scope is defined in DESIGN.md; manual legal-copy synchronization is documented in
+PROJECT-ASSETS.md.
+
+Verification passed: `make check` (52 files, zero diagnostics; 17 built pages),
+`git diff --check`, and byte-for-byte comparison of both legal copies against their
+sources. Chrome checks at 320px, 390px, and 1440px covered the seven featured cards,
+paired WayToCook images, homepage keyboard navigation, six gallery selections,
+bounded arrow-key navigation, headline selection, legal-page links and draft
+notices, and no horizontal overflow or page errors. Reduced motion was enabled for
+these checks. Desktop/mobile project screenshots and the mobile homepage card
+were visually inspected. No unit tests or deployment were performed; owner
+acceptance and physical touchscreen behavior remain pending.
+
 Media cropping now uses optional `crop` on every media/preview record, replacing
 `preview_crop`. Normal-media crops apply to homepage cards (including pairs),
 carousel media and geometry, and store exports. Single homepage previews inherit

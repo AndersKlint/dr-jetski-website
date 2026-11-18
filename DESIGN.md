@@ -26,11 +26,11 @@ rectangle's natural proportions; carousel height caps and playback rules remain.
 - Use placeholder media during design; screenshots and other real assets will come later.
 - The site should remain pragmatic, fast, lightweight, and extremely inexpensive to host.
 - The homepage will have a short studio introduction, selected prominent projects, and a more compact visual collection of the remaining public projects. Each public project gets its own page. The introduction should leave at least the first project visible immediately in a typical initial viewport.
-- Featured-project priority is HanScan, JetAlign, WayToClip, wumi - Chinese Flashcards, HanKan, then ClipThat!.
+- Featured-project priority is HanScan, JetAlign, WayToClip, wumi - Chinese Flashcards, HanKan, ClipThat!, then WayToCook.
 - Project pages are media-first: a compact studio-identity banner, a substantial demo gallery, then project explanation, downloads, installation notes, and optional engineering detail.
 - Use a restrained abstract water/wake motif as the studio's distinctive visual thread.
 - Include a compact About/contact area with the creator's DevOps/full-stack background and professional links.
-- Give all six featured projects a uniform card scale matching the current second card, JetAlign, with no visual lead/secondary sizing hierarchy. Preserve natural media aspect ratios and resulting variable heights rather than forcing equal-height cards. Arrange all six cards asymmetrically: first on the left, second lower on the right, third back on the left beneath the first, continuing the alternating rhythm. Cards have generous breathing room and do not overlap. On mobile, preserve priority order in one column.
+- Give all seven featured projects a uniform card scale matching the current second card, JetAlign, with no visual lead/secondary sizing hierarchy. Preserve natural media aspect ratios and resulting variable heights rather than forcing equal-height cards. Arrange all seven cards asymmetrically: first on the left, second lower on the right, third back on the left beneath the first, continuing the alternating rhythm. Cards have generous breathing room and do not overlap. On mobile, preserve priority order in one column.
 - Use minimal navigation: studio mark/name, a small About/contact link, and a clear Back to projects link on project pages. About/contact belongs near the bottom of the homepage.
 - Some project cards play short, silent, inline looping previews, loading near the viewport and pausing offscreen. At most three previews play together. Use still posters for reduced-motion or data-saving preferences, provide a simple pause-motion control, and keep audio user-activated.
 - Use a neutral dark studio palette: page `#101114`, raised/card surfaces `#191b1f`, borders `#30343b`, primary text `#f4f4f2`, secondary text `#a9adb5`, and retained studio orange `#ee7135`. Keep card borders and hover treatments subtle, titles stronger, descriptions secondary, stable/supporting metadata neutral, and trial labels restrained orange. Project-specific color accents belong only on project-detail pages, with readable variants where necessary; backgrounds stay neutral and homepage/studio accents stay orange. Preserve actual product colors in screenshots.
@@ -65,6 +65,7 @@ Independent apps, audio tools, and developer utilities.
                           [ wumi - Chinese Flashcards: uniform-scale preview ]
 [ HanKan: uniform-scale preview ]
                           [ ClipThat!: uniform-scale preview ]
+[ WayToCook: uniform-scale preview ]
 
 More projects
 [ compact project ] [ compact project ] [ compact project ]
@@ -102,6 +103,8 @@ The carousel stays before the substantive description/download panel on all scre
 Simplified download and store cards stretch equally within each grid row, with actions bottom-aligned despite wrapping titles or metadata; retain minimum spacing above actions without fixed heights or equalizing separate rows.
 
 HanScan has a straightforward static text privacy-policy page at https://drjetski.com/projects/hanscan/privacy. A small, normal “Privacy policy” link appears at the bottom of HanScan's project information, with no homepage or main-navigation entry.
+
+WayToCook is featured priority 7 after ClipThat!, preserving the existing featured order. The compact homepage collection remains development-only. Its public page at `/projects/waytocook` uses the simplified information layout with an alpha label, the supplied six screenshots, and the app's green `#44644E` accent. Lead with the cooking flow; pair recipe scanning and the first cooking-flow screenshot on the homepage. Describe AI-generated cooking flows, photo/PDF/text import, serving and unit adjustments, collections, on-device scanning, online generation, and offline saved recipes. Android is in internal testing with no public download; iOS is planned, and Linux is only a development target. Show this once under Availability, without download cards or invented store/source links. Small Privacy policy and Terms of service links lead to `/projects/waytocook/privacy` and `/projects/waytocook/terms-of-service`, using the existing static legal-page presentation. Publish the supplied internal-testing legal documents verbatim, retaining draft notices and unresolved items; publication is not legal approval.
 
 HanScan follows JetAlign's simplified information layout while retaining its existing gallery and blue accent. Use a short description of reading Chinese from photos and screenshots with a popup dictionary, pinyin and English translation, followed by the offline model-download qualification and “Free. No ads. No account required.” Show compact Android and iOS cards: Android links to the actual Google Play listing; iOS says “Coming soon” without a link. Omit duplicate platform badges, availability paragraphs, APK-pending copy and longer feature sections. Android remains the only currently supported platform.
 
@@ -153,7 +156,7 @@ verification remains a separate launch gate.
 
 ## Content and delivery
 
-- Ten launch projects: six featured projects and four compact projects. WORLD-vocoder-vst is a future draft, not a generated public launch page.
+- Eleven public projects: seven featured projects, including WayToCook in internal testing, and four compact projects with development-only homepage cards. WORLD-vocoder-vst is a future draft, not a generated public launch page.
 - Each project is one folder named for its stable route slug under `src/content/projects/<slug>/`, containing `index.md`, `media.yaml`, and co-located local media. Stable routing is independent of the editable display name. JetAlign uses `/projects/jetalign`; the former `/projects/vocal-aligner` route permanently redirects there. ClipThat! uses folder slug `clipthat` and route `/projects/clipthat`.
 - The `index.md` holds short descriptive metadata, Markdown detail sections, and real download references. `media.yaml` is the single source of truth for every project's gallery and media presentation: normal media records define carousel membership and order, and explicitly referenced local assets are discovered on rebuild, never automatically added to the gallery. Unlisted files do not appear; missing referenced assets fail the build. Missing or empty YAML gives an empty gallery, with no gallery fallback to `index.md`. The first gallery item supplies the homepage preview unless an independent `preview` record selects a gallery item or a separate local image; adding or moving that selector does not affect carousel order.
 - Track featured priority, release maturity, public availability, and page visibility separately. A private finished package can have a public explanatory page; an alpha can have a public download.
@@ -161,7 +164,7 @@ verification remains a separate launch gate.
 - Keep public source/registry/store links optional. Do not imply that private projects are open source or that unreleased store listings exist.
 - Gallery media reference flat local filenames without `./`; videos may instead use real HTTPS URLs such as versioned R2 paths. Each video has a local generated poster plus alt text and intrinsic width/height. Keep small optimized images, posters, diagrams, local H.264 MP4 previews, and local fonts with the static site. Serve substantial preview video and binaries separately through R2 under versioned paths; total R2 usage includes media as well as software.
 - [PROJECT-ASSETS.md](PROJECT-ASSETS.md) is the authoritative operational guide for the project folder layout, the `index.md` template, media dimensions, and preview/demo preparation. [PLAN.md](PLAN.md) names the sequence.
-- Build a static homepage, ten project routes, and a useful not-found page. The About/contact area is part of the homepage.
+- Build a static homepage, eleven project routes, their authored legal pages, and a useful not-found page. The About/contact area is part of the homepage.
 
 ## Candidate launch inventory
 
@@ -211,6 +214,10 @@ Desktop app for downloading selected time ranges from video links, queuing multi
 
 Small Linux desktop app displaying the current song's album artwork, title, and artist as a styled screensaver.
 
+### WayToCook
+
+Flutter recipe app for Android, currently in internal testing, with iOS planned. Uses on-device OCR to scan recipes from photos and PDF pages, then online AI to generate a cooking flow with ingredients beside each step. Also accepts pasted text, supports editing, serving adjustments, unit conversions, and local collections. Saved recipes work offline. No public release or store destination is supplied.
+
 ## Availability and launch visibility
 
 | Project                   | Owner-reported readiness                                                                                                | Launch treatment                                                                                                                                                            |
@@ -221,6 +228,7 @@ Small Linux desktop app displaying the current song's album artwork, title, and 
 | wumi - Chinese Flashcards | Fully functional alpha; Android APK ready; public link pending; not on Play Store                                       | Featured priority 4; simplified pending Android APK card until public delivery is verified; other platform downloads still to confirm                                       |
 | HanKan - Chinese Reader   | Beta 0.5.2-beta desktop downloads publicly verified; Linux, Windows, and Android supported; runtime behavior unverified | Featured priority 5; linked simplified Flatpak/EXE/portable ZIP cards, standalone Installation section, GitHub source link; Android Google Play, macOS, and iOS coming soon |
 | ClipThat!                 | Beta 0.6.3-beta; Linux Flatpak and Windows installer/portable downloads publicly verified; runtime behavior unverified  | Featured priority 6; three linked simplified desktop download cards, standalone Installation section with Linux and grouped Windows instructions, GitHub source link        |
+| WayToCook                 | Android internal testing; iOS planned; no public download                                                                | Featured priority 7; six supplied screenshots, paired homepage preview, simplified page with availability and internal-testing legal pages; no download/store actions         |
 | Paddle-my-pdf             | Finished CLI; unpolished, no installer, Python requirements file                                                        | Confirm source/install destination                                                                                                                                          |
 | dart_paddle_ocr           | Finished implementation; package not yet polished, still closed source; pub.dev publication planned                     | Include an informative page with publication-in-preparation status; no public package/source actions yet                                                                    |
 | chinese_popup_dict        | Finished implementation; package not yet polished, still closed source; pub.dev publication planned                     | Include an informative page with publication-in-preparation status; no public package/source actions yet                                                                    |

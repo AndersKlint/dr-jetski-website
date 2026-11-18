@@ -73,6 +73,16 @@ the website build must not depend on the sibling repository.
 This support file is not a project entry. Page presentation and placement
 are defined in [DESIGN.md](DESIGN.md).
 
+## WayToCook legal pages
+
+Copy `../WayToCook/docs/legal/privacy-policy.md` verbatim to
+`src/content/projects/waytocook/privacy.md` and `../WayToCook/docs/legal/terms.md`
+verbatim to `src/content/projects/waytocook/terms-of-service.md`.
+Preserve the internal-testing notices and unresolved draft items. Manually
+synchronize both bundled copies when their sources change; builds must not depend
+on the sibling repository. These support files use the existing legal-page
+collections and routes, not separate project entries.
+
 ## Gallery media
 
 - `image`: a local filename with required `alt`; `kind: image` is optional and
