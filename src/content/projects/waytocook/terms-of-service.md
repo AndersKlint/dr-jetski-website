@@ -1,8 +1,8 @@
 # WayToCook Terms of Service
 
-Last updated: 18 November 2026.
+Draft updated: 20 November 2026.
 
-**Internal-testing version. WayToCook is not yet publicly released. Participation in testing does not waive mandatory consumer or data-protection rights.**
+**Unpublished internal-testing draft. WayToCook is not yet publicly released. Participation in testing does not waive mandatory consumer or data-protection rights.**
 
 ## Provider and scope
 
@@ -30,7 +30,7 @@ Independently check allergens, dietary suitability, cooking temperatures, food h
 
 ## Free generation allowance
 
-Free use includes five successful generations per UTC calendar month, plus three additional generations in the first allowance month. The allowance resets at 00:00 UTC on the first day of each month. Unused allowance, including the welcome bonus, does not roll over.
+Free use includes five successful generations per UTC calendar month, plus three ad-free welcome generations used first in the first allowance month. When ads are enabled, the five regular generations normally require completing a rewarded ad. You can leave the ad early without using an allowance, but the attempt will not unlock a recipe. If you earn the reward and generation fails, you can retry without another ad within the same month's allowance. The allowance resets at 00:00 UTC on the first day of each month; unused allowance does not roll over.
 
 A successful generation or regeneration uses one allowance when the backend records a valid result, whether or not you save it or retrieve it. Local edits and opening or cooking saved recipes do not use allowance.
 
@@ -40,7 +40,7 @@ Completed results can be retrieved for ten minutes after completion. Save any re
 
 ## Pro subscriptions
 
-Pro provides up to **500 successful generations per subscription month**, shared across devices restoring the same Google Play purchase. This is a hard cap, not unlimited use. Unused allowance does not roll over.
+Pro provides up to **500 successful ad-free generations per subscription month**, shared across devices restoring the same Google Play purchase. This is a hard cap, not unlimited use. Unused allowance does not roll over.
 
 An annual subscription grants monthly allowances of 500, not 6,000 upfront. Allowance periods follow the subscription's billing anchor; the app displays the applicable balance and next reset.
 
